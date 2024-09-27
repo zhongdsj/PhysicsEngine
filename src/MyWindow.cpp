@@ -47,9 +47,9 @@ LRESULT ZDSJ::MyWindow::handelMessage(HWND handle, UINT msg, WPARAM wParam, LPAR
 	return DefWindowProc(handle, msg, wParam, lParam);
 }
 
-void ZDSJ::MyWindow::doFrame()
+void ZDSJ::MyWindow::doFrame(short _fps)
 {
-	this->m_dx11->render();
+	this->m_dx11->render(_fps);
 }
 
 ZDSJ::MyWindow::~MyWindow()

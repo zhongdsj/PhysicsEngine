@@ -3,10 +3,14 @@ struct VertexShaderOut {
 	float4 pos : SV_Position;
 };
 
-VertexShaderOut main_vertex_shader(float2 pos : Position, float4 color: Color)
+cbuffer ConstantBuffer {
+	matrix transform;
+};
+
+VertexShaderOut main_vertex_shader(float2 _pos : Position, float4 _color: Color)
 {
 	VertexShaderOut vso;
-	vso.pos = float4(pos.x, pos.y, 0.0f, 1.0f);
-	vso.color = color;
+	vso.pos = mul(float4(_pos.x, _pos.y, 0.0f, 1.0f), transform);
+	vso.color = _color;
 	return vso;
 }

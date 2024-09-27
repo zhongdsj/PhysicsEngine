@@ -1,7 +1,13 @@
 #pragma once
-
+# include <DirectXMath.h>
 
 namespace ZDSJ {
+
+	struct TransformConstantBuffer {
+		DirectX::XMMATRIX translation;
+		DirectX::XMMATRIX scal;
+		DirectX::XMMATRIX rotation;
+	};
 
 	struct Vertex2D {
 		struct {

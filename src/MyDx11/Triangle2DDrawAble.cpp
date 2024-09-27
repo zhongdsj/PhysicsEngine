@@ -5,22 +5,20 @@
 # include <MyDx11/PixelShaderBindAble.h>
 # include <MyDx11/InputLayoutBindAble.h>
 # include <MyDx11/VertexStructure.h>
-
-# include <TriangleVertexShader2D.h>
-# include <TrianglePixelShader2D.h>
+# include <MyDx11/VertexConstantBufferBindAble.h>
+# include <MyDx11/TriangleVertexShader2D.h>
+# include <MyDx11/TrianglePixelShader2D.h>
 
 # include <d3d11.h>
 # include <iterator>
 
-# include <DirectXMath.h>
 
-ZDSJ::Triangle2DDrawAble::Triangle2DDrawAble(ID3D11Device* _device, ID3D11DeviceContext* _context) : DrawAbleAdapter(_device)
-{
+ZDSJ::Triangle2DDrawAble::Triangle2DDrawAble(ID3D11Device* _device, ID3D11DeviceContext* _context) : DrawAbleAdapter(_device) {
 	// 顶点缓存
 	std::vector<ZDSJ::Vertex2D> vertices = {
-		{0.0f, 0.5f, 255, 0, 0, 0},
-		{0.5f, -0.5f, 0, 255, 0, 255},
-		{-0.5f, -0.5f, 0, 0, 255, 128},
+		{0.0f, 0.5f + 0.5f, 255, 0, 0, 128},
+		{0.5f, -0.5f + 0.5f, 0, 255, 0, 255},
+		{-0.5f, -0.5f + 0.5f, 0, 0, 255, 128},
 	};
 	// 顶点索引
 	const UINT16 indices[] = {
@@ -45,7 +43,38 @@ ZDSJ::Triangle2DDrawAble::Triangle2DDrawAble(ID3D11Device* _device, ID3D11Device
 	// 像素着色器
 	this->m_bind_able->push_back(new ZDSJ::PixelShaderBindAble(_device, g_main_pixel_shader, sizeof(g_main_pixel_shader)));
 	// 
+	this->m_transform = new ZDSJ::VertexConstantBufferBindAble(_device);
+	this->m_bind_able->push_back(m_transform);
 	// DirectX::XMMatrixRotationRollPitchYaw(); // 旋转(欧拉角)
 	// DirectX::XMMatrixTranslation(); // 平移
 	this->bind(_context);
+	// DirectX::XMMatrixMultiply();
+	/*ZDSJ::VertexConstantBuffer vertex_constant_buffer = { DirectX::XMMatrixTranslation(0.0f, 0.0f, 0.0f), DirectX::XMMatrixScaling(1.0f, 1.0f, 1.0f), DirectX::XMMatrixRotationRollPitchYaw(0.0f, 0.0f, 1.0f) };
+	DirectX::XMMATRIX matrix = DirectX::XMMatrixMultiply(vertex_constant_buffer.scal, vertex_constant_buffer.rotation);
+	D3D11_BUFFER_DESC cbd;
+	cbd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	cbd.Usage = D3D11_USAGE_DYNAMIC;
+	cbd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	cbd.MiscFlags = 0u;
+	cbd.ByteWidth = sizeof(matrix);
+	cbd.StructureByteStride = 0u;
+
+	D3D11_SUBRESOURCE_DATA csd = {};
+	csd.pSysMem = &matrix;
+	_device->CreateBuffer(&cbd, &csd, &this->m_buffer);
+	_context->VSSetConstantBuffers(0u, 1u, &this->m_buffer);*/
+}
+
+
+void ZDSJ::Triangle2DDrawAble::update(ID3D11DeviceContext* _context, short _fps) {
+	this->m_rotation_z = 2.0f * DirectX::XM_PI * this->m_run_fps / this->m_max_fps;
+	++this->m_run_fps;
+	if (this->m_run_fps == this->m_max_fps) {
+		this->m_run_fps = 0;
+	}
+	// this->m_scal_x = 3.0f / 4;
+	this->m_transform->update(_context, this->getTransformMatix());
+	// D3D11_MAPPED_SUBRESOURCE msr;
+	// _context->Map()
+	
 }

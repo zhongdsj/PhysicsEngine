@@ -77,11 +77,11 @@ ZDSJ::MyDx11::MyDx11(HWND _hwnd, int _window_width, int _window_height)
 	// this->createArc2D();
 }
 
-void ZDSJ::MyDx11::render()
+void ZDSJ::MyDx11::render(short _fps)
 {
 	const float bg_color[] = { 0.0f, 0.0f, 0.0f, 1.0f };
 	this->m_context->ClearRenderTargetView(this->m_render_target_view, bg_color);
-	this->draw();
+	this->draw(_fps);
 	this->m_swap_chain->Present(0, 0);
 }
 
@@ -93,10 +93,10 @@ ZDSJ::MyDx11::~MyDx11()
 	SAFE_RELEASE(this->m_device);
 }
 
-void ZDSJ::MyDx11::draw()
+void ZDSJ::MyDx11::draw(short _fps)
 {
 	for (auto item : this->m_draw_able) {
-		item->draw(this->m_context);
+		item->draw(this->m_context, _fps);
 	}
 }
 

@@ -15,7 +15,7 @@ namespace ZDSJ {
 	class MyDx11 {
 	public:
 		MyDx11(HWND _hwnd, int _window_width, int _window_height);
-		void render();
+		void render(short _fps);
 		~MyDx11();
 	private:
 		IDXGISwapChain* m_swap_chain = nullptr;
@@ -25,7 +25,7 @@ namespace ZDSJ {
 		std::vector<DrawAbleInterface*> m_draw_able;
 		size_t m_index_size = 0;
 
-		void draw();
+		void draw(short _fps);
 		void createTriangle2D();
 		// ID3D11Texture2D* m_texture = nullptr;
 	};

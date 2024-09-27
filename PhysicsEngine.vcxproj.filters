@@ -66,6 +66,15 @@
     <ClCompile Include="src\MyDx11\VertexStructure.cpp">
       <Filter>源文件\src\MyDx11</Filter>
     </ClCompile>
+    <ClCompile Include="src\MyDx11\ConstantBufferBindAble.cpp">
+      <Filter>源文件\src\MyDx11</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MyDx11\VertexConstantBufferBindAble.cpp">
+      <Filter>源文件\src\MyDx11</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Timer.cpp">
+      <Filter>源文件\src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\MyWindow.h">
@@ -115,6 +124,15 @@
     </ClInclude>
     <ClInclude Include="include\MyDx11\VertexStructure.h">
       <Filter>头文件\include\MyDx11</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MyDx11\ConstantBufferBindAble.h">
+      <Filter>头文件\include\MyDx11</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MyDx11\VertexConstantBufferBindAble.h">
+      <Filter>头文件\include\MyDx11</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Timer.h">
+      <Filter>头文件\include</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
