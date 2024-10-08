@@ -134,41 +134,44 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="src\MyDx11\ConstantBufferBindAble.cpp" />
-    <ClCompile Include="src\MyDx11\DrawAbleAdapter.cpp" />
-    <ClCompile Include="src\MyDx11\IndexBufferBindAble.cpp" />
-    <ClCompile Include="src\MyDx11\InputLayoutBindAble.cpp" />
+    <ClCompile Include="src\MyDx11\Animations\DrawAbleAnimation.cpp" />
+    <ClCompile Include="src\MyDx11\BindAble\ConstantBufferBindAble.cpp" />
+    <ClCompile Include="src\MyDx11\BindAble\IndexBufferBindAble.cpp" />
+    <ClCompile Include="src\MyDx11\BindAble\InputLayoutBindAble.cpp" />
+    <ClCompile Include="src\MyDx11\BindAble\PixelShaderBindAble.cpp" />
+    <ClCompile Include="src\MyDx11\BindAble\VertexBufferBindAble.cpp" />
+    <ClCompile Include="src\MyDx11\BindAble\VertexConstantBufferBindAble.cpp" />
+    <ClCompile Include="src\MyDx11\BindAble\VertexShaderBindAble.cpp" />
+    <ClCompile Include="src\MyDx11\DrawAble\DrawAbleAdapter.cpp" />
+    <ClCompile Include="src\MyDx11\DrawAble\Triangle2DDrawAble.cpp" />
     <ClCompile Include="src\MyDx11\MyDx11.cpp" />
-    <ClCompile Include="src\MyDx11\PixelShaderBindAble.cpp" />
-    <ClCompile Include="src\MyDx11\Triangle2DDrawAble.cpp" />
-    <ClCompile Include="src\MyDx11\VertexBufferBindAble.cpp" />
-    <ClCompile Include="src\MyDx11\VertexConstantBufferBindAble.cpp" />
-    <ClCompile Include="src\MyDx11\VertexShaderBindAble.cpp" />
     <ClCompile Include="src\MyDx11\VertexStructure.cpp" />
     <ClCompile Include="src\MyWindow.cpp" />
     <ClCompile Include="src\MyWindowClass.cpp" />
     <ClCompile Include="src\Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\MyDx11\BindAbleInterface.h" />
-    <ClInclude Include="include\MyDx11\ConstantBufferBindAble.h" />
-    <ClInclude Include="include\MyDx11\DrawAbleAdapter.h" />
-    <ClInclude Include="include\MyDx11\DrawAbleInterface.h" />
-    <ClInclude Include="include\MyDx11\IndexBufferBindAble.h" />
-    <ClInclude Include="include\MyDx11\InputLayoutBindAble.h" />
+    <ClInclude Include="include\MyDx11\Animations\DrawAbleAnimation.h" />
+    <ClInclude Include="include\MyDx11\BindAble\BindAbleInterface.h" />
+    <ClInclude Include="include\MyDx11\BindAble\ConstantBufferBindAble.h" />
+    <ClInclude Include="include\MyDx11\BindAble\IndexBufferBindAble.h" />
+    <ClInclude Include="include\MyDx11\BindAble\InputLayoutBindAble.h" />
+    <ClInclude Include="include\MyDx11\BindAble\PixelShaderBindAble.h" />
+    <ClInclude Include="include\MyDx11\BindAble\VertexBufferBindAble.h" />
+    <ClInclude Include="include\MyDx11\BindAble\VertexConstantBufferBindAble.h" />
+    <ClInclude Include="include\MyDx11\BindAble\VertexShaderBindAble.h" />
+    <ClInclude Include="include\MyDx11\DrawAble\DrawAbleAdapter.h" />
+    <ClInclude Include="include\MyDx11\DrawAble\DrawAbleInterface.h" />
+    <ClInclude Include="include\MyDx11\DrawAble\Triangle2DDrawAble.h" />
     <ClInclude Include="include\MyDx11\MyDx11.h" />
-    <ClInclude Include="include\MyDx11\PixelShaderBindAble.h" />
-    <ClInclude Include="include\MyDx11\Triangle2DDrawAble.h" />
-    <ClInclude Include="include\MyDx11\TrianglePixelShader2D.h" />
-    <ClInclude Include="include\MyDx11\TriangleVertexShader2D.h" />
-    <ClInclude Include="include\MyDx11\VertexBufferBindAble.h" />
-    <ClInclude Include="include\MyDx11\VertexConstantBufferBindAble.h" />
-    <ClInclude Include="include\MyDx11\VertexShaderBindAble.h" />
+    <ClInclude Include="include\MyDx11\Shader\TrianglePixelShader2D.h" />
+    <ClInclude Include="include\MyDx11\Shader\TriangleVertexShader2D.h" />
     <ClInclude Include="include\MyDx11\VertexStructure.h" />
     <ClInclude Include="include\MyWindow.h" />
     <ClInclude Include="include\MyWindowClass.h" />
     <ClInclude Include="include\MyWindowInterface.h" />
     <ClInclude Include="include\Timer.h" />
+    <ClInclude Include="include\ZDSJClassHelper.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="shader\TrianglePixelShader2D.hlsl">
@@ -178,8 +181,8 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
-      <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">include/MyDx11/TrianglePixelShader2D.h</HeaderFileOutput>
-      <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">include/MyDx11/TrianglePixelShader2D.h</HeaderFileOutput>
+      <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">include/MyDx11/Shader/TrianglePixelShader2D.h</HeaderFileOutput>
+      <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">include/MyDx11/Shader/TrianglePixelShader2D.h</HeaderFileOutput>
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">main_pixel_shader</EntryPointName>
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">main_pixel_shader</EntryPointName>
     </FxCompile>
@@ -190,8 +193,8 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
-      <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">include/MyDx11/TriangleVertexShader2D.h</HeaderFileOutput>
-      <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">include/MyDx11/TriangleVertexShader2D.h</HeaderFileOutput>
+      <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">include/MyDx11/Shader/TriangleVertexShader2D.h</HeaderFileOutput>
+      <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">include/MyDx11/Shader/TriangleVertexShader2D.h</HeaderFileOutput>
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">main_vertex_shader</EntryPointName>
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">main_vertex_shader</EntryPointName>
     </FxCompile>

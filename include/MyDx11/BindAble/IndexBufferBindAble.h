@@ -1,5 +1,5 @@
 # pragma once
-# include <MyDx11/BindAbleInterface.h>
+# include <MyDx11/BindAble/BindAbleInterface.h>
 struct ID3D11Buffer;
 
 namespace ZDSJ {

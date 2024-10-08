@@ -1,5 +1,7 @@
 # include <MyDx11/MyDx11.h>
-# include <MyDx11/Triangle2DDrawAble.h>
+# include <MyDx11/DrawAble/Triangle2DDrawAble.h>
+# include <MyDx11/Animations/DrawAbleAnimation.h>
+# include <DirectXMath.h>
 # include <d3d11.h>
 
 ZDSJ::MyDx11::MyDx11(HWND _hwnd, int _window_width, int _window_height)
@@ -87,6 +89,9 @@ void ZDSJ::MyDx11::render(short _fps)
 
 ZDSJ::MyDx11::~MyDx11()
 {
+	for (auto item : this->m_draw_able) {
+		delete item;
+	}
 	SAFE_RELEASE(this->m_render_target_view);
 	SAFE_RELEASE(this->m_context);
 	SAFE_RELEASE(this->m_swap_chain);
@@ -102,5 +107,9 @@ void ZDSJ::MyDx11::draw(short _fps)
 
 void ZDSJ::MyDx11::createTriangle2D()
 {
+	// this->m_draw_able.push_back(new ZDSJ::Triangle2DDrawAble(this->m_device, this->m_context));
+	auto triangle = new ZDSJ::Triangle2DDrawAble(this->m_device, this->m_context, 0.5f);
+	triangle->addAnimation(triangle->rotationZAnimation(360.f, 5000, 60, true));
+	this->m_draw_able.push_back(triangle);
 	this->m_draw_able.push_back(new ZDSJ::Triangle2DDrawAble(this->m_device, this->m_context));
 }

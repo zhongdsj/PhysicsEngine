@@ -1,4 +1,4 @@
-# include <MyDx11/IndexBufferBindAble.h>
+# include <MyDx11/BindAble/IndexBufferBindAble.h>
 # include <d3d11.h>
 
 ZDSJ::IndexBufferBindAble::IndexBufferBindAble(ID3D11Device* _device, const UINT16* _indices, size_t _indicesSize)

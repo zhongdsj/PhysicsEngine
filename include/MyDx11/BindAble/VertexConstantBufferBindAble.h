@@ -1,5 +1,5 @@
 # pragma once
-# include <MyDx11/ConstantBufferBindAble.h>
+# include <MyDx11/BindAble/ConstantBufferBindAble.h>
 
 namespace ZDSJ {
 

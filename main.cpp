@@ -28,7 +28,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	MSG msg;
 	BOOL ret;
 	short fps = 60;
-	short now_fps = 0;
+	float run_time_fps = 0.0f;
 	ZDSJ::Timer* timer = new ZDSJ::Timer(fps);
 	while (true) {
 		timer->mark();
@@ -44,12 +44,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 				DispatchMessageW(&msg);
 			}
 		}
-		timer->nextFps();
-		window->doFrame(now_fps);
-		++now_fps;
-		if (now_fps >= fps) {
-			now_fps = 0;
-		}
+		run_time_fps = timer->nextFps();
+		window->doFrame(run_time_fps);
 	}
 	delete window;
 	delete window_class;

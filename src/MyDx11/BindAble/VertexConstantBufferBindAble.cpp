@@ -1,4 +1,4 @@
-# include <MyDx11/VertexConstantBufferBindAble.h>
+# include <MyDx11/BindAble/VertexConstantBufferBindAble.h>
 # include <d3d11.h>
 # include <DirectXMath.h>
 

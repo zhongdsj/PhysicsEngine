@@ -1,4 +1,4 @@
-# include <MyDx11/VertexBufferBindAble.h>
+# include <MyDx11/BindAble/VertexBufferBindAble.h>
 
 void ZDSJ::VertexBufferBindAble::bind(ID3D11DeviceContext* _context)
 {

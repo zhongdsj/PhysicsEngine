@@ -1,4 +1,4 @@
-# include <MyDx11/ConstantBufferBindAble.h>
+# include <MyDx11/BindAble/ConstantBufferBindAble.h>
 # include <DirectXMath.h>
 # include <d3d11.h>
 

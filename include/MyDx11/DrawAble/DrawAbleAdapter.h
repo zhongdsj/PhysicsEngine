@@ -1,5 +1,6 @@
 # pragma once
-# include <MyDx11/DrawAbleInterface.h>
+# include <MyDx11/DrawAble/DrawAbleInterface.h>
+# include <ZDSJClassHelper.h>
 
 namespace DirectX {
 	struct XMMATRIX;

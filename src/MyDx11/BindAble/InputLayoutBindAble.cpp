@@ -1,4 +1,4 @@
-# include <MyDx11/InputLayoutBindAble.h>
+# include <MyDx11/BindAble/InputLayoutBindAble.h>
 # include <d3d11.h>
 
 ZDSJ::InputLayoutBindAble::InputLayoutBindAble(ID3D11Device* _device, std::vector<D3D11_INPUT_ELEMENT_DESC>& _ied, const BYTE* _vertex_shader, size_t _vertex_shader_size)
