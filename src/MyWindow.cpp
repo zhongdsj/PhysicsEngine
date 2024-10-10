@@ -1,5 +1,6 @@
-﻿#include "MyWindow.h"
-#include <MyDx11/MyDx11.h>
+﻿# include <MyWindow.h>
+# include <MyDx11/MyDx11.h>
+# include <ImGuiManager.h>
 
 # pragma region MyWindow
 
@@ -29,6 +30,7 @@ bool ZDSJ::MyWindow::create(DWORD _ex_style, LPCWSTR _class_name, LPCWSTR _windo
 		return false;
 	}
 	this->m_dx11 = new ZDSJ::MyDx11(this->m_hwnd, _width, _height);
+	this->m_imgui = new ZDSJ::ImGuiManager(this->m_hwnd, this->m_dx11->device(), this->m_dx11->context());
 	ShowWindow(this->m_hwnd, SW_SHOWDEFAULT);
 
 	return true;
@@ -36,6 +38,10 @@ bool ZDSJ::MyWindow::create(DWORD _ex_style, LPCWSTR _class_name, LPCWSTR _windo
 
 LRESULT ZDSJ::MyWindow::handelMessage(HWND handle, UINT msg, WPARAM wParam, LPARAM lParam)
 {
+	if (this->m_imgui != nullptr) {
+		this->m_imgui->handelMessage(handle, msg, wParam, lParam);
+	}
+
 	switch (msg)
 	{
 	case WM_CLOSE:
@@ -47,13 +53,19 @@ LRESULT ZDSJ::MyWindow::handelMessage(HWND handle, UINT msg, WPARAM wParam, LPAR
 	return DefWindowProc(handle, msg, wParam, lParam);
 }
 
-void ZDSJ::MyWindow::doFrame(short _fps)
+void ZDSJ::MyWindow::doFrame(float _fps)
 {
+	
 	this->m_dx11->render(_fps);
+	if (this->m_imgui != nullptr) {
+		this->m_imgui->render(_fps);
+	}
+	this->m_dx11->endRender();
 }
 
 ZDSJ::MyWindow::~MyWindow()
 {
+	delete this->m_imgui;
 	delete this->m_dx11;
 	DestroyWindow(this->m_hwnd);
 }

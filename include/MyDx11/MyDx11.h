@@ -15,7 +15,10 @@ namespace ZDSJ {
 	class MyDx11 {
 	public:
 		MyDx11(HWND _hwnd, int _window_width, int _window_height);
-		void render(short _fps);
+		void render(float _fps);
+		void endRender();
+		ID3D11Device* device() const;
+		ID3D11DeviceContext* context() const;
 		~MyDx11();
 	private:
 		IDXGISwapChain* m_swap_chain = nullptr;
@@ -25,7 +28,7 @@ namespace ZDSJ {
 		std::vector<DrawAbleInterface*> m_draw_able;
 		size_t m_index_size = 0;
 
-		void draw(short _fps);
+		void draw(float _fps);
 		void createTriangle2D();
 		// ID3D11Texture2D* m_texture = nullptr;
 	};

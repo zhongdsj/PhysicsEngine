@@ -1,5 +1,6 @@
 # include <MyDx11/MyDx11.h>
 # include <MyDx11/DrawAble/Triangle2DDrawAble.h>
+# include <MyDx11/DrawAble/Rectangle2DDrawAble.h>
 # include <MyDx11/Animations/DrawAbleAnimation.h>
 # include <DirectXMath.h>
 # include <d3d11.h>
@@ -79,12 +80,26 @@ ZDSJ::MyDx11::MyDx11(HWND _hwnd, int _window_width, int _window_height)
 	// this->createArc2D();
 }
 
-void ZDSJ::MyDx11::render(short _fps)
+void ZDSJ::MyDx11::render(float _fps)
 {
 	const float bg_color[] = { 0.0f, 0.0f, 0.0f, 1.0f };
 	this->m_context->ClearRenderTargetView(this->m_render_target_view, bg_color);
 	this->draw(_fps);
+}
+
+void ZDSJ::MyDx11::endRender()
+{
 	this->m_swap_chain->Present(0, 0);
+}
+
+ID3D11Device* ZDSJ::MyDx11::device() const
+{
+	return this->m_device;
+}
+
+ID3D11DeviceContext* ZDSJ::MyDx11::context() const
+{
+	return this->m_context;
 }
 
 ZDSJ::MyDx11::~MyDx11()
@@ -98,7 +113,7 @@ ZDSJ::MyDx11::~MyDx11()
 	SAFE_RELEASE(this->m_device);
 }
 
-void ZDSJ::MyDx11::draw(short _fps)
+void ZDSJ::MyDx11::draw(float _fps)
 {
 	for (auto item : this->m_draw_able) {
 		item->draw(this->m_context, _fps);
@@ -108,8 +123,8 @@ void ZDSJ::MyDx11::draw(short _fps)
 void ZDSJ::MyDx11::createTriangle2D()
 {
 	// this->m_draw_able.push_back(new ZDSJ::Triangle2DDrawAble(this->m_device, this->m_context));
-	auto triangle = new ZDSJ::Triangle2DDrawAble(this->m_device, this->m_context, 0.5f);
-	triangle->addAnimation(triangle->rotationZAnimation(360.f, 5000, 60, true));
-	this->m_draw_able.push_back(triangle);
+	auto triangle = (new ZDSJ::Triangle2DDrawAble(this->m_device, this->m_context))->setTranslationX(0.5f);
+	this->m_draw_able.push_back(triangle->addAnimation(ZDSJ::DrawAbleAnimation::rotationZAnimation(360.f, 5000, 60, true)));
 	this->m_draw_able.push_back(new ZDSJ::Triangle2DDrawAble(this->m_device, this->m_context));
+	this->m_draw_able.push_back((new ZDSJ::Rectangle2DDrawAble(this->m_device, this->m_context))->setTranslationX(-0.8f));
 }

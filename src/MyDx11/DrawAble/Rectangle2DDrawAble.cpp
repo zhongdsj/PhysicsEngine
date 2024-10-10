@@ -1,4 +1,4 @@
-# include <MyDx11/DrawAble/Triangle2DDrawAble.h>
+# include <MyDx11/DrawAble/Rectangle2DDrawAble.h>
 # include <MyDx11/BindAble/VertexBufferBindAble.h>
 # include <MyDx11/BindAble/IndexBufferBindAble.h>
 # include <MyDx11/BindAble/VertexShaderBindAble.h>
@@ -11,17 +11,19 @@
 
 # include <d3d11.h>
 
-
-ZDSJ::Triangle2DDrawAble::Triangle2DDrawAble(ID3D11Device* _device, ID3D11DeviceContext* _context, const DrawAbleData& _data) :  DrawAbleAdapter(_device, _data) {
+ZDSJ::Rectangle2DDrawAble::Rectangle2DDrawAble(ID3D11Device* _device, ID3D11DeviceContext* _context, const DrawAbleData& _data) : DrawAbleAdapter(_device, _data)
+{
 	// ¶¥µã»º´æ
 	std::vector<ZDSJ::Vertex2D> vertices = {
-		{0.0f, 1.0f, 255, 0, 0, 128},
-		{0.5f, 0.0f, 0, 255, 0, 255},
-		{-0.5f, 0.0f, 0, 0, 255, 128},
+		{-0.5f, 1.0f, 255, 0, 0, 255},
+		{0.5f, 1.0f, 0, 255, 0, 128},
+		{-0.5f, 0.0f, 0, 0, 255, 255},
+		{0.5f, 0.0f, 255, 0, 0, 128},
 	};
 	// ¶¥µãË÷Òý
 	const UINT16 indices[] = {
-		0,1,2
+		0, 1, 3,
+		3, 2, 0
 	};
 	// ¶¥µã»º´æ
 	this->m_bind_able->push_back(new ZDSJ::VertexBufferBindAble(_device, vertices));
@@ -41,16 +43,14 @@ ZDSJ::Triangle2DDrawAble::Triangle2DDrawAble(ID3D11Device* _device, ID3D11Device
 	// Ëõ·ÅÐý×ª¾ØÕó
 	this->m_transform = new ZDSJ::VertexConstantBufferBindAble(_device);
 	this->m_bind_able->push_back(m_transform);
-	// this->m_data->translation.x = _translation_x;
-	// this->bind(_context);
 }
 
-ZDSJ::Triangle2DDrawAble::Triangle2DDrawAble(ID3D11Device* _device, ID3D11DeviceContext* _context) : Triangle2DDrawAble(_device, _context, DrawAbleData())
+ZDSJ::Rectangle2DDrawAble::Rectangle2DDrawAble(ID3D11Device* _device, ID3D11DeviceContext* _context) : Rectangle2DDrawAble(_device, _context, DrawAbleData())
 {
-	
+
 }
 
-ZDSJ::Triangle2DDrawAble::~Triangle2DDrawAble()
+ZDSJ::Rectangle2DDrawAble::~Rectangle2DDrawAble()
 {
 
 }

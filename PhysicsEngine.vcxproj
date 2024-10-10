@@ -81,7 +81,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>d3d11.lib;Winmm.lib;./assimp/assimp-vc143-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d11.lib;Winmm.lib;d3dcompiler.lib;dxgi.lib;./assimp/assimp-vc143-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>./import;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
@@ -112,7 +112,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>d3d11.lib;Winmm.lib;./assimp/assimp-vc143-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d11.lib;Winmm.lib;d3dcompiler.lib;dxgi.lib;./assimp/assimp-vc143-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>./import;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
@@ -133,7 +133,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="include\imgui\imgui.cpp" />
+    <ClCompile Include="include\imgui\imgui_draw.cpp" />
+    <ClCompile Include="include\imgui\imgui_impl_dx11.cpp" />
+    <ClCompile Include="include\imgui\imgui_impl_win32.cpp" />
+    <ClCompile Include="include\imgui\imgui_tables.cpp" />
+    <ClCompile Include="include\imgui\imgui_widgets.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="src\ImGuiManager.cpp" />
     <ClCompile Include="src\MyDx11\Animations\DrawAbleAnimation.cpp" />
     <ClCompile Include="src\MyDx11\BindAble\ConstantBufferBindAble.cpp" />
     <ClCompile Include="src\MyDx11\BindAble\IndexBufferBindAble.cpp" />
@@ -143,6 +150,7 @@
     <ClCompile Include="src\MyDx11\BindAble\VertexConstantBufferBindAble.cpp" />
     <ClCompile Include="src\MyDx11\BindAble\VertexShaderBindAble.cpp" />
     <ClCompile Include="src\MyDx11\DrawAble\DrawAbleAdapter.cpp" />
+    <ClCompile Include="src\MyDx11\DrawAble\Rectangle2DDrawAble.cpp" />
     <ClCompile Include="src\MyDx11\DrawAble\Triangle2DDrawAble.cpp" />
     <ClCompile Include="src\MyDx11\MyDx11.cpp" />
     <ClCompile Include="src\MyDx11\VertexStructure.cpp" />
@@ -151,6 +159,15 @@
     <ClCompile Include="src\Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\ImGuiManager.h" />
+    <ClInclude Include="include\imgui\imconfig.h" />
+    <ClInclude Include="include\imgui\imgui.h" />
+    <ClInclude Include="include\imgui\imgui_impl_dx11.h" />
+    <ClInclude Include="include\imgui\imgui_impl_win32.h" />
+    <ClInclude Include="include\imgui\imgui_internal.h" />
+    <ClInclude Include="include\imgui\imstb_rectpack.h" />
+    <ClInclude Include="include\imgui\imstb_textedit.h" />
+    <ClInclude Include="include\imgui\imstb_truetype.h" />
     <ClInclude Include="include\MyDx11\Animations\DrawAbleAnimation.h" />
     <ClInclude Include="include\MyDx11\BindAble\BindAbleInterface.h" />
     <ClInclude Include="include\MyDx11\BindAble\ConstantBufferBindAble.h" />
@@ -162,6 +179,7 @@
     <ClInclude Include="include\MyDx11\BindAble\VertexShaderBindAble.h" />
     <ClInclude Include="include\MyDx11\DrawAble\DrawAbleAdapter.h" />
     <ClInclude Include="include\MyDx11\DrawAble\DrawAbleInterface.h" />
+    <ClInclude Include="include\MyDx11\DrawAble\Rectangle2DDrawAble.h" />
     <ClInclude Include="include\MyDx11\DrawAble\Triangle2DDrawAble.h" />
     <ClInclude Include="include\MyDx11\MyDx11.h" />
     <ClInclude Include="include\MyDx11\Shader\TrianglePixelShader2D.h" />
@@ -171,7 +189,6 @@
     <ClInclude Include="include\MyWindowClass.h" />
     <ClInclude Include="include\MyWindowInterface.h" />
     <ClInclude Include="include\Timer.h" />
-    <ClInclude Include="include\ZDSJClassHelper.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="shader\TrianglePixelShader2D.hlsl">
@@ -198,6 +215,9 @@
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">main_vertex_shader</EntryPointName>
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">main_vertex_shader</EntryPointName>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

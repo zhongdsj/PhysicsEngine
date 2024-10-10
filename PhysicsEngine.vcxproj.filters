@@ -49,6 +49,12 @@
     <Filter Include="源文件\src\MyDx11\Animations">
       <UniqueIdentifier>{b93ced78-0a92-494e-b307-c69219264b57}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\include\imgui">
+      <UniqueIdentifier>{71ec27d5-62f5-40e7-98ec-deafec20e8df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\src\imgui">
+      <UniqueIdentifier>{3d80eb63-84f0-43ad-b9b9-ed53c46d2cae}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -98,6 +104,30 @@
     </ClCompile>
     <ClCompile Include="src\MyDx11\Animations\DrawAbleAnimation.cpp">
       <Filter>源文件\src\MyDx11\Animations</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MyDx11\DrawAble\Rectangle2DDrawAble.cpp">
+      <Filter>源文件\src\MyDx11\DrawAble</Filter>
+    </ClCompile>
+    <ClCompile Include="include\imgui\imgui.cpp">
+      <Filter>源文件\src\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="include\imgui\imgui_draw.cpp">
+      <Filter>源文件\src\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="include\imgui\imgui_impl_dx11.cpp">
+      <Filter>源文件\src\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="include\imgui\imgui_impl_win32.cpp">
+      <Filter>源文件\src\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="include\imgui\imgui_widgets.cpp">
+      <Filter>源文件\src\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="include\imgui\imgui_tables.cpp">
+      <Filter>源文件\src\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ImGuiManager.cpp">
+      <Filter>源文件\src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -158,11 +188,38 @@
     <ClInclude Include="include\MyDx11\Shader\TriangleVertexShader2D.h">
       <Filter>头文件\include\MyDx11\Shader</Filter>
     </ClInclude>
-    <ClInclude Include="include\ZDSJClassHelper.h">
-      <Filter>头文件\include</Filter>
-    </ClInclude>
     <ClInclude Include="include\MyDx11\Animations\DrawAbleAnimation.h">
       <Filter>头文件\include\MyDx11\Animations</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MyDx11\DrawAble\Rectangle2DDrawAble.h">
+      <Filter>头文件\include\MyDx11\DrawAble</Filter>
+    </ClInclude>
+    <ClInclude Include="include\imgui\imconfig.h">
+      <Filter>头文件\include\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="include\imgui\imgui.h">
+      <Filter>头文件\include\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="include\imgui\imgui_impl_dx11.h">
+      <Filter>头文件\include\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="include\imgui\imgui_impl_win32.h">
+      <Filter>头文件\include\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="include\imgui\imgui_internal.h">
+      <Filter>头文件\include\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="include\imgui\imstb_rectpack.h">
+      <Filter>头文件\include\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="include\imgui\imstb_textedit.h">
+      <Filter>头文件\include\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="include\imgui\imstb_truetype.h">
+      <Filter>头文件\include\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ImGuiManager.h">
+      <Filter>头文件\include</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -172,5 +229,8 @@
     <FxCompile Include="shader\TrianglePixelShader2D.hlsl">
       <Filter>shader</Filter>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
 </Project>
