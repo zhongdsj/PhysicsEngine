@@ -1,7 +1,8 @@
-# include <ImGuiManager.h>
+# include <ImGuiManager/ImGuiManager.h>
 # include <imgui/imgui.h>
 # include <imgui/imgui_impl_win32.h>
 # include <imgui/imgui_impl_dx11.h>
+# include <Context/FpsContext.h>
 
 
 ZDSJ::ImGuiManager::ImGuiManager(HWND _hwnd, ID3D11Device* _device, ID3D11DeviceContext* _context)
@@ -10,6 +11,7 @@ ZDSJ::ImGuiManager::ImGuiManager(HWND _hwnd, ID3D11Device* _device, ID3D11Device
 	ImGui::CreateContext();
 	ImGui_ImplWin32_Init(_hwnd);
 	ImGui_ImplDX11_Init(_device, _context);
+	
 	this->m_window_flag |= ImGuiWindowFlags_NoTitleBar;
 	this->m_window_flag |= ImGuiWindowFlags_NoMove;
 	this->m_window_flag |= ImGuiWindowFlags_NoResize;
@@ -24,9 +26,10 @@ LRESULT ZDSJ::ImGuiManager::handelMessage(HWND handle, UINT msg, WPARAM wParam, 
 {
 	if (ImGui_ImplWin32_WndProcHandler(handle, msg, wParam, lParam))
 		return true;
+	return false;
 }
 
-void ZDSJ::ImGuiManager::render(float _fps)
+void ZDSJ::ImGuiManager::render()
 {
 	ImGui_ImplDX11_NewFrame();
 	ImGui_ImplWin32_NewFrame();
@@ -37,26 +40,23 @@ void ZDSJ::ImGuiManager::render(float _fps)
 	this->captureGraveAccent();
 	if (this->m_show_fps || this->m_console) {
 		ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_Appearing);
-		ImGui::SetNextWindowSize(ImVec2(0, 0));
+		ImGui::SetNextWindowSize(ImVec2(0, 0), ImGuiCond_Appearing);
 		ImGui::Begin("console", NULL, this->m_window_flag);
-		
+		ZDSJ::FpsContext* fpsContext = ZDSJ::FpsContext::getInstance();
 		if (this->m_show_fps) {
-			ImGui::Text("fps: %.2f, frame_time: %f", _fps, 0.0f);
+			ImGui::Text("fps: %.2f, frame_time: %.5fms", fpsContext->fps(), fpsContext->useTime());
 		}
-
-		// TODO 控制台输入/输出
+		
+		// 控制台输入/输出
 		if (this->m_console) {
+			ZDSJ::ringBuffer->enablePush(true);
 			ImGui::Separator();
-			auto a = ImGui::GetStyle().ItemSpacing.y + ImGui::GetFrameHeightWithSpacing();
-			ImGui::BeginChild("ScrollingRegion", ImVec2(0, ImGui::GetFontSize() * 20), false, ImGuiWindowFlags_HorizontalScrollbar);
+			ImGui::BeginChild("ScrollingRegion", ImVec2(800 * 0.6, 600 * 0.6), false, ImGuiWindowFlags_HorizontalScrollbar);
 			ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(4, 1));
 			
-			ImGuiListClipper clipper;
-			char command[128] = "";
-			auto t = "Console features are being developed, you can press ctrl + mouseleft output this text";
-			for (int i = 0; i < this->m_num; ++i) {
-				ImGui::TextUnformatted(t, t + strlen(t));
-			}
+			ZDSJ::ringBuffer->forEeach([](char* const& _message) {
+				ImGui::TextUnformatted(_message, _message + strlen(_message));
+			});
 			if (ImGui::GetScrollY() == ImGui::GetScrollMaxY()) {
 				this->m_auto_console_bottom = true;
 			}
@@ -69,10 +69,19 @@ void ZDSJ::ImGuiManager::render(float _fps)
 			ImGui::PopStyleVar();
 			ImGui::EndChild();
 			ImGui::Separator();
+			char command[128] = "";
 			// ImGui::InputText("input text", command, 128, ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_EscapeClearsAll | ImGuiInputTextFlags_CallbackCompletion | ImGuiInputTextFlags_CallbackHistory);
 			if (ImGui::InputText("command", command, 128, ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_EscapeClearsAll | ImGuiInputTextFlags_AutoSelectAll)) {
-
+				// this->m_ring_buffer->push();
+				char* temp = new char[128];
+				memcpy_s(temp, 128, command, 128);
+				ZDSJ::ringBuffer->push(temp);
+				memset(command, ' ', 128);
+				ImGui::SetKeyboardFocusHere(-1);
 			}
+		}
+		else {
+			ZDSJ::ringBuffer->enablePush(false);
 		}
 
 		ImGui::End();
@@ -117,7 +126,7 @@ void ZDSJ::ImGuiManager::captureGraveAccent()
 ZDSJ::ImGuiManager::~ImGuiManager()
 {
 	// ImGui::PopStyleVar();
-	ImGui::PopStyleColor(2);
+	// ImGui::PopStyleColor(2);
 	ImGui_ImplDX11_Shutdown();
 	ImGui_ImplWin32_Shutdown();
 	ImGui::DestroyContext();

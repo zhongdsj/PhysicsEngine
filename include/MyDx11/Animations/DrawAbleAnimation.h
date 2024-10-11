@@ -8,7 +8,7 @@ namespace ZDSJ {
 	{
 	public:
 		DrawAbleAnimation(float _change_value, long long _animation_time, short _fps, std::function<void(DrawAbleAdapter*, float)> _update_function, std::function<float(float, float)> _exchange_function, bool _loop = false);
-		void update(DrawAbleAdapter* _drawable, float _fps, bool _continue);
+		void update(DrawAbleAdapter* _drawable, bool _continue);
 
 		static ZDSJ::DrawAbleAnimation* rotationZAnimation(float _change_value, long long _amination_time, short _fps, bool _loop = false);
 

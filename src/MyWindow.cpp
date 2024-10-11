@@ -1,6 +1,7 @@
 ﻿# include <MyWindow.h>
 # include <MyDx11/MyDx11.h>
-# include <ImGuiManager.h>
+# include <ImGuiManager/ImGuiManager.h>
+# include <Context/FpsContext.h>
 
 # pragma region MyWindow
 
@@ -39,7 +40,9 @@ bool ZDSJ::MyWindow::create(DWORD _ex_style, LPCWSTR _class_name, LPCWSTR _windo
 LRESULT ZDSJ::MyWindow::handelMessage(HWND handle, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	if (this->m_imgui != nullptr) {
-		this->m_imgui->handelMessage(handle, msg, wParam, lParam);
+		if (this->m_imgui->handelMessage(handle, msg, wParam, lParam)) {
+			return true;
+		}
 	}
 
 	switch (msg)
@@ -53,12 +56,12 @@ LRESULT ZDSJ::MyWindow::handelMessage(HWND handle, UINT msg, WPARAM wParam, LPAR
 	return DefWindowProc(handle, msg, wParam, lParam);
 }
 
-void ZDSJ::MyWindow::doFrame(float _fps)
+void ZDSJ::MyWindow::doFrame()
 {
 	
-	this->m_dx11->render(_fps);
+	this->m_dx11->render();
 	if (this->m_imgui != nullptr) {
-		this->m_imgui->render(_fps);
+		this->m_imgui->render();
 	}
 	this->m_dx11->endRender();
 }

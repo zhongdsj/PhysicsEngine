@@ -8,9 +8,9 @@ namespace ZDSJ {
 
 	class DrawAbleInterface {
 	public:
-		virtual void draw(ID3D11DeviceContext* _context, float _fps) = 0;
+		virtual void draw(ID3D11DeviceContext* _context) = 0;
 	protected:
-		virtual void update(ID3D11DeviceContext* _context, float _fps) = 0;
+		virtual void update(ID3D11DeviceContext* _context) = 0;
 	};
 
 }

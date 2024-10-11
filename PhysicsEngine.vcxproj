@@ -140,7 +140,8 @@
     <ClCompile Include="include\imgui\imgui_tables.cpp" />
     <ClCompile Include="include\imgui\imgui_widgets.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="src\ImGuiManager.cpp" />
+    <ClCompile Include="src\Context\FpsContext.cpp" />
+    <ClCompile Include="src\ImGuiManager\ImGuiManager.cpp" />
     <ClCompile Include="src\MyDx11\Animations\DrawAbleAnimation.cpp" />
     <ClCompile Include="src\MyDx11\BindAble\ConstantBufferBindAble.cpp" />
     <ClCompile Include="src\MyDx11\BindAble\IndexBufferBindAble.cpp" />
@@ -159,7 +160,8 @@
     <ClCompile Include="src\Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\ImGuiManager.h" />
+    <ClInclude Include="include\Context\FpsContext.h" />
+    <ClInclude Include="include\ImGuiManager\ImGuiManager.h" />
     <ClInclude Include="include\imgui\imconfig.h" />
     <ClInclude Include="include\imgui\imgui.h" />
     <ClInclude Include="include\imgui\imgui_impl_dx11.h" />
@@ -188,6 +190,7 @@
     <ClInclude Include="include\MyWindow.h" />
     <ClInclude Include="include\MyWindowClass.h" />
     <ClInclude Include="include\MyWindowInterface.h" />
+    <ClInclude Include="include\RingBuffer.h" />
     <ClInclude Include="include\Timer.h" />
   </ItemGroup>
   <ItemGroup>

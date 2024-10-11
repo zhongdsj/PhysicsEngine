@@ -2,6 +2,7 @@
 # include <MyDx11/DrawAble/DrawAbleAdapter.h>
 # include <DirectXMath.h>
 # include <cmath>
+# include <Context/FpsContext.h>
 
 ZDSJ::DrawAbleAnimation::DrawAbleAnimation(float _change_value, long long _animation_time, short _fps, 
 	std::function<void(DrawAbleAdapter*, float)> _update_function, std::function<float(float, float)> _exchange_function, bool _loop):
@@ -11,12 +12,12 @@ ZDSJ::DrawAbleAnimation::DrawAbleAnimation(float _change_value, long long _anima
 	this->m_animation_fps = round((_fps / 1000.0f) * _animation_time);
 }
 
-void ZDSJ::DrawAbleAnimation::update(DrawAbleAdapter* _drawable, float _fps, bool _continue)
+void ZDSJ::DrawAbleAnimation::update(DrawAbleAdapter* _drawable, bool _continue)
 {
 	// continue 做动画中断
 	
 	// 换算时间基
-	float temp = this->m_time_base / _fps / this->m_animation_fps;
+	float temp = this->m_time_base / ZDSJ::FpsContext::getInstance()->fps() / this->m_animation_fps;
 
 	this->m_step += temp;
 	this->m_update_function(_drawable, this->m_exchange_function(this->m_step, this->m_change_value));

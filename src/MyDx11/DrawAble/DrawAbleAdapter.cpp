@@ -8,10 +8,10 @@ ZDSJ::DrawAbleAdapter::DrawAbleAdapter(ID3D11Device* _device, const DrawAbleData
 {
 }
 
-void ZDSJ::DrawAbleAdapter::draw(ID3D11DeviceContext* _context, float _fps)
+void ZDSJ::DrawAbleAdapter::draw(ID3D11DeviceContext* _context)
 {
 	this->bind(_context);
-	this->update(_context, _fps);
+	this->update(_context);
 	_context->DrawIndexed(this->m_index_size, 0u, 0u);
 }
 
@@ -29,10 +29,10 @@ ZDSJ::DrawAbleAdapter::~DrawAbleAdapter()
 	}
 }
 
-void ZDSJ::DrawAbleAdapter::update(ID3D11DeviceContext* _context, float _fps)
+void ZDSJ::DrawAbleAdapter::update(ID3D11DeviceContext* _context)
 {
 	for (auto item : this->m_animation) {
-		item->update(this, _fps, true);
+		item->update(this, true);
 	}
 	this->m_transform->update(_context, this->getTransformMatix());
 }

@@ -3,13 +3,14 @@
 # include <chrono>
 
 namespace ZDSJ {
+	class FpsContext;
 
 	class Timer {
 	public:
 		Timer(uint16_t _fps);
 		uint64_t getClockFreq() const;
 		void mark();
-		double nextFps() const;
+		void nextFps(FpsContext* _context = nullptr) const;
 		~Timer();
 	private:
 		LARGE_INTEGER* m_clock_freq = nullptr;
@@ -20,5 +21,4 @@ namespace ZDSJ {
 
 		uint64_t now() const;
 	};
-
 }

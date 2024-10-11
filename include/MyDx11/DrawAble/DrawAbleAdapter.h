@@ -29,7 +29,7 @@ namespace ZDSJ {
 	class DrawAbleAdapter : public DrawAbleInterface {
 	public:
 		DrawAbleAdapter(ID3D11Device* _device, const DrawAbleData& _data = DrawAbleData());
-		void draw(ID3D11DeviceContext* _context, float _fps) override;
+		void draw(ID3D11DeviceContext* _context) override;
 		const DrawAbleData* getData() const;
 		
 		inline DrawAbleAdapter* setScaleX(float _value) { this->m_data->scale.x = _value; return this; }
@@ -48,7 +48,7 @@ namespace ZDSJ {
 		size_t m_index_size = 0;
 		std::vector<BindAbleInterface*>* m_bind_able = nullptr;
 		ConstantBufferBindAble* m_transform = nullptr;
-		void update(ID3D11DeviceContext* _context, float _fps) override;
+		void update(ID3D11DeviceContext* _context) override;
 		void bind(ID3D11DeviceContext* _context);
 		DirectX::XMMATRIX getTransformMatix() const;
 

@@ -1,4 +1,5 @@
 # include <Timer.h>
+# include <Context/FpsContext.h>
 
 inline long long mulDiv64(long long _target, long long _freq)
 {
@@ -27,12 +28,17 @@ void ZDSJ::Timer::mark()
 
 }
 
-double ZDSJ::Timer::nextFps() const
+void ZDSJ::Timer::nextFps(ZDSJ::FpsContext* _context) const
 {
 	const long long target = mulDiv64(this->m_last + this->m_interval, this->m_clock_freq->QuadPart);
 	LARGE_INTEGER now;
 	QueryPerformanceCounter(&now);
-	const long long wait = (((target - now.QuadPart) * 1000.0) / this->m_clock_freq->QuadPart);
+	const long long temp = (target - now.QuadPart) * 100;
+	const float use = 1000.0f / (this->m_interval - temp);
+	const long long wait = ((temp * 10.0) / this->m_clock_freq->QuadPart);
+	if (_context != nullptr) {
+		_context->useTime(use);
+	}
 	if (now.QuadPart < target) {
 
 		if (wait > 1) {
@@ -46,10 +52,15 @@ double ZDSJ::Timer::nextFps() const
 
 			YieldProcessor();
 		}
-		return this->m_fps;
+		if (_context != nullptr) {
+			_context->fps(this->m_fps);
+		}
+		return;
 	}
-	return this->m_fps / (1 - wait * this->m_fps / 1000.0);
-
+	if (_context != nullptr) {
+		_context->fps(use * 1000000000);
+	}
+	return;
 }
 
 ZDSJ::Timer::~Timer()

@@ -55,6 +55,18 @@
     <Filter Include="源文件\src\imgui">
       <UniqueIdentifier>{3d80eb63-84f0-43ad-b9b9-ed53c46d2cae}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\include\ImGuiManager">
+      <UniqueIdentifier>{455100e7-8621-42df-b0e5-ed4a3773d656}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\src\ImGuiManager">
+      <UniqueIdentifier>{910e5070-68d2-423c-a981-0610266c99c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\include\Context">
+      <UniqueIdentifier>{a75a7c4b-8ae1-4597-a859-72932483d3f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\src\Context">
+      <UniqueIdentifier>{b0234e10-7057-4fd0-a7e3-2a2f9cc2bd64}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -126,8 +138,11 @@
     <ClCompile Include="include\imgui\imgui_tables.cpp">
       <Filter>源文件\src\imgui</Filter>
     </ClCompile>
-    <ClCompile Include="src\ImGuiManager.cpp">
-      <Filter>源文件\src</Filter>
+    <ClCompile Include="src\ImGuiManager\ImGuiManager.cpp">
+      <Filter>源文件\src\ImGuiManager</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Context\FpsContext.cpp">
+      <Filter>源文件\src\Context</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -218,8 +233,14 @@
     <ClInclude Include="include\imgui\imstb_truetype.h">
       <Filter>头文件\include\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="include\ImGuiManager.h">
+    <ClInclude Include="include\ImGuiManager\ImGuiManager.h">
+      <Filter>头文件\include\ImGuiManager</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RingBuffer.h">
       <Filter>头文件\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Context\FpsContext.h">
+      <Filter>头文件\include\Context</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

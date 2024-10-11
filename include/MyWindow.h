@@ -13,7 +13,7 @@ namespace ZDSJ {
 		bool create(DWORD _ex_style, LPCWSTR _class_name, LPCWSTR _window_name, DWORD _style, int _x, int _y, int _width, int _height,
 			HWND _parent, HMENU _menu, HINSTANCE _instance) override;
 		LRESULT handelMessage(HWND handle, UINT msg, WPARAM wParam, LPARAM lParam);
-		void doFrame(float _fps);
+		void doFrame();
 		~MyWindow();
 		MyWindow(const MyWindow&) = delete;
 		MyWindow& operator=(const MyWindow&) = delete;

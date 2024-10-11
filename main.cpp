@@ -6,6 +6,7 @@
 # include <assimp/postprocess.h>
 # include <assimp/scene.h>
 # include <Timer.h>
+# include <Context/FpsContext.h>
 
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nShowCmd) {
 	//Assimp::Importer importer;
@@ -28,7 +29,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	MSG msg;
 	BOOL ret;
 	short fps = 60;
-	float run_time_fps = 0.0f;
 	ZDSJ::Timer* timer = new ZDSJ::Timer(fps);
 	while (true) {
 		timer->mark();
@@ -44,8 +44,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 				DispatchMessageW(&msg);
 			}
 		}
-		run_time_fps = timer->nextFps();
-		window->doFrame(run_time_fps);
+		timer->nextFps(ZDSJ::FpsContext::getInstance());
+		window->doFrame();
 	}
 	delete window;
 	delete window_class;

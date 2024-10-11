@@ -10,8 +10,8 @@ ZDSJ::MyDx11::MyDx11(HWND _hwnd, int _window_width, int _window_height)
 	// 创建设备及交换链
 	DXGI_MODE_DESC bufferDesc;
 	ZeroMemory(&bufferDesc, sizeof(DXGI_MODE_DESC));
-	bufferDesc.Width = _window_width;
-	bufferDesc.Height = _window_height;
+	bufferDesc.Width = 0; // 这里设置窗口大小会导致imgui中viewPort与窗口大小不同，结果是右下角有黑边，且imgui显示有bug, 我不理解但我大为震撼
+	bufferDesc.Height = 0;
 	bufferDesc.RefreshRate.Numerator = 0;
 	bufferDesc.RefreshRate.Denominator = 1;
 	bufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
@@ -80,11 +80,11 @@ ZDSJ::MyDx11::MyDx11(HWND _hwnd, int _window_width, int _window_height)
 	// this->createArc2D();
 }
 
-void ZDSJ::MyDx11::render(float _fps)
+void ZDSJ::MyDx11::render()
 {
 	const float bg_color[] = { 0.0f, 0.0f, 0.0f, 1.0f };
 	this->m_context->ClearRenderTargetView(this->m_render_target_view, bg_color);
-	this->draw(_fps);
+	this->draw();
 }
 
 void ZDSJ::MyDx11::endRender()
@@ -113,10 +113,10 @@ ZDSJ::MyDx11::~MyDx11()
 	SAFE_RELEASE(this->m_device);
 }
 
-void ZDSJ::MyDx11::draw(float _fps)
+void ZDSJ::MyDx11::draw()
 {
 	for (auto item : this->m_draw_able) {
-		item->draw(this->m_context, _fps);
+		item->draw(this->m_context);
 	}
 }
 
