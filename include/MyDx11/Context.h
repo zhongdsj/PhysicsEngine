@@ -1,16 +1,10 @@
 # pragma once
 # include <atomic>
-# include <assert.h>
-
-# define ZDSJ_FpsContext_Init_Assert assert(ZDSJ::FpsContext::fps_context != nullptr, "check fpsContext has been inited!")
-
 namespace ZDSJ {
 
-	class FpsContext {
+	class Context {
 	public:
-# define instance fps_context
-		static FpsContext* fps_context;
-		static void initFpsContext();
+		static Context* getInstance();
 		inline float fps() const {
 			return this->m_fps.load();
 		}
@@ -23,13 +17,21 @@ namespace ZDSJ {
 		inline void useTime(float _use_time) {
 			this->m_use_time.store(_use_time);
 		}
+		inline bool animationRun() {
+			return this->m_animation_run.load();
+		}
+		inline void animationRun(bool _run) {
+			this->m_animation_run.store(_run);
+		}
+
 	private:
 		std::atomic<float> m_fps = 0.0f;
 		std::atomic<float> m_use_time = 0.0f;
+		std::atomic<bool> m_animation_run = true;
 
-		FpsContext() = default;
+		Context() = default;
 	protected:
-		~FpsContext() = default;
+		~Context() = default;
 	};
 
 }

@@ -11,14 +11,36 @@ namespace ZDSJ {
 	class RingBuffer {
 	public: 
 		static RingBuffer<T>* getInstance() {
-			static ZDSJ::RingBuffer<T> instance(32, [](char*& _value) { delete[] _value; });
+			static ZDSJ::RingBuffer<T> instance(32, [](std::string& _value) {  });
 			return &instance;
+		}
+
+		void clear() {
+			while (this->m_begin != this->m_end) {
+				this->m_destory_callback(this->m_buffer[this->m_begin]);
+				this->m_begin += 1;
+				this->m_begin %= this->m_max_size;
+			}
 		}
 
 		void enablePush(bool _enable) {
 			this->m_mutex.lock_shared();
 			this->m_enable_push = _enable;
 			this->m_mutex.unlock_shared();
+		}
+
+		void push(const T& _val) {
+			this->m_mutex.lock();
+			if (this->m_begin == ((this->m_end + 1) % this->m_max_size)) {
+				// ¶ÓÁÐÒÑÂú
+				this->m_destory_callback(this->m_buffer[this->m_begin]);
+				this->m_begin += 1;
+				this->m_begin %= this->m_max_size;
+			}
+			this->m_buffer[this->m_end] = _val;
+			this->m_end += 1;
+			this->m_end %= this->m_max_size;
+			this->m_mutex.unlock();
 		}
 
 		void push(T& _val) {
@@ -86,7 +108,7 @@ namespace ZDSJ {
 
 	private:
 		RingBuffer(size_t _max_size, std::function<void(T&)> _destory_callback = [](T& _value) {}) : m_max_size(_max_size + 1), m_destory_callback(_destory_callback) {
-			this->m_buffer = new char* [_max_size + 1];
+			this->m_buffer = new T [_max_size + 1];
 		}
 
 		T* m_buffer = nullptr;
@@ -108,6 +130,6 @@ namespace ZDSJ {
 	};
 
 #ifndef ringBuffer
-	static RingBuffer<char*>* ringBuffer = ZDSJ::RingBuffer<char*>::getInstance();
+	static RingBuffer<std::string>* ringBuffer = ZDSJ::RingBuffer<std::string>::getInstance();
 #endif // !ringBuffer
 }

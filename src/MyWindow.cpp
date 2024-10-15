@@ -1,7 +1,6 @@
 ﻿# include <MyWindow.h>
 # include <MyDx11/MyDx11.h>
 # include <ImGuiManager/ImGuiManager.h>
-# include <Context/FpsContext.h>
 # include <MyDx11/DrawAbleManager.h>
 
 # pragma region MyWindow

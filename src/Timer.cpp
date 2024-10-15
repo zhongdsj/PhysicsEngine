@@ -1,5 +1,5 @@
 # include <Timer.h>
-# include <Context/FpsContext.h>
+# include <MyDx11/Context.h>
 
 inline long long mulDiv64(long long _target, long long _freq)
 {
@@ -36,8 +36,7 @@ void ZDSJ::Timer::nextFps() const
 	const long long temp = (target - now.QuadPart) * 100;
 	const float use = 1000.0f / (this->m_interval - temp);
 	const long long wait = ((temp * 10.0) / this->m_clock_freq->QuadPart);
-	ZDSJ_FpsContext_Init_Assert;
-	ZDSJ::FpsContext::fps_context->useTime(use);
+	ZDSJ::Context::getInstance()->useTime(use);
 	if (now.QuadPart < target) {
 
 		if (wait > 1) {
@@ -51,10 +50,10 @@ void ZDSJ::Timer::nextFps() const
 
 			YieldProcessor();
 		}
-		ZDSJ::FpsContext::fps_context->fps(this->m_fps);
+		ZDSJ::Context::getInstance()->fps(this->m_fps);
 		return;
 	}
-	ZDSJ::FpsContext::fps_context->fps(use * 1000000000);
+	ZDSJ::Context::getInstance()->fps(use * 1000000000);
 	return;
 }
 

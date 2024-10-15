@@ -2,7 +2,8 @@
 # include <MyDx11/DrawAble/DrawAbleAdapter.h>
 # include <DirectXMath.h>
 # include <cmath>
-# include <Context/FpsContext.h>
+# include <MyDx11/Context.h>
+# include <ImGuiManager/Command.h>
 
 ZDSJ::DrawAbleAnimation::DrawAbleAnimation(float _change_value, long long _animation_time, short _fps, 
 	std::function<void(DrawAbleAdapter*, float)> _update_function, std::function<float(float, float)> _exchange_function, bool _loop):
@@ -10,14 +11,33 @@ ZDSJ::DrawAbleAnimation::DrawAbleAnimation(float _change_value, long long _anima
 {
 	// 计算出在当前时间基下(帧数)下需要多少帧
 	this->m_animation_fps = round((_fps / 1000.0f) * _animation_time);
+
+	// 注册command
+	ZDSJ::Command* command = ZDSJ::Command::getInstance();
+	command->registeCommand("animation_run", "stop animation if data is false, continue with true", [&](std::string& _data) {
+		if (_data == "true") {
+			ZDSJ::Context::getInstance()->animationRun(true);
+		}
+		else if(_data == "false") {
+			ZDSJ::Context::getInstance()->animationRun(false);
+		}
+		else {
+			return false;
+		}
+
+		return true;
+	});
 }
+
 
 void ZDSJ::DrawAbleAnimation::update(DrawAbleAdapter* _drawable, bool _continue)
 {
-	// continue 做动画中断
-	ZDSJ_FpsContext_Init_Assert;
+	if (!ZDSJ::Context::getInstance()->animationRun()) {
+		// 暂停动画
+		return;
+	}
 	// 换算时间基
-	float temp = this->m_time_base / ZDSJ::FpsContext::fps_context->fps() / this->m_animation_fps;
+	float temp = this->m_time_base / ZDSJ::Context::getInstance()->fps() / this->m_animation_fps;
 
 	this->m_step += temp;
 	this->m_update_function(_drawable, this->m_exchange_function(this->m_step, this->m_change_value));

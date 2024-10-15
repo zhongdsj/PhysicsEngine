@@ -61,12 +61,6 @@
     <Filter Include="源文件\src\ImGuiManager">
       <UniqueIdentifier>{910e5070-68d2-423c-a981-0610266c99c1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="头文件\include\Context">
-      <UniqueIdentifier>{a75a7c4b-8ae1-4597-a859-72932483d3f8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="源文件\src\Context">
-      <UniqueIdentifier>{b0234e10-7057-4fd0-a7e3-2a2f9cc2bd64}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -141,11 +135,14 @@
     <ClCompile Include="src\ImGuiManager\ImGuiManager.cpp">
       <Filter>源文件\src\ImGuiManager</Filter>
     </ClCompile>
-    <ClCompile Include="src\Context\FpsContext.cpp">
-      <Filter>源文件\src\Context</Filter>
-    </ClCompile>
     <ClCompile Include="src\MyDx11\DrawAbleManager.cpp">
       <Filter>源文件\src\MyDx11</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MyDx11\Context.cpp">
+      <Filter>源文件\src\MyDx11</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ImGuiManager\Command.cpp">
+      <Filter>源文件\src\ImGuiManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -242,14 +239,17 @@
     <ClInclude Include="include\RingBuffer.h">
       <Filter>头文件\include</Filter>
     </ClInclude>
-    <ClInclude Include="include\Context\FpsContext.h">
-      <Filter>头文件\include\Context</Filter>
-    </ClInclude>
     <ClInclude Include="include\MyDx11\DrawAble\DrawAbleBase.h">
       <Filter>头文件\include\MyDx11\DrawAble</Filter>
     </ClInclude>
     <ClInclude Include="include\MyDx11\DrawAbleManager.h">
       <Filter>头文件\include\MyDx11</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MyDx11\Context.h">
+      <Filter>头文件\include\MyDx11</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ImGuiManager\Command.h">
+      <Filter>头文件\include\ImGuiManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
