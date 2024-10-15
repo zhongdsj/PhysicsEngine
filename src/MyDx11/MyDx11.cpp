@@ -2,10 +2,11 @@
 # include <MyDx11/DrawAble/Triangle2DDrawAble.h>
 # include <MyDx11/DrawAble/Rectangle2DDrawAble.h>
 # include <MyDx11/Animations/DrawAbleAnimation.h>
+# include <MyDx11/DrawAbleManager.h>
 # include <DirectXMath.h>
 # include <d3d11.h>
 
-ZDSJ::MyDx11::MyDx11(HWND _hwnd, int _window_width, int _window_height)
+ZDSJ::MyDx11::MyDx11(HWND _hwnd, int _window_width, int _window_height, RenderType _render_type)
 {
 	// 创建设备及交换链
 	DXGI_MODE_DESC bufferDesc;
@@ -74,6 +75,9 @@ ZDSJ::MyDx11::MyDx11(HWND _hwnd, int _window_width, int _window_height)
 	viewPort.MaxDepth = 1.0f;
 	this->m_context->RSSetViewports(1, &viewPort);
 
+	// 
+	this->m_drawable_manager = new ZDSJ::DrawAbleManager(_render_type);
+
 	// 创建三角形
 	this->createTriangle2D();
 	// 创建圆弧
@@ -82,9 +86,8 @@ ZDSJ::MyDx11::MyDx11(HWND _hwnd, int _window_width, int _window_height)
 
 void ZDSJ::MyDx11::render()
 {
-	const float bg_color[] = { 0.0f, 0.0f, 0.0f, 1.0f };
-	this->m_context->ClearRenderTargetView(this->m_render_target_view, bg_color);
-	this->draw();
+	this->clearByBackground();
+	this->m_drawable_manager->render(m_context);
 }
 
 void ZDSJ::MyDx11::endRender()
@@ -104,27 +107,24 @@ ID3D11DeviceContext* ZDSJ::MyDx11::context() const
 
 ZDSJ::MyDx11::~MyDx11()
 {
-	for (auto item : this->m_draw_able) {
-		delete item;
-	}
+	delete this->m_drawable_manager;
 	SAFE_RELEASE(this->m_render_target_view);
 	SAFE_RELEASE(this->m_context);
 	SAFE_RELEASE(this->m_swap_chain);
 	SAFE_RELEASE(this->m_device);
 }
 
-void ZDSJ::MyDx11::draw()
+void ZDSJ::MyDx11::clearByBackground()
 {
-	for (auto item : this->m_draw_able) {
-		item->draw(this->m_context);
-	}
+	this->m_context->ClearRenderTargetView(this->m_render_target_view, this->m_background);
 }
 
 void ZDSJ::MyDx11::createTriangle2D()
 {
 	// this->m_draw_able.push_back(new ZDSJ::Triangle2DDrawAble(this->m_device, this->m_context));
 	auto triangle = (new ZDSJ::Triangle2DDrawAble(this->m_device, this->m_context))->setTranslationX(0.5f);
-	this->m_draw_able.push_back(triangle->addAnimation(ZDSJ::DrawAbleAnimation::rotationZAnimation(360.f, 5000, 60, true)));
-	this->m_draw_able.push_back(new ZDSJ::Triangle2DDrawAble(this->m_device, this->m_context));
-	this->m_draw_able.push_back((new ZDSJ::Rectangle2DDrawAble(this->m_device, this->m_context))->setTranslationX(-0.8f));
+	
+	this->m_drawable_manager->add(triangle->addAnimation(ZDSJ::DrawAbleAnimation::rotationZAnimation(360.f, 5000, 60, true)));
+	this->m_drawable_manager->add(new ZDSJ::Triangle2DDrawAble(this->m_device, this->m_context));
+	this->m_drawable_manager->add((new ZDSJ::Rectangle2DDrawAble(this->m_device, this->m_context))->setTranslationX(-0.8f));
 }

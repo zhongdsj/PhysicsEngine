@@ -1,7 +1,8 @@
 # include <Context/FpsContext.h>
 
-ZDSJ::FpsContext* ZDSJ::FpsContext::getInstance()
+ZDSJ::FpsContext* ZDSJ::FpsContext::fps_context = nullptr;
+
+void ZDSJ::FpsContext::initFpsContext()
 {
-	static ZDSJ::FpsContext instance;
-	return &instance;
+	fps_context = new FpsContext();
 }

@@ -10,7 +10,7 @@ namespace ZDSJ {
 		Timer(uint16_t _fps);
 		uint64_t getClockFreq() const;
 		void mark();
-		void nextFps(FpsContext* _context = nullptr) const;
+		void nextFps() const;
 		~Timer();
 	private:
 		LARGE_INTEGER* m_clock_freq = nullptr;

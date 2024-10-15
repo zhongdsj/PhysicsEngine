@@ -2,6 +2,7 @@
 # include <MyDx11/MyDx11.h>
 # include <ImGuiManager/ImGuiManager.h>
 # include <Context/FpsContext.h>
+# include <MyDx11/DrawAbleManager.h>
 
 # pragma region MyWindow
 
@@ -30,7 +31,7 @@ bool ZDSJ::MyWindow::create(DWORD _ex_style, LPCWSTR _class_name, LPCWSTR _windo
 		auto err = GetLastError();
 		return false;
 	}
-	this->m_dx11 = new ZDSJ::MyDx11(this->m_hwnd, _width, _height);
+	this->m_dx11 = new ZDSJ::MyDx11(this->m_hwnd, _width, _height, Category);
 	this->m_imgui = new ZDSJ::ImGuiManager(this->m_hwnd, this->m_dx11->device(), this->m_dx11->context());
 	ShowWindow(this->m_hwnd, SW_SHOWDEFAULT);
 

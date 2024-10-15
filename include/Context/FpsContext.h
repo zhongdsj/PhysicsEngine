@@ -1,11 +1,16 @@
 # pragma once
 # include <atomic>
+# include <assert.h>
+
+# define ZDSJ_FpsContext_Init_Assert assert(ZDSJ::FpsContext::fps_context != nullptr, "check fpsContext has been inited!")
 
 namespace ZDSJ {
 
 	class FpsContext {
 	public:
-		static FpsContext* getInstance();
+# define instance fps_context
+		static FpsContext* fps_context;
+		static void initFpsContext();
 		inline float fps() const {
 			return this->m_fps.load();
 		}

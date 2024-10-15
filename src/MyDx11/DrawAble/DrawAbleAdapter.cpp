@@ -4,15 +4,16 @@
 # include <d3d11.h>
 # include <DirectXMath.h>
 
-ZDSJ::DrawAbleAdapter::DrawAbleAdapter(ID3D11Device* _device, const DrawAbleData& _data) : m_bind_able(new std::vector<ZDSJ::BindAbleInterface*>), m_data(new DrawAbleData(_data))
+ZDSJ::DrawAbleAdapter::DrawAbleAdapter(const DrawAbleData& _data) : m_bind_able(new std::vector<ZDSJ::BindAbleInterface*>), m_data(new DrawAbleData(_data))
 {
 }
 
 void ZDSJ::DrawAbleAdapter::draw(ID3D11DeviceContext* _context)
 {
 	this->bind(_context);
+	this->bindStatic(_context);
 	this->update(_context);
-	_context->DrawIndexed(this->m_index_size, 0u, 0u);
+	this->drawIndex(_context);
 }
 
 const ZDSJ::DrawAbleData* ZDSJ::DrawAbleAdapter::getData() const
@@ -42,6 +43,18 @@ void ZDSJ::DrawAbleAdapter::bind(ID3D11DeviceContext* _context)
 	for (auto item : *this->m_bind_able) {
 		item->bind(_context);
 	}
+}
+
+void ZDSJ::DrawAbleAdapter::bindStatic(ID3D11DeviceContext* _context)
+{
+	for (auto item : this->getStaticBindAble()) {
+		item->bind(_context);
+	}
+}
+
+void ZDSJ::DrawAbleAdapter::drawIndex(ID3D11DeviceContext* _context, unsigned int _start_index_location, int _base_vertex_location)
+{
+	_context->DrawIndexed(this->getStaticIndexSize(), _start_index_location, _base_vertex_location);
 }
 
 DirectX::XMMATRIX ZDSJ::DrawAbleAdapter::getTransformMatix() const

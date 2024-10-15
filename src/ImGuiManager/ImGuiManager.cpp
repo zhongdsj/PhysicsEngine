@@ -40,11 +40,11 @@ void ZDSJ::ImGuiManager::render()
 	this->captureGraveAccent();
 	if (this->m_show_fps || this->m_console) {
 		ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_Appearing);
-		ImGui::SetNextWindowSize(ImVec2(0, 0), ImGuiCond_Appearing);
+		ImGui::SetNextWindowSize(ImVec2(0, 0));
 		ImGui::Begin("console", NULL, this->m_window_flag);
-		ZDSJ::FpsContext* fpsContext = ZDSJ::FpsContext::getInstance();
+		ZDSJ_FpsContext_Init_Assert;
 		if (this->m_show_fps) {
-			ImGui::Text("fps: %.2f, frame_time: %.5fms", fpsContext->fps(), fpsContext->useTime());
+			ImGui::Text("fps: %.2f, frame_time: %.5fms", ZDSJ::FpsContext::fps_context->fps(), ZDSJ::FpsContext::fps_context->useTime());
 		}
 		
 		// 控制台输入/输出

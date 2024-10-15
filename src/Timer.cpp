@@ -28,7 +28,7 @@ void ZDSJ::Timer::mark()
 
 }
 
-void ZDSJ::Timer::nextFps(ZDSJ::FpsContext* _context) const
+void ZDSJ::Timer::nextFps() const
 {
 	const long long target = mulDiv64(this->m_last + this->m_interval, this->m_clock_freq->QuadPart);
 	LARGE_INTEGER now;
@@ -36,9 +36,8 @@ void ZDSJ::Timer::nextFps(ZDSJ::FpsContext* _context) const
 	const long long temp = (target - now.QuadPart) * 100;
 	const float use = 1000.0f / (this->m_interval - temp);
 	const long long wait = ((temp * 10.0) / this->m_clock_freq->QuadPart);
-	if (_context != nullptr) {
-		_context->useTime(use);
-	}
+	ZDSJ_FpsContext_Init_Assert;
+	ZDSJ::FpsContext::fps_context->useTime(use);
 	if (now.QuadPart < target) {
 
 		if (wait > 1) {
@@ -52,14 +51,10 @@ void ZDSJ::Timer::nextFps(ZDSJ::FpsContext* _context) const
 
 			YieldProcessor();
 		}
-		if (_context != nullptr) {
-			_context->fps(this->m_fps);
-		}
+		ZDSJ::FpsContext::fps_context->fps(this->m_fps);
 		return;
 	}
-	if (_context != nullptr) {
-		_context->fps(use * 1000000000);
-	}
+	ZDSJ::FpsContext::fps_context->fps(use * 1000000000);
 	return;
 }
 

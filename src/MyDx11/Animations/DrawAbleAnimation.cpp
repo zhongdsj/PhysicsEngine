@@ -15,9 +15,9 @@ ZDSJ::DrawAbleAnimation::DrawAbleAnimation(float _change_value, long long _anima
 void ZDSJ::DrawAbleAnimation::update(DrawAbleAdapter* _drawable, bool _continue)
 {
 	// continue 做动画中断
-	
+	ZDSJ_FpsContext_Init_Assert;
 	// 换算时间基
-	float temp = this->m_time_base / ZDSJ::FpsContext::getInstance()->fps() / this->m_animation_fps;
+	float temp = this->m_time_base / ZDSJ::FpsContext::fps_context->fps() / this->m_animation_fps;
 
 	this->m_step += temp;
 	this->m_update_function(_drawable, this->m_exchange_function(this->m_step, this->m_change_value));

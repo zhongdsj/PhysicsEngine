@@ -27,8 +27,9 @@ namespace ZDSJ {
 	};
 
 	class DrawAbleAdapter : public DrawAbleInterface {
+		
 	public:
-		DrawAbleAdapter(ID3D11Device* _device, const DrawAbleData& _data = DrawAbleData());
+		DrawAbleAdapter(const DrawAbleData& _data = DrawAbleData());
 		void draw(ID3D11DeviceContext* _context) override;
 		const DrawAbleData* getData() const;
 		
@@ -45,14 +46,18 @@ namespace ZDSJ {
 		inline DrawAbleAdapter* addAnimation(ZDSJ::DrawAbleAnimation* _animation) { this->m_animation.push_back(_animation); return this; };
 		~DrawAbleAdapter();
 	protected:
-		size_t m_index_size = 0;
 		std::vector<BindAbleInterface*>* m_bind_able = nullptr;
 		ConstantBufferBindAble* m_transform = nullptr;
 		void update(ID3D11DeviceContext* _context) override;
-		void bind(ID3D11DeviceContext* _context);
+		void bind(ID3D11DeviceContext* _context) override;
+		void bindStatic(ID3D11DeviceContext* _context) override;
+		void drawIndex(ID3D11DeviceContext* _context, unsigned int _start_index_location = 0u, int _base_vertex_location = 0u) override;
 		DirectX::XMMATRIX getTransformMatix() const;
 
 		std::vector<ZDSJ::DrawAbleAnimation*> m_animation;
 		DrawAbleData* m_data = nullptr;
+
+		virtual const std::vector<BindAbleInterface*>& getStaticBindAble() const = 0;
+		virtual const size_t getStaticIndexSize() const = 0;
 	};
 }

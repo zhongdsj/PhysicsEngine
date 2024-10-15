@@ -144,6 +144,9 @@
     <ClCompile Include="src\Context\FpsContext.cpp">
       <Filter>源文件\src\Context</Filter>
     </ClCompile>
+    <ClCompile Include="src\MyDx11\DrawAbleManager.cpp">
+      <Filter>源文件\src\MyDx11</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\MyWindow.h">
@@ -241,6 +244,12 @@
     </ClInclude>
     <ClInclude Include="include\Context\FpsContext.h">
       <Filter>头文件\include\Context</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MyDx11\DrawAble\DrawAbleBase.h">
+      <Filter>头文件\include\MyDx11\DrawAble</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MyDx11\DrawAbleManager.h">
+      <Filter>头文件\include\MyDx11</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

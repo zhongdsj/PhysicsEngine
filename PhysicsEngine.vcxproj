@@ -154,6 +154,7 @@
     <ClCompile Include="src\MyDx11\DrawAble\Rectangle2DDrawAble.cpp" />
     <ClCompile Include="src\MyDx11\DrawAble\Triangle2DDrawAble.cpp" />
     <ClCompile Include="src\MyDx11\MyDx11.cpp" />
+    <ClCompile Include="src\MyDx11\DrawAbleManager.cpp" />
     <ClCompile Include="src\MyDx11\VertexStructure.cpp" />
     <ClCompile Include="src\MyWindow.cpp" />
     <ClCompile Include="src\MyWindowClass.cpp" />
@@ -180,10 +181,12 @@
     <ClInclude Include="include\MyDx11\BindAble\VertexConstantBufferBindAble.h" />
     <ClInclude Include="include\MyDx11\BindAble\VertexShaderBindAble.h" />
     <ClInclude Include="include\MyDx11\DrawAble\DrawAbleAdapter.h" />
+    <ClInclude Include="include\MyDx11\DrawAble\DrawAbleBase.h" />
     <ClInclude Include="include\MyDx11\DrawAble\DrawAbleInterface.h" />
     <ClInclude Include="include\MyDx11\DrawAble\Rectangle2DDrawAble.h" />
     <ClInclude Include="include\MyDx11\DrawAble\Triangle2DDrawAble.h" />
     <ClInclude Include="include\MyDx11\MyDx11.h" />
+    <ClInclude Include="include\MyDx11\DrawAbleManager.h" />
     <ClInclude Include="include\MyDx11\Shader\TrianglePixelShader2D.h" />
     <ClInclude Include="include\MyDx11\Shader\TriangleVertexShader2D.h" />
     <ClInclude Include="include\MyDx11\VertexStructure.h" />

@@ -30,6 +30,10 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	BOOL ret;
 	short fps = 60;
 	ZDSJ::Timer* timer = new ZDSJ::Timer(fps);
+
+	// ³õÊ¼»¯context
+	ZDSJ::FpsContext::initFpsContext();
+
 	while (true) {
 		timer->mark();
 		ret = PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE);
@@ -44,7 +48,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 				DispatchMessageW(&msg);
 			}
 		}
-		timer->nextFps(ZDSJ::FpsContext::getInstance());
+		timer->nextFps();
 		window->doFrame();
 	}
 	delete window;
