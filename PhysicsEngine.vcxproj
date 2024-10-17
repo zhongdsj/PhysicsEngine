@@ -150,10 +150,12 @@
     <ClCompile Include="src\MyDx11\BindAble\VertexBufferBindAble.cpp" />
     <ClCompile Include="src\MyDx11\BindAble\VertexConstantBufferBindAble.cpp" />
     <ClCompile Include="src\MyDx11\BindAble\VertexShaderBindAble.cpp" />
+    <ClCompile Include="src\MyDx11\Camera.cpp" />
     <ClCompile Include="src\MyDx11\Context.cpp" />
     <ClCompile Include="src\MyDx11\DrawAble\DrawAbleAdapter.cpp" />
     <ClCompile Include="src\MyDx11\DrawAble\Rectangle2DDrawAble.cpp" />
     <ClCompile Include="src\MyDx11\DrawAble\Triangle2DDrawAble.cpp" />
+    <ClCompile Include="src\MyDx11\Keyboard.cpp" />
     <ClCompile Include="src\MyDx11\MyDx11.cpp" />
     <ClCompile Include="src\MyDx11\DrawAbleManager.cpp" />
     <ClCompile Include="src\MyDx11\VertexStructure.cpp" />
@@ -181,12 +183,14 @@
     <ClInclude Include="include\MyDx11\BindAble\VertexBufferBindAble.h" />
     <ClInclude Include="include\MyDx11\BindAble\VertexConstantBufferBindAble.h" />
     <ClInclude Include="include\MyDx11\BindAble\VertexShaderBindAble.h" />
+    <ClInclude Include="include\MyDx11\Camera.h" />
     <ClInclude Include="include\MyDx11\Context.h" />
     <ClInclude Include="include\MyDx11\DrawAble\DrawAbleAdapter.h" />
     <ClInclude Include="include\MyDx11\DrawAble\DrawAbleBase.h" />
     <ClInclude Include="include\MyDx11\DrawAble\DrawAbleInterface.h" />
     <ClInclude Include="include\MyDx11\DrawAble\Rectangle2DDrawAble.h" />
     <ClInclude Include="include\MyDx11\DrawAble\Triangle2DDrawAble.h" />
+    <ClInclude Include="include\MyDx11\Keyboard.h" />
     <ClInclude Include="include\MyDx11\MyDx11.h" />
     <ClInclude Include="include\MyDx11\DrawAbleManager.h" />
     <ClInclude Include="include\MyDx11\Shader\TrianglePixelShader2D.h" />

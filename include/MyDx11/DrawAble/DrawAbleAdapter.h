@@ -18,12 +18,11 @@ namespace ZDSJ {
 
 	struct DrawAbleData
 	{
-		float3 scale;
-		float3 translation;
+		float3 size;
+		float3 pos;
 		float3 rotation;
-		DrawAbleData(): DrawAbleData(float3({ 1.0f, 1.0f, 1.0f }), float3({ 0.0f, 0.0f, 0.0f }), float3({ 0.0f, 0.0f, 0.0f })){};
-		DrawAbleData(float3 _scale, float3 _translation, float3 _rotation):scale(_scale), translation(_translation), rotation(_rotation){}
-		// DrawAbleData(const DrawAbleData& _other):position(_other.position), translation(_other.translation), rotation(_other.rotation){}
+		DrawAbleData(): DrawAbleData(float3({ 100.0f, 100.0f, 1.0f }), float3({ 0.0f, 0.0f, 0.0f }), float3({ 0.0f, 0.0f, 0.0f })){};
+		DrawAbleData(float3 _size, float3 _pos, float3 _rotation):size(_size), pos(_pos), rotation(_rotation){}
 	};
 
 	class DrawAbleAdapter : public DrawAbleInterface {
@@ -33,12 +32,12 @@ namespace ZDSJ {
 		void draw(ID3D11DeviceContext* _context) override;
 		const DrawAbleData* getData() const;
 		
-		inline DrawAbleAdapter* setScaleX(float _value) { this->m_data->scale.x = _value; return this; }
-		inline DrawAbleAdapter* setScaleY(float _value) { this->m_data->scale.y = _value; return this;}
-		inline DrawAbleAdapter* setScaleZ(float _value) { this->m_data->scale.z = _value; return this;}
-		inline DrawAbleAdapter* setTranslationX(float _value) { this->m_data->translation.x = _value; return this;}
-		inline DrawAbleAdapter* setTranslationY(float _value) { this->m_data->translation.y = _value; return this;}
-		inline DrawAbleAdapter* setTranslationZ(float _value) { this->m_data->translation.z = _value; return this;}
+		inline DrawAbleAdapter* setSizeX(float _value) { this->m_data->size.x = _value; return this; }
+		inline DrawAbleAdapter* setSizeY(float _value) { this->m_data->size.y = _value; return this;}
+		inline DrawAbleAdapter* setSizeZ(float _value) { this->m_data->size.z = _value; return this;}
+		inline DrawAbleAdapter* setPosX(float _value) { this->m_data->pos.x = _value; return this;}
+		inline DrawAbleAdapter* setPosY(float _value) { this->m_data->pos.y = _value; return this;}
+		inline DrawAbleAdapter* setPosZ(float _value) { this->m_data->pos.z = _value; return this;}
 		inline DrawAbleAdapter* setRotationX(float _value) { this->m_data->rotation.x = _value; return this;}
 		inline DrawAbleAdapter* setRotationY(float _value) { this->m_data->rotation.y = _value; return this;}
 		inline DrawAbleAdapter* setRotationZ(float _value) { this->m_data->rotation.z = _value; return this;}

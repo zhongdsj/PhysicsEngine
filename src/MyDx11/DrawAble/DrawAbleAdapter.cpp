@@ -1,8 +1,9 @@
-# include <MyDx11/DrawAble/DrawAbleAdapter.h>
+﻿# include <MyDx11/DrawAble/DrawAbleAdapter.h>
 # include <MyDx11/BindAble/BindAbleInterface.h>
 # include <MyDx11/BindAble/VertexConstantBufferBindAble.h>
 # include <d3d11.h>
 # include <DirectXMath.h>
+# include <MyDx11/Context.h>
 
 ZDSJ::DrawAbleAdapter::DrawAbleAdapter(const DrawAbleData& _data) : m_bind_able(new std::vector<ZDSJ::BindAbleInterface*>), m_data(new DrawAbleData(_data))
 {
@@ -59,14 +60,14 @@ void ZDSJ::DrawAbleAdapter::drawIndex(ID3D11DeviceContext* _context, unsigned in
 
 DirectX::XMMATRIX ZDSJ::DrawAbleAdapter::getTransformMatix() const
 {
-	/*DirectX::XMMatrixPerspectiveLH(1.0f, 3.0f / 4.0f, 1.0f, 1.0f);
-	DirectX::XMMATRIX pro = DirectX::XMMatrixScaling(3.0f/4.0f, 1.0f, 1.0f);*/
-	/*auto base = DirectX::XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
-	DirectX::XMMatrixRotationRollPitchYawFromVector*/
-	DirectX::XMMATRIX pro = DirectX::XMMatrixOrthographicLH(2.0f * 800.0f/600.0f, 2.0f, 0.0f, 1.0f); // *2.0f;
-	DirectX::XMMATRIX matrix = DirectX::XMMatrixTranslation(this->m_data->translation.x, this->m_data->translation.y, this->m_data->translation.z)
-		* DirectX::XMMatrixScaling(this->m_data->scale.x, this->m_data->scale.y, this->m_data->scale.z)
-		* DirectX::XMMatrixRotationRollPitchYaw(this->m_data->rotation.x, this->m_data->rotation.y, this->m_data->rotation.z);
-	return DirectX::XMMatrixTranspose(matrix * pro);
-	// return DirectX::XMMatrixTranspose(matrix);
+	// 世界矩阵->视图矩阵->投影矩阵
+	// 世界矩阵
+	DirectX::XMMATRIX size = DirectX::XMMatrixScaling(this->m_data->size.x, this->m_data->size.y, this->m_data->size.z);
+	DirectX::XMMATRIX rotation = DirectX::XMMatrixRotationRollPitchYaw(this->m_data->rotation.x, this->m_data->rotation.y, this->m_data->rotation.z);
+	DirectX::XMMATRIX pos = DirectX::XMMatrixTranslation(this->m_data->pos.x, this->m_data->pos.y, this->m_data->pos.z);
+	DirectX::XMMATRIX word = size * rotation * pos;
+	
+	DirectX::XMMATRIX matrix = word * ZDSJ::Context::getInstance()->camera()->getCarmeraMatrix();
+	// return DirectX::XMMatrixTranspose(matrix * pro);
+	return DirectX::XMMatrixTranspose(matrix);
 }

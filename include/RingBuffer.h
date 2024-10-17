@@ -7,13 +7,17 @@
 
 
 namespace ZDSJ {
+	class Context;
+
 	template <class T>
 	class RingBuffer {
+		friend Context;
 	public: 
-		static RingBuffer<T>* getInstance() {
-			static ZDSJ::RingBuffer<T> instance(32, [](std::string& _value) {  });
-			return &instance;
-		}
+		
+		//static RingBuffer<T>* getInstance() {
+		//	static ZDSJ::RingBuffer<T> instance(32, [](std::string& _value) {  });
+		//	return &instance;
+		//}
 
 		void clear() {
 			while (this->m_begin != this->m_end) {
@@ -32,7 +36,7 @@ namespace ZDSJ {
 		void push(const T& _val) {
 			this->m_mutex.lock();
 			if (this->m_begin == ((this->m_end + 1) % this->m_max_size)) {
-				// ¶ÓÁÐÒÑÂú
+				// é˜Ÿåˆ—å·²æ»¡
 				this->m_destory_callback(this->m_buffer[this->m_begin]);
 				this->m_begin += 1;
 				this->m_begin %= this->m_max_size;
@@ -51,7 +55,7 @@ namespace ZDSJ {
 				return;
 			}
 			if (this->m_begin == ((this->m_end + 1) % this->m_max_size)) {
-				// ¶ÓÁÐÒÑÂú
+				// é˜Ÿåˆ—å·²æ»¡
 				this->m_destory_callback(this->m_buffer[this->m_begin]);
 				this->m_begin += 1;
 				this->m_begin %= this->m_max_size;
@@ -107,9 +111,6 @@ namespace ZDSJ {
 		}
 
 	private:
-		RingBuffer(size_t _max_size, std::function<void(T&)> _destory_callback = [](T& _value) {}) : m_max_size(_max_size + 1), m_destory_callback(_destory_callback) {
-			this->m_buffer = new T [_max_size + 1];
-		}
 
 		T* m_buffer = nullptr;
 		bool m_enable_push = true;
@@ -119,7 +120,10 @@ namespace ZDSJ {
 		std::function<void(T&)> m_destory_callback;
 		std::shared_mutex m_mutex;
 
-	protected:
+		RingBuffer(size_t _max_size, std::function<void(T&)> _destory_callback = [](T& _value) {}) : m_max_size(_max_size + 1), m_destory_callback(_destory_callback) {
+			this->m_buffer = new T[_max_size + 1];
+		}
+
 		~RingBuffer() {
 			while (this->m_begin != this->m_end) {
 				this->m_destory_callback(this->m_buffer[this->m_begin]);
@@ -128,8 +132,4 @@ namespace ZDSJ {
 			}
 		}
 	};
-
-#ifndef ringBuffer
-	static RingBuffer<std::string>* ringBuffer = ZDSJ::RingBuffer<std::string>::getInstance();
-#endif // !ringBuffer
 }

@@ -3,18 +3,16 @@
 # include <DirectXMath.h>
 # include <cmath>
 # include <MyDx11/Context.h>
-# include <ImGuiManager/Command.h>
 
 ZDSJ::DrawAbleAnimation::DrawAbleAnimation(float _change_value, long long _animation_time, short _fps, 
 	std::function<void(DrawAbleAdapter*, float)> _update_function, std::function<float(float, float)> _exchange_function, bool _loop):
 	m_change_value(_change_value), m_time_base(_fps), m_update_function(_update_function), m_exchange_function(_exchange_function), m_loop(_loop)
 {
-	// ¼ÆËã³öÔÚµ±Ç°Ê±¼ä»ùÏÂ(Ö¡Êı)ÏÂĞèÒª¶àÉÙÖ¡
+	// è®¡ç®—å‡ºåœ¨å½“å‰æ—¶é—´åŸºä¸‹(å¸§æ•°)ä¸‹éœ€è¦å¤šå°‘å¸§
 	this->m_animation_fps = round((_fps / 1000.0f) * _animation_time);
 
-	// ×¢²ácommand
-	ZDSJ::Command* command = ZDSJ::Command::getInstance();
-	command->registeCommand("animation_run", "stop animation if data is false, continue with true", [&](std::string& _data) {
+	// æ³¨å†Œcommand
+	ZDSJ::Context::getInstance()->command()->registeCommand("animation", "run", "stop animation if data is false, continue with true", [&](std::string& _data) {
 		if (_data == "true") {
 			ZDSJ::Context::getInstance()->animationRun(true);
 		}
@@ -33,21 +31,21 @@ ZDSJ::DrawAbleAnimation::DrawAbleAnimation(float _change_value, long long _anima
 void ZDSJ::DrawAbleAnimation::update(DrawAbleAdapter* _drawable, bool _continue)
 {
 	if (!ZDSJ::Context::getInstance()->animationRun()) {
-		// ÔİÍ£¶¯»­
+		// æš‚åœåŠ¨ç”»
 		return;
 	}
-	// »»ËãÊ±¼ä»ù
+	// æ¢ç®—æ—¶é—´åŸº
 	float temp = this->m_time_base / ZDSJ::Context::getInstance()->fps() / this->m_animation_fps;
 
 	this->m_step += temp;
 	this->m_update_function(_drawable, this->m_exchange_function(this->m_step, this->m_change_value));
 	if (!this->m_loop) {
 		if (this->m_step >= this->m_animation_fps) {
-			// TODO ½áÊø»Øµ÷
+			// TODO ç»“æŸå›è°ƒ
 		}
 	}
 	else if (!_continue) {
-		// TODO ½áÊø»Øµ÷
+		// TODO ç»“æŸå›è°ƒ
 	}
 	
 }

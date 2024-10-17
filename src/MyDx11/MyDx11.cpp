@@ -8,10 +8,10 @@
 
 ZDSJ::MyDx11::MyDx11(HWND _hwnd, int _window_width, int _window_height, RenderType _render_type)
 {
-	// ´´½¨Éè±¸¼°½»»»Á´
+	// åˆ›å»ºè®¾å¤‡åŠäº¤æ¢é“¾
 	DXGI_MODE_DESC bufferDesc;
 	ZeroMemory(&bufferDesc, sizeof(DXGI_MODE_DESC));
-	bufferDesc.Width = 0; // ÕâÀïÉèÖÃ´°¿Ú´óÐ¡»áµ¼ÖÂimguiÖÐviewPortÓë´°¿Ú´óÐ¡²»Í¬£¬½á¹ûÊÇÓÒÏÂ½ÇÓÐºÚ±ß£¬ÇÒimguiÏÔÊ¾ÓÐbug, ÎÒ²»Àí½âµ«ÎÒ´óÎªÕðº³
+	bufferDesc.Width = 0; // è¿™é‡Œè®¾ç½®çª—å£å¤§å°ä¼šå¯¼è‡´imguiä¸­viewPortä¸Žçª—å£å¤§å°ä¸åŒï¼Œç»“æžœæ˜¯å³ä¸‹è§’æœ‰é»‘è¾¹ï¼Œä¸”imguiæ˜¾ç¤ºæœ‰bug, æˆ‘ä¸ç†è§£ä½†æˆ‘å¤§ä¸ºéœ‡æ’¼
 	bufferDesc.Height = 0;
 	bufferDesc.RefreshRate.Numerator = 0;
 	bufferDesc.RefreshRate.Denominator = 1;
@@ -33,7 +33,7 @@ ZDSJ::MyDx11::MyDx11(HWND _hwnd, int _window_width, int _window_height, RenderTy
 	D3D11CreateDeviceAndSwapChain(nullptr, D3D_DRIVER_TYPE_HARDWARE, NULL, NULL, NULL, NULL, D3D11_SDK_VERSION, &swapChainDesc,
 		&this->m_swap_chain, &this->m_device, NULL, &this->m_context);
 	
-	// ´´½¨³ÊÏÖÄ¿±ê
+	// åˆ›å»ºå‘ˆçŽ°ç›®æ ‡
 	ID3D11Texture2D* backBuffer;
 	this->m_swap_chain->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)&backBuffer);
 	if (backBuffer != nullptr) {
@@ -44,28 +44,28 @@ ZDSJ::MyDx11::MyDx11(HWND _hwnd, int _window_width, int _window_height, RenderTy
 
 	// this->m_render_target_texture = new RenderTargerTexture(this->m_device, 2560, 1440);
 	//this->m_render_target_texture = new RenderTargerTexture(this->m_device, this->m_window_width, this->m_window_height);
-	// °ó¶¨³ÊÏÖÄ¿±ê
+	// ç»‘å®šå‘ˆçŽ°ç›®æ ‡
 	this->m_context->OMSetRenderTargets(1, &this->m_render_target_view, nullptr);
 
-	// Í¸Ã÷
+	// é€æ˜Ž
 	ID3D11BlendState* blendState;
 	D3D11_BLEND_DESC blendDesc = {};
 	blendDesc.AlphaToCoverageEnable = FALSE;
 	blendDesc.IndependentBlendEnable = FALSE;
-	blendDesc.RenderTarget->BlendEnable = TRUE; // ÊÇ·ñ¿ªÆô»ìºÏ
-	blendDesc.RenderTarget->SrcBlend = D3D11_BLEND_SRC_ALPHA; // ½«Ô´Í¼µÄ alpha ×÷Îª src rgb µÄ»ìºÏÒò×Ó
-	blendDesc.RenderTarget->DestBlend = D3D11_BLEND_INV_SRC_ALPHA; // ½«Ô´Í¼µÄ 1-alpha ×÷Îª dst rgb µÄ»ìºÏÒò×Ó
-	blendDesc.RenderTarget->BlendOp = D3D11_BLEND_OP_ADD; // ½øÐÐÏà¼Ó²Ù×÷
+	blendDesc.RenderTarget->BlendEnable = TRUE; // æ˜¯å¦å¼€å¯æ··åˆ
+	blendDesc.RenderTarget->SrcBlend = D3D11_BLEND_SRC_ALPHA; // å°†æºå›¾çš„ alpha ä½œä¸º src rgb çš„æ··åˆå› å­
+	blendDesc.RenderTarget->DestBlend = D3D11_BLEND_INV_SRC_ALPHA; // å°†æºå›¾çš„ 1-alpha ä½œä¸º dst rgb çš„æ··åˆå› å­
+	blendDesc.RenderTarget->BlendOp = D3D11_BLEND_OP_ADD; // è¿›è¡Œç›¸åŠ æ“ä½œ
 	blendDesc.RenderTarget->SrcBlendAlpha = D3D11_BLEND_ZERO; // 
 	blendDesc.RenderTarget->DestBlendAlpha = D3D11_BLEND_ZERO;
 	blendDesc.RenderTarget->BlendOpAlpha = D3D11_BLEND_OP_ADD;
-	blendDesc.RenderTarget->RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL; // ¿ÉÒÔÐ´ÈëµÄÎ»ÖÃ
+	blendDesc.RenderTarget->RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL; // å¯ä»¥å†™å…¥çš„ä½ç½®
 	this->m_device->CreateBlendState(&blendDesc, &blendState);
 	const FLOAT BlendFactor[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
 	this->m_context->OMSetBlendState(blendState, BlendFactor, 0xffffffff);
 	SAFE_RELEASE(blendState);
 
-	// ½«ÊÓÇøÊý×é°ó¶¨µ½¹ÜµÀµÄ¹âÕ¤Æ÷½×¶Î
+	// å°†è§†åŒºæ•°ç»„ç»‘å®šåˆ°ç®¡é“çš„å…‰æ …å™¨é˜¶æ®µ
 	D3D11_VIEWPORT viewPort;
 	viewPort.TopLeftX = 0;
 	viewPort.TopLeftY = 0;
@@ -78,9 +78,9 @@ ZDSJ::MyDx11::MyDx11(HWND _hwnd, int _window_width, int _window_height, RenderTy
 	// 
 	this->m_drawable_manager = new ZDSJ::DrawAbleManager(_render_type);
 
-	// ´´½¨Èý½ÇÐÎ
+	// åˆ›å»ºä¸‰è§’å½¢
 	this->createTriangle2D();
-	// ´´½¨Ô²»¡
+	// åˆ›å»ºåœ†å¼§
 	// this->createArc2D();
 }
 
@@ -122,9 +122,10 @@ void ZDSJ::MyDx11::clearByBackground()
 void ZDSJ::MyDx11::createTriangle2D()
 {
 	// this->m_draw_able.push_back(new ZDSJ::Triangle2DDrawAble(this->m_device, this->m_context));
-	auto triangle = (new ZDSJ::Triangle2DDrawAble(this->m_device, this->m_context))->setTranslationX(0.5f);
+	// auto triangle =;
 	
-	this->m_drawable_manager->add(triangle->addAnimation(ZDSJ::DrawAbleAnimation::rotationZAnimation(360.f, 5000, 60, true)));
-	this->m_drawable_manager->add(new ZDSJ::Triangle2DDrawAble(this->m_device, this->m_context));
-	this->m_drawable_manager->add((new ZDSJ::Rectangle2DDrawAble(this->m_device, this->m_context))->setTranslationX(-0.8f));
+	this->m_drawable_manager->add((new ZDSJ::Triangle2DDrawAble(this->m_device, this->m_context))->setPosX(100.0f)
+		->addAnimation(ZDSJ::DrawAbleAnimation::rotationZAnimation(360.f, 5000, 60, true)));
+	this->m_drawable_manager->add((new ZDSJ::Triangle2DDrawAble(this->m_device, this->m_context)));
+	this->m_drawable_manager->add((new ZDSJ::Rectangle2DDrawAble(this->m_device, this->m_context))->setPosX(-100.0f));
 }

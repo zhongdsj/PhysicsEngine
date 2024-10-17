@@ -144,6 +144,12 @@
     <ClCompile Include="src\ImGuiManager\Command.cpp">
       <Filter>源文件\src\ImGuiManager</Filter>
     </ClCompile>
+    <ClCompile Include="src\MyDx11\Camera.cpp">
+      <Filter>源文件\src\MyDx11</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MyDx11\Keyboard.cpp">
+      <Filter>源文件\src\MyDx11</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\MyWindow.h">
@@ -250,6 +256,12 @@
     </ClInclude>
     <ClInclude Include="include\ImGuiManager\Command.h">
       <Filter>头文件\include\ImGuiManager</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MyDx11\Camera.h">
+      <Filter>头文件\include\MyDx11</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MyDx11\Keyboard.h">
+      <Filter>头文件\include\MyDx11</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

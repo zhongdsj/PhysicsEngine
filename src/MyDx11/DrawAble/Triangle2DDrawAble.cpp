@@ -14,22 +14,22 @@
 
 ZDSJ::Triangle2DDrawAble::Triangle2DDrawAble(ID3D11Device* _device, ID3D11DeviceContext* _context, const DrawAbleData& _data) : DrawAbleBase<Triangle2DDrawAble>(_data) {
 	if (!this->isStaticInitialized()) {
-		// ¶¥µã»º´æ
+		// é¡¶ç‚¹ç¼“å­˜
 		std::vector<ZDSJ::Vertex2D> vertices = {
 			{0.0f, 1.0f, 255, 0, 0, 128},
 			{0.5f, 0.0f, 0, 255, 0, 255},
 			{-0.5f, 0.0f, 0, 0, 255, 128},
 		};
-		// ¶¥µãË÷Òý
+		// é¡¶ç‚¹ç´¢å¼•
 		const UINT16 indices[] = {
 			0,1,2
 		};
-		// ¶¥µã»º´æ
+		// é¡¶ç‚¹ç¼“å­˜
 		this->addStaticBind(new ZDSJ::VertexBufferBindAble(_device, vertices));
-		// ¶¥µãË÷Òý
+		// é¡¶ç‚¹ç´¢å¼•
 		this->addStaticIndexBuffer(new ZDSJ::IndexBufferBindAble(_device, indices, sizeof(indices)), sizeof(indices) / sizeof(UINT16));
 		// this->m_index_size = ;
-		// ¶¥µã×ÅÉ«Æ÷
+		// é¡¶ç‚¹ç€è‰²å™¨
 		this->addStaticBind(new ZDSJ::VertexShaderBindAble(_device, g_main_vertex_shader, sizeof(g_main_vertex_shader)));
 		// layout
 		std::vector<D3D11_INPUT_ELEMENT_DESC> ied = {
@@ -37,10 +37,10 @@ ZDSJ::Triangle2DDrawAble::Triangle2DDrawAble(ID3D11Device* _device, ID3D11Device
 			{"Color", 0, DXGI_FORMAT_R8G8B8A8_UNORM, 0, 8u, D3D11_INPUT_PER_VERTEX_DATA, 0},
 		};
 		this->addStaticBind(new ZDSJ::InputLayoutBindAble(_device, ied, g_main_vertex_shader, sizeof(g_main_vertex_shader)));
-		// ÏñËØ×ÅÉ«Æ÷
+		// åƒç´ ç€è‰²å™¨
 		this->addStaticBind(new ZDSJ::PixelShaderBindAble(_device, g_main_pixel_shader, sizeof(g_main_pixel_shader)));
 	}
-	// Ëõ·ÅÐý×ª¾ØÕó
+	// ç¼©æ”¾æ—‹è½¬çŸ©é˜µ
 	this->m_transform = new ZDSJ::VertexConstantBufferBindAble(_device);
 	this->m_bind_able->push_back(m_transform);
 	// this->m_data->translation.x = _translation_x;
@@ -50,6 +50,10 @@ ZDSJ::Triangle2DDrawAble::Triangle2DDrawAble(ID3D11Device* _device, ID3D11Device
 ZDSJ::Triangle2DDrawAble::Triangle2DDrawAble(ID3D11Device* _device, ID3D11DeviceContext* _context) : Triangle2DDrawAble(_device, _context, DrawAbleData())
 {
 	
+}
+
+ZDSJ::Triangle2DDrawAble::Triangle2DDrawAble(ID3D11Device* _device, ID3D11DeviceContext* _context, float3 _size, float3 _pos) : Triangle2DDrawAble(_device, _context, DrawAbleData(_size, _pos, {0.0f, 0.0f, 0.0f}))
+{
 }
 
 ZDSJ::Triangle2DDrawAble::~Triangle2DDrawAble()

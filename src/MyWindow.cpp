@@ -2,6 +2,7 @@
 # include <MyDx11/MyDx11.h>
 # include <ImGuiManager/ImGuiManager.h>
 # include <MyDx11/DrawAbleManager.h>
+# include <MyDx11/Context.h>
 
 # pragma region MyWindow
 
@@ -26,6 +27,7 @@ bool ZDSJ::MyWindow::create(DWORD _ex_style, LPCWSTR _class_name, LPCWSTR _windo
 		_style, // WS_POPUPWINDOW: 没有标题栏
 		_x, _y, _width, _height, _parent, _menu, _instance, this
 	);
+	ZDSJ::Context::getInstance()->windowWidth(_width)->windowHeight(_height);
 	if (this->m_hwnd == nullptr) {
 		auto err = GetLastError();
 		return false;
@@ -44,9 +46,43 @@ LRESULT ZDSJ::MyWindow::handelMessage(HWND handle, UINT msg, WPARAM wParam, LPAR
 			return true;
 		}
 	}
-
 	switch (msg)
 	{
+	case WM_SYSKEYDOWN:
+		return true;
+		break;
+	case WM_SYSKEYUP:
+		switch (wParam)
+		{
+		case VK_CONTROL:
+			ZDSJ::Context::getInstance()->Keyboard()->mod(ZDSJ::Key::nothing);
+		default:
+			break;
+		}
+		break;
+	case WM_MOUSEWHEEL:
+		ZDSJ::Context::getInstance()->Keyboard()->execKeyboard(WM_MOUSEWHEEL, static_cast<short>(HIWORD(wParam))/120);
+		break;
+	case WM_KEYDOWN:
+		switch (wParam)
+		{
+		case VK_CONTROL:
+			ZDSJ::Context::getInstance()->Keyboard()->mod(VK_CONTROL);
+			break;
+		default:
+			ZDSJ::Context::getInstance()->Keyboard()->execKeyboard(wParam, 0.0f);
+			break;
+		}
+		break;
+	case WM_KEYUP:
+		switch (wParam) {
+		case VK_CONTROL:
+			ZDSJ::Context::getInstance()->Keyboard()->mod(ZDSJ::Key::nothing);
+			break;
+		default:
+			break;
+		}
+		break;
 	case WM_CLOSE:
 		PostQuitMessage(0);
 		break;

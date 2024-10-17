@@ -1,4 +1,4 @@
-# include <ImGuiManager/ImGuiManager.h>
+ï»¿# include <ImGuiManager/ImGuiManager.h>
 # include <imgui/imgui.h>
 # include <imgui/imgui_impl_win32.h>
 # include <imgui/imgui_impl_dx11.h>
@@ -6,26 +6,33 @@
 # include <ImGuiManager/Command.h>
 
 
-ZDSJ::ImGuiManager::ImGuiManager(HWND _hwnd, ID3D11Device* _device, ID3D11DeviceContext* _context):m_command(ZDSJ::Command::getInstance())
+ZDSJ::ImGuiManager::ImGuiManager(HWND _hwnd, ID3D11Device* _device, ID3D11DeviceContext* _context)
 {
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGui_ImplWin32_Init(_hwnd);
 	ImGui_ImplDX11_Init(_device, _context);
 	
+	// ctrl+F æ˜¾ç¤ºfps
+	ZDSJ::Context::getInstance()->Keyboard()->registeKeyboard(ZDSJ::Key::ctrl, 'F', "show fps", [&](float _ignore) {
+		this->m_show_fps = !this->m_show_fps;
+	});
+
+	// `æ‰“å¼€æŽ§åˆ¶å°
+	ZDSJ::Context::getInstance()->Keyboard()->registeKeyboard(ZDSJ::Key::nothing, ZDSJ::Key::tilde, "open console", [&](float _ignore) {
+		this->m_show_console = !this->m_show_console;
+		// ImGui::getwindow
+	});
+
 	this->m_window_flag |= ImGuiWindowFlags_NoTitleBar;
 	this->m_window_flag |= ImGuiWindowFlags_NoMove;
 	this->m_window_flag |= ImGuiWindowFlags_NoResize;
 	this->m_window_flag |= ImGuiWindowFlags_NoSavedSettings;
 	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.2f, 0.2f, 0.2f, 0.5f));
 	ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
-	this->m_command->registeCommand("command", "clear command", [](std::string& _data) {
-		if (_data == "clear") {
-			ZDSJ::ringBuffer->clear();
-			return true;
-		}
-		return false;
-	});
+	// æ˜¾ç¤ºä¸­æ–‡, è¾“å…¥ä¸­æ–‡æ—¶å¡é¡¿ä¸¥é‡
+	// auto f = ImGui::GetIO().Fonts->AddFontFromFileTTF("source/fonts/simkai.ttf", 13.0f, nullptr, ImGui::GetIO().Fonts->GetGlyphRangesChineseSimplifiedCommon());
+	ImGui::GetIO().Fonts->AddFontFromFileTTF("source/fonts/FiraCode-Medium.ttf", 16.0f);
 }
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
@@ -42,27 +49,24 @@ void ZDSJ::ImGuiManager::render()
 	ImGui_ImplDX11_NewFrame();
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
-	// ´¦Àíctrl
-	this->captureModCtrl();
-	// ´¦Àí¿ØÖÆÌ¨¿ªÆô
-	this->captureGraveAccent();
-	if (this->m_show_fps || this->m_console) {
+
+	if (this->m_show_fps || this->m_show_console) {
 		ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_Appearing);
 		ImGui::SetNextWindowSize(ImVec2(0, 0));
 		ImGui::Begin("console", NULL, this->m_window_flag);
 		if (this->m_show_fps) {
 			ImGui::Text("fps: %.2f, frame_time: %.5fms", ZDSJ::Context::getInstance()->fps(), ZDSJ::Context::getInstance()->useTime());
+			ImGui::Text("fov: %.1f, camera_pos_z: %.1f", ZDSJ::Context::getInstance()->camera()->fov(), ZDSJ::Context::getInstance()->camera()->cameraPosZ());
 		}
 		
-		// ¿ØÖÆÌ¨ÊäÈë/Êä³ö
-		if (this->m_console) {
-			ZDSJ::ringBuffer->enablePush(true);
+		// æŽ§åˆ¶å°è¾“å…¥/è¾“å‡º
+		if (this->m_show_console) {
+			ZDSJ::Context::getInstance()->ringBuffer()->enablePush(true);
 			ImGui::Separator();
-			ImGui::BeginChild("ScrollingRegion", ImVec2(800 * 0.6, 600 * 0.6), false, ImGuiWindowFlags_HorizontalScrollbar);
+			ImGui::BeginChild("ScrollingRegion", ImVec2(ZDSJ::Context::getInstance()->windowWidth() * 0.6, ZDSJ::Context::getInstance()->windowHeight() * 0.6), false, ImGuiWindowFlags_HorizontalScrollbar);
 			ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(4, 1));
-			
-			ImGui::PushTextWrapPos(ImGui::GetCursorPos().x + ImGui::GetWindowWidth());
-			ZDSJ::ringBuffer->forEeach([](const std::string& _message) {
+			ImGui::PushTextWrapPos(ImGui::GetCursorPos().x + ImGui::GetWindowWidth() - ImGui::GetStyle().ScrollbarSize);
+			ZDSJ::Context::getInstance()->ringBuffer()->forEeach([](const std::string& _message) {
 				ImGui::TextUnformatted(_message.data(), _message.data() + _message.size());
 			});
 			ImGui::PopTextWrapPos();
@@ -79,16 +83,14 @@ void ZDSJ::ImGuiManager::render()
 			ImGui::EndChild();
 			ImGui::Separator();
 			char command[128] = "";
-			// ImGui::InputText("input text", command, 128, ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_EscapeClearsAll | ImGuiInputTextFlags_CallbackCompletion | ImGuiInputTextFlags_CallbackHistory);
 			if (ImGui::InputText("command", command, 128, ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_EscapeClearsAll | ImGuiInputTextFlags_AutoSelectAll | ImGuiInputTextFlags_CallbackHistory, &textEditCallbackStub, reinterpret_cast<void*>(this))) {
 				std::string temp(command);
-				this->m_command->execCommand(temp);
-				// ImGui::SetKeyboardFocusHere(-1);
+				ZDSJ::Context::getInstance()->command()->execCommand(temp);
+				ImGui::SetKeyboardFocusHere(-1);
 			}
-			ImGui::SetKeyboardFocusHere(-1);
 		}
 		else {
-			ZDSJ::ringBuffer->enablePush(false);
+			ZDSJ::Context::getInstance()->ringBuffer()->enablePush(false);
 		}
 
 		ImGui::End();
@@ -103,42 +105,13 @@ void ZDSJ::ImGuiManager::showFps(bool _show)
 	this->m_show_fps = _show;
 }
 
-void ZDSJ::ImGuiManager::captureModCtrl()
-{
-	if (ImGui::GetIO().KeyCtrl) {
-		// ctrl°´ÏÂ
-		this->captureKeyFPress();
-		if (ImGui::IsKeyPressed(ImGuiKey_MouseLeft)) {
-			this->m_num++;
-		}
-	}
-}
-
-void ZDSJ::ImGuiManager::captureKeyFPress()
-{
-	if (ImGui::IsKeyPressed(ImGuiKey_F)) {
-		// F°´ÏÂ
-		this->m_show_fps = !this->m_show_fps;
-	}
-}
-
-void ZDSJ::ImGuiManager::captureGraveAccent()
-{
-	if (ImGui::IsKeyPressed(ImGuiKey_GraveAccent)) {
-		// `°´ÏÂ
-		this->m_console = !this->m_console;
-	}
-}
-
 int ZDSJ::ImGuiManager::textEditCallbackStub(ImGuiInputTextCallbackData* _data)
 {
-	ZDSJ::ImGuiManager* console = reinterpret_cast<ZDSJ::ImGuiManager*>(_data->UserData);
-	return console->m_command->textEditCallback(_data);
+	return ZDSJ::Context::getInstance()->command()->textEditCallback(_data);
 }
 
 ZDSJ::ImGuiManager::~ImGuiManager()
 {
-	// ImGui::PopStyleVar();
 	ImGui::PopStyleColor(2);
 	ImGui_ImplDX11_Shutdown();
 	ImGui_ImplWin32_Shutdown();

@@ -4,9 +4,8 @@
 
 ZDSJ::ConstantBufferBindAble::ConstantBufferBindAble(ID3D11Device* _device)
 {
-	DirectX::XMMATRIX matrix = DirectX::XMMatrixRotationRollPitchYaw(0.0f, 0.0f, 1.0f);
-	matrix = DirectX::XMMatrixMultiply(DirectX::XMMatrixScaling(1.0f, 1.0f, 1.0f), matrix);
-	matrix = DirectX::XMMatrixMultiply(DirectX::XMMatrixTranslation(0.0f, 0.0f, 0.0f), matrix);
+	
+	DirectX::XMMATRIX matrix = DirectX::XMMatrixScaling(1.0f, 1.0f, 1.0f) * DirectX::XMMatrixRotationRollPitchYaw(0.0f, 0.0f, 0.0f) * DirectX::XMMatrixTranslation(0.0f, 0.0f, 0.0f);
 	D3D11_BUFFER_DESC cbd;
 	cbd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 	cbd.Usage = D3D11_USAGE_DYNAMIC;

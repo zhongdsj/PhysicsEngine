@@ -9,6 +9,7 @@ namespace ZDSJ {
 	public:
 		Triangle2DDrawAble(ID3D11Device* _device, ID3D11DeviceContext* _context, const DrawAbleData& _data);
 		Triangle2DDrawAble(ID3D11Device* _device, ID3D11DeviceContext* _context);
+		Triangle2DDrawAble(ID3D11Device* _device, ID3D11DeviceContext* _context, float3 _size, float3 _pos);
 		~Triangle2DDrawAble();
 	};
 }
