@@ -25,6 +25,10 @@ ZDSJ::DrawAbleAnimation::DrawAbleAnimation(float _change_value, long long _anima
 
 		return true;
 	});
+	// 注册keyboard
+	ZDSJ::Context::getInstance()->Keyboard()->registeKeyboard(ZDSJ::Key::nothing, ZDSJ::Key::space, "pause animation", [&](float _data) {
+		ZDSJ::Context::getInstance()->animationRun(!ZDSJ::Context::getInstance()->animationRun());
+	});
 }
 
 

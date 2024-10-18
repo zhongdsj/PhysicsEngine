@@ -46,7 +46,7 @@ ZDSJ::Command::Command(ZDSJ::Context* _context)
 				else {
 					auto item = category_map->second.find(operation);
 					if (item != category_map->second.end()) {
-						oss << category << "-" << operation << ":" << item->first << " " << item->second.first << "\n";
+						oss << "- " << category << "-" << operation << ":" << item->first << " " << item->second.first << "\n";
 					}
 				}
 				this->write(oss.str());
@@ -72,7 +72,7 @@ void ZDSJ::Command::execCommand(std::string& _command)
 	std::string data;
 	std::getline(iss, category, ':');
 	std::getline(iss, operation, ':');
-	std::getline(iss, data, ':');
+	std::getline(iss, data, ' ');
 	if (this->m_history.size() >= this->m_max_history) {
 		this->m_history.erase(this->m_history.begin());
 	}

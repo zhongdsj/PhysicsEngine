@@ -48,6 +48,17 @@ LRESULT ZDSJ::MyWindow::handelMessage(HWND handle, UINT msg, WPARAM wParam, LPAR
 	}
 	switch (msg)
 	{
+	case WM_MOUSEMOVE:
+		if (wParam == MK_LBUTTON) {
+			short x = static_cast<short>(LOWORD(lParam));
+			short y = static_cast<short>(HIWORD(lParam));
+			ZDSJ::Context::getInstance()->Keyboard()->mouseDrag(x, y);
+			ZDSJ::Context::getInstance()->Keyboard()->execKeyboard(WM_MOUSEMOVE, lParam);
+		}
+		break;
+	case WM_LBUTTONUP:
+		ZDSJ::Context::getInstance()->Keyboard()->mouseDragReset();
+		break;
 	case WM_SYSKEYDOWN:
 		return true;
 		break;
