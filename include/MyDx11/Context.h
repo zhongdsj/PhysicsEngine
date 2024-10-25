@@ -5,6 +5,12 @@
 # include <MyDx11/Keyboard.h>
 
 namespace ZDSJ {
+	struct Point {
+		float x;
+		float y;
+		Point(float _x, float _y):x(_x), y(_y) {};
+		Point():x(0.0f), y(0.0f) {};
+	};
 
 # define fields(type, fields_name, default_value, func_name) type m_##fields_name = default_value; \
 	public: inline Context* func_name(type _value){ this->m_##fields_name = _value; return this; } \

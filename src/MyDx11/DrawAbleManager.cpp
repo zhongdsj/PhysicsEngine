@@ -4,6 +4,7 @@
 # include <typeinfo>
 # include <map>
 # include <string>
+# include <MyDx11/VertexStructure.h>
 
 
 ZDSJ::DrawAbleManager::DrawAbleManager(RenderType _render_type) : m_render_type(_render_type)
@@ -35,6 +36,25 @@ ZDSJ::DrawAbleManager::~DrawAbleManager()
 		break;
 	}
 	delete this->m_container;
+}
+
+ZDSJ::DrawAbleInterface* ZDSJ::DrawAbleManager::pointInPolgon2D(float _x, float _y) {
+	// TODO bug
+	ZDSJ::DrawAbleInterface* result = nullptr;
+	std::map<std::string, std::vector<ZDSJ::DrawAbleInterface*>>* container = reinterpret_cast<std::map<std::string, std::vector<ZDSJ::DrawAbleInterface*>>*>(this->m_container);
+	std::map<std::string, std::vector<ZDSJ::DrawAbleInterface*>>::iterator type_container = container->end();
+	for (auto type_container : *container) {
+		for (auto item : type_container.second) {
+			if (item->pointInPolgon2D(_x, _y)) {
+				result = item;
+				break;
+			}
+		}
+		if (result != nullptr) {
+			break;
+		}
+	}
+	return result;
 }
 
 void ZDSJ::DrawAbleManager::add(ZDSJ::DrawAbleInterface* _drawable)

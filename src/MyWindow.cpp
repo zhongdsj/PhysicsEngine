@@ -3,6 +3,7 @@
 # include <ImGuiManager/ImGuiManager.h>
 # include <MyDx11/DrawAbleManager.h>
 # include <MyDx11/Context.h>
+# include <Timer.h>
 
 # pragma region MyWindow
 
@@ -52,13 +53,17 @@ LRESULT ZDSJ::MyWindow::handelMessage(HWND handle, UINT msg, WPARAM wParam, LPAR
 		if (wParam == MK_LBUTTON) {
 			short x = static_cast<short>(LOWORD(lParam));
 			short y = static_cast<short>(HIWORD(lParam));
+			ZDSJ::Context::getInstance()->Keyboard()->splitFloatToShorts(lParam, x, y);
 			ZDSJ::Context::getInstance()->Keyboard()->mouseDrag(x, y);
-			ZDSJ::Context::getInstance()->Keyboard()->execKeyboard(WM_MOUSEMOVE, lParam);
+			// ZDSJ::Context::getInstance()->Keyboard()->execKeyboard(WM_MOUSEMOVE, lParam);
 		}
+		ZDSJ::Context::getInstance()->Keyboard()->execKeyboard(WM_MOUSEMOVE, lParam);
 		break;
 	case WM_LBUTTONUP:
 		ZDSJ::Context::getInstance()->Keyboard()->mouseDragReset();
 		break;
+	case WM_LBUTTONDOWN:
+		ZDSJ::Context::getInstance()->Keyboard()->execKeyboard(VK_LBUTTON, lParam);
 	case WM_SYSKEYDOWN:
 		return true;
 		break;
@@ -103,6 +108,36 @@ LRESULT ZDSJ::MyWindow::handelMessage(HWND handle, UINT msg, WPARAM wParam, LPAR
 	return DefWindowProc(handle, msg, wParam, lParam);
 }
 
+void ZDSJ::MyWindow::changeFps(short _fps)
+{
+	if (this->m_rend_state) {
+		this->m_rend_state = false;
+		this->m_rend_thread->join();
+		delete this->m_rend_thread;
+		delete this->m_fps_control;
+	}
+	this->m_rend_state = true;
+	ZDSJ::Context::getInstance()->fps(_fps);
+	this->m_fps_control = new ZDSJ::Timer(_fps);
+	this->m_rend_thread = new std::thread(&ZDSJ::MyWindow::rend, this);
+}
+
+void ZDSJ::MyWindow::run(short _fps)
+{
+	this->changeFps(_fps);
+	MSG msg;
+	while (GetMessage(&msg, nullptr, 0, 0)) {
+		if (msg.message == WM_QUIT)
+		{
+			break;
+		}
+		else {
+			TranslateMessage(&msg);
+			DispatchMessageW(&msg);
+		}
+	}
+}
+
 void ZDSJ::MyWindow::doFrame()
 {
 	
@@ -115,9 +150,24 @@ void ZDSJ::MyWindow::doFrame()
 
 ZDSJ::MyWindow::~MyWindow()
 {
+	if (this->m_rend_state) {
+		this->m_rend_state = false;
+		this->m_rend_thread->join();
+		delete this->m_rend_thread;
+		delete this->m_fps_control;
+	}
 	delete this->m_imgui;
 	delete this->m_dx11;
 	DestroyWindow(this->m_hwnd);
+}
+
+void ZDSJ::MyWindow::rend()
+{
+	while (this->m_rend_state) {
+		this->m_fps_control->mark();
+		this->doFrame();
+		this->m_fps_control->nextFps();
+	}
 }
 
 # pragma endregion MyWindow

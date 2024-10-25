@@ -5,6 +5,9 @@
 # include <MyDx11/DrawAbleManager.h>
 # include <DirectXMath.h>
 # include <d3d11.h>
+# include <MyDx11/Context.h>
+# include <MyDx11/VertexStructure.h>
+# include <sstream>
 
 ZDSJ::MyDx11::MyDx11(HWND _hwnd, int _window_width, int _window_height, RenderType _render_type)
 {
@@ -78,6 +81,28 @@ ZDSJ::MyDx11::MyDx11(HWND _hwnd, int _window_width, int _window_height, RenderTy
 	// 
 	this->m_drawable_manager = new ZDSJ::DrawAbleManager(_render_type);
 
+	ZDSJ::Context::getInstance()->Keyboard()->registeKeyboard(ZDSJ::Key::ctrl, ZDSJ::Key::mouse_left, "add element in mouse position", [&](float _data) {
+		short x;
+		short y;
+		ZDSJ::Context::getInstance()->Keyboard()->splitFloatToShorts(_data, x, y);
+		ZDSJ::Point word_pos = ZDSJ::Context::getInstance()->camera()->viewPosToWordPos(ZDSJ::Point(x, y));
+		this->m_drawable_manager->add((new ZDSJ::Triangle2DDrawAble(this->m_device, this->m_context))->setPosX(word_pos.x)->setPosY(word_pos.y));
+	});
+	ZDSJ::Context::getInstance()->Keyboard()->registeKeyboard(ZDSJ::Key::ctrl, ZDSJ::Key::mouse_move, "move mouse", [&](float _data) {
+		short x;
+		short y;
+		ZDSJ::Context::getInstance()->Keyboard()->splitFloatToShorts(_data, x, y);
+		ZDSJ::Point word_pos = ZDSJ::Context::getInstance()->camera()->viewPosToWordPos(ZDSJ::Point(x, y));
+		ZDSJ::DrawAbleInterface* in = nullptr;
+		in = this->m_drawable_manager->pointInPolgon2D(word_pos.x, word_pos.y);
+		if (in != nullptr) {
+			std::ostringstream oss;
+			auto data = reinterpret_cast<ZDSJ::DrawAbleAdapter*>(in)->getData();
+			oss << typeid(*in).name() << " [pos: (" << data->pos.x << "," << data->pos.y << "), size: (" << data->size.x << "," << data->size.y << ")]";
+			ZDSJ::Context::getInstance()->command()->write(oss.str().substr(12));
+		}
+		
+	});
 	// 创建三角形
 	this->createTriangle2D();
 	// 创建圆弧
@@ -121,11 +146,8 @@ void ZDSJ::MyDx11::clearByBackground()
 
 void ZDSJ::MyDx11::createTriangle2D()
 {
-	// this->m_draw_able.push_back(new ZDSJ::Triangle2DDrawAble(this->m_device, this->m_context));
-	// auto triangle =;
-	
 	this->m_drawable_manager->add((new ZDSJ::Triangle2DDrawAble(this->m_device, this->m_context))->setPosX(100.0f)
 		->addAnimation(ZDSJ::DrawAbleAnimation::rotationZAnimation(360.f, 5000, 60, true)));
-	this->m_drawable_manager->add((new ZDSJ::Triangle2DDrawAble(this->m_device, this->m_context)));
+	this->m_drawable_manager->add(new ZDSJ::Triangle2DDrawAble(this->m_device, this->m_context));
 	this->m_drawable_manager->add((new ZDSJ::Rectangle2DDrawAble(this->m_device, this->m_context))->setPosX(-100.0f));
 }

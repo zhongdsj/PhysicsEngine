@@ -12,9 +12,14 @@ namespace ZDSJ {
 		Category = 2
 	};
 
+	struct Vertex2D;
+	typedef unsigned short      UINT16;
+
 	class DrawAbleManager {
 	public:
 		DrawAbleManager(RenderType _render_type = Default);
+
+		DrawAbleInterface* pointInPolgon2D(float _x, float _y);
 
 		void add(DrawAbleInterface* _drawable);
 

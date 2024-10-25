@@ -4,6 +4,7 @@
 
 ZDSJ::Keyboard::Keyboard(ZDSJ::Context* _context)
 {
+	this->m_mouse_drag = new ZDSJ::Point(-1.0f, -1.0f);
 	_context->command()->registeCommand("keyboard", "", "keyboard description", [&](std::string& _data) -> bool {
 		if (_data.empty()) {
 			ZDSJ::Context::getInstance()->command()->write(this->outputToCommand());
@@ -27,7 +28,6 @@ std::string ZDSJ::Keyboard::outputToCommand() const
 				oss << mod << "+";
 			}
 			oss << key << ": " << item.second.first << "\n";
-			// << mod_map.first << "+" << item.first << ": " << item.second.first << "\n";
 		}
 	}
 	return oss.str();
@@ -100,41 +100,37 @@ std::string ZDSJ::Keyboard::keyToString(Key _key) const
 	return oss.str();
 }
 
+ZDSJ::Point ZDSJ::Keyboard::mouseDrag()
+{
+	return *this->m_mouse_drag;
+}
+
 void ZDSJ::Keyboard::mouseDrag(short _x, short _y)
 {
-	if (this->m_mouse_drag_x != -1.0f && this->m_mouse_drag_y != -1.0f) {
-		this->execKeyboard(ZDSJ::Key::mouse_drag, this->mergeShortsToFloat(_x - this->m_mouse_drag_x, _y - this->m_mouse_drag_y));
+	if (this->m_mouse_drag->x != -1.0f && this->m_mouse_drag->x != -1.0f) {
+		this->execKeyboard(ZDSJ::Key::mouse_drag, this->mergeShortsToFloat(_x, _y));
 	}
-	this->m_mouse_drag_x = _x;
-	this->m_mouse_drag_y = _y;
+	this->m_mouse_drag->x = _x;
+	this->m_mouse_drag->y = _y;
 }
 
 void ZDSJ::Keyboard::mouseDragReset()
 {
-	this->m_mouse_drag_x = -1.0f;
-	this->m_mouse_drag_y = -1.0f;
+	this->m_mouse_drag->x = -1.0f;
+	this->m_mouse_drag->y = -1.0f;
 }
 
 float ZDSJ::Keyboard::mergeShortsToFloat(short first, short second)
 {
-	uint8_t bytes[4];
-	bytes[0] = static_cast<uint8_t>(first & 0xFF);
-	bytes[1] = static_cast<uint8_t>((first >> 8) & 0xFF);
-	bytes[2] = static_cast<uint8_t>(second & 0xFF);
-	bytes[3] = static_cast<uint8_t>((second >> 8) & 0xFF);
-
-	float result;
-	std::memcpy(&result, bytes, sizeof(result));
+	float result = (second << 16) | first;
 	return result;
 }
 
 void ZDSJ::Keyboard::splitFloatToShorts(float value, short& first, short& second)
 {
-	uint8_t bytes[4];
-	std::memcpy(bytes, &value, sizeof(value));
-
-	first = (bytes[1] << 8) | bytes[0];
-	second = (bytes[3] << 8) | bytes[2];
+	unsigned __int64 temp = static_cast<unsigned __int64>(value);
+	first = temp & 0xffff;
+	second = (temp >> 16) & 0xffff;
 }
 
 bool ZDSJ::Keyboard::registeKeyboard(int _mod, int _key, const std::string& _description, HandlerFunc _handle_func)

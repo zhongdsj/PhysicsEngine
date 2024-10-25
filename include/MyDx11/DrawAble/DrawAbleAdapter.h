@@ -9,6 +9,8 @@ namespace DirectX {
 namespace ZDSJ {
 	class BindAbleInterface;
 	class ConstantBufferBindAble;
+	class VertexBufferBindAble;
+	class IndexBufferBindAble;
 
 	struct float3 {
 		float x;
@@ -31,6 +33,7 @@ namespace ZDSJ {
 		DrawAbleAdapter(const DrawAbleData& _data = DrawAbleData());
 		void draw(ID3D11DeviceContext* _context) override;
 		const DrawAbleData* getData() const;
+		bool pointInPolgon2D(float _x, float _y) override;
 		
 		inline DrawAbleAdapter* setSizeX(float _value) { this->m_data->size.x = _value; return this; }
 		inline DrawAbleAdapter* setSizeY(float _value) { this->m_data->size.y = _value; return this;}
@@ -55,8 +58,13 @@ namespace ZDSJ {
 
 		std::vector<ZDSJ::DrawAbleAnimation*> m_animation;
 		DrawAbleData* m_data = nullptr;
+		std::vector<Vertex2D> m_vertices;
+		std::vector<UINT16> m_indices;
 
+		void setVertexBufferAndIndexBuffer(ID3D11Device* _device, ID3D11DeviceContext* _context, const VertexBufferBindAble*& _vertex_buffer_bindable, const IndexBufferBindAble*& _index_buffer_bindable);
 		virtual const std::vector<BindAbleInterface*>& getStaticBindAble() const = 0;
 		virtual const size_t getStaticIndexSize() const = 0;
+
+		bool pointInTriangle2D(float _x, float _y, short _triangle_index, DirectX::XMMATRIX& _word_matrix);
 	};
 }

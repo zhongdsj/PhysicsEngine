@@ -6,10 +6,14 @@ struct ID3D11DeviceContext;
 
 namespace ZDSJ {
 
+	struct Vertex2D;
+	typedef unsigned short      UINT16;
+
 	class DrawAbleInterface {
 		friend class DrawAbleManager;
 	public:
 		virtual void draw(ID3D11DeviceContext* _context) = 0;
+		virtual bool pointInPolgon2D(float _x, float _y) = 0;
 	protected:
 		virtual void update(ID3D11DeviceContext* _context) = 0;
 		virtual void bind(ID3D11DeviceContext* _context) = 0;

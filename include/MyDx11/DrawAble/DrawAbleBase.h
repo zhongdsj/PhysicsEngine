@@ -4,6 +4,7 @@
 # include <MyDx11/BindAble/IndexBufferBindAble.h>
 
 namespace ZDSJ {
+	class VertexBufferBindAble;
 
 	template<class T>
 	class DrawAbleBase : public DrawAbleAdapter {
@@ -35,6 +36,23 @@ namespace ZDSJ {
 
 		const size_t getStaticIndexSize() const override {
 			return this->m_index_size;
+		}
+
+		bool getStaticVertexBufferAndIndexBuffer(const VertexBufferBindAble*& _vertex_buffer_bindable, const IndexBufferBindAble*& _index_buffer_bindable) const {
+			bool result = false;
+			for (auto item : this->m_static_bindable) {
+				if (const auto ptr = dynamic_cast<VertexBufferBindAble*>(item)) {
+					_vertex_buffer_bindable = ptr;
+				}
+				if (const auto ptr = dynamic_cast<IndexBufferBindAble*>(item)) {
+					_index_buffer_bindable = ptr;
+				}
+				if (_vertex_buffer_bindable != nullptr && _index_buffer_bindable != nullptr) {
+					result = true;
+					break;
+				}
+			}
+			return result;
 		}
 	};
 

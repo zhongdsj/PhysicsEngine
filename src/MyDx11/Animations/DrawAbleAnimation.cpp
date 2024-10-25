@@ -40,7 +40,7 @@ void ZDSJ::DrawAbleAnimation::update(DrawAbleAdapter* _drawable, bool _continue)
 	}
 	// 换算时间基
 	float temp = this->m_time_base / ZDSJ::Context::getInstance()->fps() / this->m_animation_fps;
-
+	
 	this->m_step += temp;
 	this->m_update_function(_drawable, this->m_exchange_function(this->m_step, this->m_change_value));
 	if (!this->m_loop) {

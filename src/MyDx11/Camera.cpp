@@ -2,7 +2,7 @@
 # include <DirectXMath.h>
 # include <MyDx11/Context.h>
 
-ZDSJ::Camera::Camera(ZDSJ::Context* _context, float _window_rate)
+ZDSJ::Camera::Camera(ZDSJ::Context* _context, float _window_rate) : m_view_pos(new ZDSJ::Point())
 {
 	_context->Keyboard()->registeKeyboard(ZDSJ::Key::nothing, ZDSJ::Key::mouse_wheel, "change camera position z, scroll up close to the object, scroll down away from the object", [&](float _data) {
 		this->m_pos.z += (_data * this->m_pos_z_step);
@@ -12,6 +12,9 @@ ZDSJ::Camera::Camera(ZDSJ::Context* _context, float _window_rate)
 		short x;
 		short y;
 		ZDSJ::Context::getInstance()->Keyboard()->splitFloatToShorts(_data, x, y);
+		ZDSJ::Point drag_pos = ZDSJ::Context::getInstance()->Keyboard()->mouseDrag();
+		x -= drag_pos.x;
+		y -= drag_pos.y;
 		this->m_pos.x -= x;
 		this->m_pos.y += y;
 		this->calsulateViewMatrix();
@@ -76,7 +79,16 @@ ZDSJ::Camera::Camera(ZDSJ::Context* _context, float _window_rate)
 		return true;
 		});
 	this->calculateProjectionMatrix(_window_rate);
-	this->calsulateViewMatrix();
+	this->calsulateViewMatrix(_window_rate);
+}
+
+ZDSJ::Point ZDSJ::Camera::viewPosToWordPos(ZDSJ::Point _pos)
+{
+	ZDSJ::Point point;
+	ZDSJ::Context* context = ZDSJ::Context::getInstance();
+	point.x = this->viewPosSize().x * (_pos.x / context->windowWidth()) - this->viewPosSize().x / 2 + this->m_pos.x;
+	point.y = this->viewPosSize().y * (_pos.y / context->windowHeight()) * -1 + this->viewPosSize().y / 2 + this->m_pos.y;
+	return point;
 }
 
 float ZDSJ::Camera::fov()
@@ -123,11 +135,16 @@ void ZDSJ::Camera::calculateProjectionMatrix(float _window_rate)
 	std::unique_lock<std::shared_mutex> lock(this->m_shared_mutex);
 	delete this->m_projection_matrix;
 	// 投影矩阵
-	this->m_projection_matrix = new DirectX::XMMATRIX(DirectX::XMMatrixPerspectiveFovLH(this->m_fov / 180.0f * DirectX::XM_PI, _window_rate, this->m_near_plane, this->m_far_plane));
-
+	this->m_projection_matrix = new DirectX::XMMATRIX(DirectX::XMMatrixPerspectiveFovLH(DirectX::XMConvertToRadians(this->m_fov), _window_rate, this->m_near_plane, this->m_far_plane));
+	this->viewPosSize(_window_rate);
 }
 
 void ZDSJ::Camera::calsulateViewMatrix()
+{
+	this->calsulateViewMatrix(ZDSJ::Context::getInstance()->windowRate());
+}
+
+void ZDSJ::Camera::calsulateViewMatrix(float _window_rate)
 {
 	std::unique_lock<std::shared_mutex> lock(this->m_shared_mutex);
 	delete this->view_matrix;
@@ -136,9 +153,22 @@ void ZDSJ::Camera::calsulateViewMatrix()
 		DirectX::XMVectorSet(this->m_pos.x, this->m_pos.y, 0.0f, 1.0f),     // 目标点（世界空间原点）  
 		DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f)   // 上方向（y轴）);
 	));
+	this->viewPosSize(_window_rate);
+}
+
+void ZDSJ::Camera::viewPosSize(float _window_rate)
+{
+	float tan_fov_2 = DirectX::XMVectorGetX(DirectX::XMVectorTan(DirectX::XMVectorSet(DirectX::XMConvertToRadians(this->m_fov / 2), 0, 0, 0)));
+	this->m_view_pos->x = tan_fov_2 * (-this->m_pos.z) * 2 * _window_rate;
+	this->m_view_pos->y = tan_fov_2 * (-this->m_pos.z) * 2;
+}
+
+ZDSJ::Point ZDSJ::Camera::viewPosSize() const
+{
+	return *this->m_view_pos;
 }
 
 ZDSJ::Camera::~Camera()
 {
-
+	delete this->m_view_pos;
 }

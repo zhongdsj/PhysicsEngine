@@ -40,11 +40,14 @@ ZDSJ::Triangle2DDrawAble::Triangle2DDrawAble(ID3D11Device* _device, ID3D11Device
 		// 像素着色器
 		this->addStaticBind(new ZDSJ::PixelShaderBindAble(_device, g_main_pixel_shader, sizeof(g_main_pixel_shader)));
 	}
+	const ZDSJ::VertexBufferBindAble* vertex_buffer_bindable = nullptr;
+	const ZDSJ::IndexBufferBindAble* index_buffer_bindable = nullptr;
+	if (this->getStaticVertexBufferAndIndexBuffer(vertex_buffer_bindable, index_buffer_bindable)) {
+		this->setVertexBufferAndIndexBuffer(_device, _context, vertex_buffer_bindable, index_buffer_bindable);
+	}
 	// 缩放旋转矩阵
 	this->m_transform = new ZDSJ::VertexConstantBufferBindAble(_device);
 	this->m_bind_able->push_back(m_transform);
-	// this->m_data->translation.x = _translation_x;
-	// this->bind(_context);
 }
 
 ZDSJ::Triangle2DDrawAble::Triangle2DDrawAble(ID3D11Device* _device, ID3D11DeviceContext* _context) : Triangle2DDrawAble(_device, _context, DrawAbleData())

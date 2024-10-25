@@ -5,7 +5,6 @@
 # include <assimp/Importer.hpp>
 # include <assimp/postprocess.h>
 # include <assimp/scene.h>
-# include <Timer.h>
 
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nShowCmd) {
 	//Assimp::Importer importer;
@@ -13,40 +12,19 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	//// importer.SetPropertyInteger(AI_CONFIG_PP_SBP_REMOVE, aiPrimitiveType_LINE | aiPrimitiveType_POINT);
 	//std::string filename("./RotatingCube.3DS");
 	//auto model = importer.ReadFile(filename.data(), 
-	//	aiProcess_Triangulate // ²ð·Ö¶à±ßÐÎ£¬½«¶à±ßÐÎ×ªÎªÈý½ÇÐÎ
-	//	| aiProcess_JoinIdenticalVertices // ÖØ¸´Ê¹ÓÃ¶¥µã£¬´ó·ù¶È½µµÍ¶¥µãÊýÁ¿
+	//	aiProcess_Triangulate // æ‹†åˆ†å¤šè¾¹å½¢ï¼Œå°†å¤šè¾¹å½¢è½¬ä¸ºä¸‰è§’å½¢
+	//	| aiProcess_JoinIdenticalVertices // é‡å¤ä½¿ç”¨é¡¶ç‚¹ï¼Œå¤§å¹…åº¦é™ä½Žé¡¶ç‚¹æ•°é‡
 	//);
 	//
-	//// ¿ÕÖ¸Õë || Î´¶ÁÈ¡ÍêÕû || Ã»ÓÐÍø¸ñÐÅÏ¢
+	//// ç©ºæŒ‡é’ˆ || æœªè¯»å–å®Œæ•´ || æ²¡æœ‰ç½‘æ ¼ä¿¡æ¯
 	//if (model == nullptr || (model->mFlags & AI_SCENE_FLAGS_INCOMPLETE) || !model->HasMeshes()) {
 	//	return 1;
 	//}
-
+	short fps = 60;
 	ZDSJ::MyWindow* window = new ZDSJ::MyWindow();
 	ZDSJ::MyWindowClass* window_class = new ZDSJ::MyWindowClass(GetModuleHandle(nullptr), L"ZDSJWindow");
 	window_class->creatWindow(window, 200, 300, 800, 600, L"hello");
-	MSG msg;
-	BOOL ret;
-	short fps = 60;
-	ZDSJ::Timer* timer = new ZDSJ::Timer(fps);
-
-	while (true) {
-		timer->mark();
-		ret = PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE);
-		if (ret != 0)
-		{
-			if (msg.message == WM_QUIT)
-			{
-				break;
-			}
-			else {
-				TranslateMessage(&msg);
-				DispatchMessageW(&msg);
-			}
-		}
-		timer->nextFps();
-		window->doFrame();
-	}
+	window->run(fps);
 	delete window;
 	delete window_class;
 	return 0;

@@ -7,6 +7,7 @@ namespace DirectX {
 
 namespace ZDSJ {
 	class Context;
+	struct Point;
 	struct float4 {
 		float x;
 		float y;
@@ -18,6 +19,7 @@ namespace ZDSJ {
 		friend Context;
 	public:
 
+		Point viewPosToWordPos(Point _pos);
 		float fov();
 		void fov(float _value);
 
@@ -30,6 +32,7 @@ namespace ZDSJ {
 		DirectX::XMMATRIX getCarmeraMatrix();
 		
 	private:
+		Point* m_view_pos = nullptr;
 		float4 m_pos = { 0.0f, 0.0f, -200.0f, 1.0f };
 		// float4 m_focus = { 0.0f, 0.0f, 0.0f, 1.0f };
 		float m_pos_z_step = 10.0f;
@@ -45,6 +48,9 @@ namespace ZDSJ {
 		void calculateProjectionMatrix();
 		void calculateProjectionMatrix(float _window_rate);
 		void calsulateViewMatrix();
+		void calsulateViewMatrix(float _window_rate);
+		void viewPosSize(float _window_rate);
+		Point viewPosSize() const;
 
 		~Camera();
 	};

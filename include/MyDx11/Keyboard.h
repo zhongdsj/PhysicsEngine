@@ -8,6 +8,7 @@ namespace ZDSJ {
 	using HandlerFunc = std::function<void(float _data)>;
 	enum Key {
 		mouse_drag = 4096,
+		mouse_move = 512,
 		mouse_wheel = 522,
 		nothing = 0,
 		mouse_left,
@@ -18,12 +19,15 @@ namespace ZDSJ {
 		tilde=192,
 	};
 
+	struct Point;
+
 	class Keyboard {
 		friend Context;
 	public:
 		void mod(int _mod);
 		bool execKeyboard(int _key, float _data);
 		std::string keyToString(Key _key) const;
+		Point mouseDrag();
 		void mouseDrag(short _x, short _y);
 		void mouseDragReset();
 		// 合并两个short为一个float  
@@ -41,8 +45,7 @@ namespace ZDSJ {
 	private:
 		std::unordered_map<int, std::unordered_map<int, std::pair<std::string, HandlerFunc>>> m_keyboard_handle;
 		int m_mod = 0;
-		short m_mouse_drag_x = -1.0f;
-		short m_mouse_drag_y = -1.0f;
+		Point* m_mouse_drag = nullptr;
 
 		Keyboard(Context* _context);
 		std::string outputToCommand() const;

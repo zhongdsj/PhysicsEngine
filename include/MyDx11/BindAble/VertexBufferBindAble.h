@@ -11,16 +11,17 @@ namespace ZDSJ {
 	public:
 		template<class T>
 		VertexBufferBindAble(ID3D11Device* _device, std::vector<T>& _vertices) {
-				D3D11_BUFFER_DESC bd = {};
-				bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-				bd.StructureByteStride = sizeof(T);
-				bd.ByteWidth = bd.StructureByteStride * _vertices.size();
-				D3D11_SUBRESOURCE_DATA sd = {};
-				sd.pSysMem = _vertices.data();
-				_device->CreateBuffer(&bd, &sd, this->m_buffer.GetAddressOf());
-				this->m_stride = bd.StructureByteStride;
+			D3D11_BUFFER_DESC bd = {};
+			bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+			bd.StructureByteStride = sizeof(T);
+			bd.ByteWidth = bd.StructureByteStride * _vertices.size();
+			D3D11_SUBRESOURCE_DATA sd = {};
+			sd.pSysMem = _vertices.data();
+			_device->CreateBuffer(&bd, &sd, this->m_buffer.GetAddressOf());
+			this->m_stride = bd.StructureByteStride;
 		}
 		void bind(ID3D11DeviceContext* _context) override;
+		void getData(ID3D11Device* _device, ID3D11DeviceContext* _context, void** _data, size_t& _size) const;
 		~VertexBufferBindAble() = default;
 
 	private:
