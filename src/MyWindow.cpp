@@ -53,17 +53,17 @@ LRESULT ZDSJ::MyWindow::handelMessage(HWND handle, UINT msg, WPARAM wParam, LPAR
 		if (wParam == MK_LBUTTON) {
 			short x = static_cast<short>(LOWORD(lParam));
 			short y = static_cast<short>(HIWORD(lParam));
-			ZDSJ::Context::getInstance()->Keyboard()->splitFloatToShorts(lParam, x, y);
-			ZDSJ::Context::getInstance()->Keyboard()->mouseDrag(x, y);
+			ZDSJ::Context::getInstance()->keyboard()->splitFloatToShorts(lParam, x, y);
+			ZDSJ::Context::getInstance()->keyboard()->mouseDrag(x, y);
 			// ZDSJ::Context::getInstance()->Keyboard()->execKeyboard(WM_MOUSEMOVE, lParam);
 		}
-		ZDSJ::Context::getInstance()->Keyboard()->execKeyboard(WM_MOUSEMOVE, lParam);
+		ZDSJ::Context::getInstance()->keyboard()->execKeyboard(WM_MOUSEMOVE, lParam);
 		break;
 	case WM_LBUTTONUP:
-		ZDSJ::Context::getInstance()->Keyboard()->mouseDragReset();
+		ZDSJ::Context::getInstance()->keyboard()->mouseDragReset();
 		break;
 	case WM_LBUTTONDOWN:
-		ZDSJ::Context::getInstance()->Keyboard()->execKeyboard(VK_LBUTTON, lParam);
+		ZDSJ::Context::getInstance()->keyboard()->execKeyboard(VK_LBUTTON, lParam);
 	case WM_SYSKEYDOWN:
 		return true;
 		break;
@@ -71,29 +71,29 @@ LRESULT ZDSJ::MyWindow::handelMessage(HWND handle, UINT msg, WPARAM wParam, LPAR
 		switch (wParam)
 		{
 		case VK_CONTROL:
-			ZDSJ::Context::getInstance()->Keyboard()->mod(ZDSJ::Key::nothing);
+			ZDSJ::Context::getInstance()->keyboard()->mod(ZDSJ::Key::nothing);
 		default:
 			break;
 		}
 		break;
 	case WM_MOUSEWHEEL:
-		ZDSJ::Context::getInstance()->Keyboard()->execKeyboard(WM_MOUSEWHEEL, static_cast<short>(HIWORD(wParam))/120);
+		ZDSJ::Context::getInstance()->keyboard()->execKeyboard(WM_MOUSEWHEEL, static_cast<short>(HIWORD(wParam))/120);
 		break;
 	case WM_KEYDOWN:
 		switch (wParam)
 		{
 		case VK_CONTROL:
-			ZDSJ::Context::getInstance()->Keyboard()->mod(VK_CONTROL);
+			ZDSJ::Context::getInstance()->keyboard()->mod(VK_CONTROL);
 			break;
 		default:
-			ZDSJ::Context::getInstance()->Keyboard()->execKeyboard(wParam, 0.0f);
+			ZDSJ::Context::getInstance()->keyboard()->execKeyboard(wParam, 0.0f);
 			break;
 		}
 		break;
 	case WM_KEYUP:
 		switch (wParam) {
 		case VK_CONTROL:
-			ZDSJ::Context::getInstance()->Keyboard()->mod(ZDSJ::Key::nothing);
+			ZDSJ::Context::getInstance()->keyboard()->mod(ZDSJ::Key::nothing);
 			break;
 		default:
 			break;

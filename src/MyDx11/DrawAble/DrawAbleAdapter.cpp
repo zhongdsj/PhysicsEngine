@@ -7,17 +7,27 @@
 # include <MyDx11/VertexStructure.h>
 # include <MyDx11/BindAble/IndexBufferBindAble.h>
 # include <MyDx11/BindAble/VertexBufferBindAble.h>
+# include <MyDx11/MyDx11.h>
 
 ZDSJ::DrawAbleAdapter::DrawAbleAdapter(const DrawAbleData& _data) : m_bind_able(new std::vector<ZDSJ::BindAbleInterface*>), m_data(new DrawAbleData(_data))
 {
+	
 }
 
-void ZDSJ::DrawAbleAdapter::draw(ID3D11DeviceContext* _context)
+void ZDSJ::DrawAbleAdapter::draw(ID3D11DeviceContext* _context, bool _bind_static)
 {
 	this->bind(_context);
-	this->bindStatic(_context);
+	if (_bind_static) {
+		this->bindStatic(_context);
+	}
 	this->update(_context);
-	this->drawIndex(_context);
+	if (!this->hasState(ZDSJ::DrawAbleState::Check)) {
+		this->drawIndex(_context);
+	}
+	if (this->hasState(ZDSJ::DrawAbleState::Hover) || this->hasState(ZDSJ::DrawAbleState::Check)) {
+		this->drawBorder(_context);
+	}
+	
 }
 
 const ZDSJ::DrawAbleData* ZDSJ::DrawAbleAdapter::getData() const
@@ -54,6 +64,7 @@ void ZDSJ::DrawAbleAdapter::bindStatic(ID3D11DeviceContext* _context)
 	for (auto item : this->getStaticBindAble()) {
 		item->bind(_context);
 	}
+	this->getColorVertex()->bind(_context);
 }
 
 void ZDSJ::DrawAbleAdapter::drawIndex(ID3D11DeviceContext* _context, unsigned int _start_index_location, int _base_vertex_location)
@@ -71,7 +82,6 @@ DirectX::XMMATRIX ZDSJ::DrawAbleAdapter::getTransformMatix() const
 	DirectX::XMMATRIX word = size * rotation * pos;
 	
 	DirectX::XMMATRIX matrix = word * ZDSJ::Context::getInstance()->camera()->getCarmeraMatrix();
-	// return DirectX::XMMatrixTranspose(matrix * pro);
 	return DirectX::XMMatrixTranspose(matrix);
 }
 
@@ -90,7 +100,25 @@ bool ZDSJ::DrawAbleAdapter::pointInPolgon2D(float _x, float _y)
 			break;
 		}
 	}
+	if (result) {
+		this->addState(ZDSJ::DrawAbleState::Hover);
+	}
+	else {
+		this->removeState(ZDSJ::DrawAbleState::Hover);
+	}
 	return result;
+}
+
+void ZDSJ::DrawAbleAdapter::drawBorder(ID3D11DeviceContext* _context)
+{
+	// 准备绘制border资源
+	ZDSJ::Context::getInstance()->dx11()->wireframe();
+	this->getBorderVertex()->bind(_context);
+	// 绘制
+	this->drawIndex(_context);
+	// 恢复原有资源
+	ZDSJ::Context::getInstance()->dx11()->solid();
+	this->getColorVertex()->bind(_context);
 }
 
 void ZDSJ::DrawAbleAdapter::setVertexBufferAndIndexBuffer(ID3D11Device* _device, ID3D11DeviceContext* _context, const ZDSJ::VertexBufferBindAble*& _vertex_buffer_bindable, const ZDSJ::IndexBufferBindAble*& _index_buffer_bindable)

@@ -43,10 +43,6 @@ ZDSJ::MyDx11::MyDx11(HWND _hwnd, int _window_width, int _window_height, RenderTy
 		this->m_device->CreateRenderTargetView(backBuffer, nullptr, &this->m_render_target_view);
 	}
 	SAFE_RELEASE(backBuffer);
-	// this->m_device->CreateRenderTargetView(&this->m_texture, &renderTargetViewDesc, m_render_target_view);
-
-	// this->m_render_target_texture = new RenderTargerTexture(this->m_device, 2560, 1440);
-	//this->m_render_target_texture = new RenderTargerTexture(this->m_device, this->m_window_width, this->m_window_height);
 	// 绑定呈现目标
 	this->m_context->OMSetRenderTargets(1, &this->m_render_target_view, nullptr);
 
@@ -68,6 +64,9 @@ ZDSJ::MyDx11::MyDx11(HWND _hwnd, int _window_width, int _window_height, RenderTy
 	this->m_context->OMSetBlendState(blendState, BlendFactor, 0xffffffff);
 	SAFE_RELEASE(blendState);
 
+	// 三角形
+	this->m_context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
 	// 将视区数组绑定到管道的光栅器阶段
 	D3D11_VIEWPORT viewPort;
 	viewPort.TopLeftX = 0;
@@ -81,25 +80,25 @@ ZDSJ::MyDx11::MyDx11(HWND _hwnd, int _window_width, int _window_height, RenderTy
 	// 
 	this->m_drawable_manager = new ZDSJ::DrawAbleManager(_render_type);
 
-	ZDSJ::Context::getInstance()->Keyboard()->registeKeyboard(ZDSJ::Key::ctrl, ZDSJ::Key::mouse_left, "add element in mouse position", [&](float _data) {
+	ZDSJ::Context::getInstance()->keyboard()->registeKeyboard(ZDSJ::Key::ctrl, ZDSJ::Key::mouse_left, "add element in mouse position", [&](float _data) {
 		short x;
 		short y;
-		ZDSJ::Context::getInstance()->Keyboard()->splitFloatToShorts(_data, x, y);
+		ZDSJ::Context::getInstance()->keyboard()->splitFloatToShorts(_data, x, y);
 		ZDSJ::Point word_pos = ZDSJ::Context::getInstance()->camera()->viewPosToWordPos(ZDSJ::Point(x, y));
 		this->m_drawable_manager->add((new ZDSJ::Triangle2DDrawAble(this->m_device, this->m_context))->setPosX(word_pos.x)->setPosY(word_pos.y));
 	});
-	ZDSJ::Context::getInstance()->Keyboard()->registeKeyboard(ZDSJ::Key::ctrl, ZDSJ::Key::mouse_move, "move mouse", [&](float _data) {
+	ZDSJ::Context::getInstance()->keyboard()->registeKeyboard(ZDSJ::Key::nothing, ZDSJ::Key::mouse_move, "move mouse", [&](float _data) {
 		short x;
 		short y;
-		ZDSJ::Context::getInstance()->Keyboard()->splitFloatToShorts(_data, x, y);
+		ZDSJ::Context::getInstance()->keyboard()->splitFloatToShorts(_data, x, y);
 		ZDSJ::Point word_pos = ZDSJ::Context::getInstance()->camera()->viewPosToWordPos(ZDSJ::Point(x, y));
 		ZDSJ::DrawAbleInterface* in = nullptr;
 		in = this->m_drawable_manager->pointInPolgon2D(word_pos.x, word_pos.y);
 		if (in != nullptr) {
-			std::ostringstream oss;
-			auto data = reinterpret_cast<ZDSJ::DrawAbleAdapter*>(in)->getData();
-			oss << typeid(*in).name() << " [pos: (" << data->pos.x << "," << data->pos.y << "), size: (" << data->size.x << "," << data->size.y << ")]";
-			ZDSJ::Context::getInstance()->command()->write(oss.str().substr(12));
+			// std::ostringstream oss;
+			// auto data = reinterpret_cast<ZDSJ::DrawAbleAdapter*>(in)->getData();
+			// oss << typeid(*in).name() << " [pos: (" << data->pos.x << "," << data->pos.y << "), size: (" << data->size.x << "," << data->size.y << ")]";
+			// ZDSJ::Context::getInstance()->command()->write(oss.str().substr(12));
 		}
 		
 	});
@@ -107,6 +106,26 @@ ZDSJ::MyDx11::MyDx11(HWND _hwnd, int _window_width, int _window_height, RenderTy
 	this->createTriangle2D();
 	// 创建圆弧
 	// this->createArc2D();
+	
+	D3D11_RASTERIZER_DESC solid_desc;
+	ZeroMemory(&solid_desc, sizeof(solid_desc));
+	solid_desc.FillMode = D3D11_FILL_SOLID;
+	solid_desc.CullMode = D3D11_CULL_BACK;
+	solid_desc.ScissorEnable = false;
+	solid_desc.DepthClipEnable = true;
+	this->m_device->CreateRasterizerState(&solid_desc, &this->m_solid_rasterizer_state);
+
+	D3D11_RASTERIZER_DESC wireframe_desc;
+	ZeroMemory(&wireframe_desc, sizeof(wireframe_desc));
+	wireframe_desc.FillMode = D3D11_FILL_WIREFRAME;
+	wireframe_desc.CullMode = D3D11_CULL_BACK;
+	wireframe_desc.ScissorEnable = false;
+	wireframe_desc.DepthClipEnable = true;
+	this->m_device->CreateRasterizerState(&wireframe_desc, &this->m_wireframe_rasterizer_state);
+	
+	this->solid();
+
+	ZDSJ::Context::getInstance()->dx11(this);
 }
 
 void ZDSJ::MyDx11::render()
@@ -118,6 +137,16 @@ void ZDSJ::MyDx11::render()
 void ZDSJ::MyDx11::endRender()
 {
 	this->m_swap_chain->Present(0, 0);
+}
+
+void ZDSJ::MyDx11::solid()
+{
+	this->m_context->RSSetState(this->m_solid_rasterizer_state);
+}
+
+void ZDSJ::MyDx11::wireframe()
+{
+	this->m_context->RSSetState(this->m_wireframe_rasterizer_state);
 }
 
 ID3D11Device* ZDSJ::MyDx11::device() const
@@ -136,6 +165,8 @@ ZDSJ::MyDx11::~MyDx11()
 	SAFE_RELEASE(this->m_render_target_view);
 	SAFE_RELEASE(this->m_context);
 	SAFE_RELEASE(this->m_swap_chain);
+	SAFE_RELEASE(this->m_solid_rasterizer_state);
+	SAFE_RELEASE(this->m_wireframe_rasterizer_state);
 	SAFE_RELEASE(this->m_device);
 }
 

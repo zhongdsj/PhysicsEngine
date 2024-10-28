@@ -25,10 +25,10 @@ ZDSJ::Triangle2DDrawAble::Triangle2DDrawAble(ID3D11Device* _device, ID3D11Device
 			0,1,2
 		};
 		// 顶点缓存
-		this->addStaticBind(new ZDSJ::VertexBufferBindAble(_device, vertices));
+		// this->addStaticBind(new ZDSJ::VertexBufferBindAble(_device, vertices));
+		this->setVertexBindAble(_device, _context, new ZDSJ::VertexBufferBindAble(_device, vertices));
 		// 顶点索引
 		this->addStaticIndexBuffer(new ZDSJ::IndexBufferBindAble(_device, indices, sizeof(indices)), sizeof(indices) / sizeof(UINT16));
-		// this->m_index_size = ;
 		// 顶点着色器
 		this->addStaticBind(new ZDSJ::VertexShaderBindAble(_device, g_main_vertex_shader, sizeof(g_main_vertex_shader)));
 		// layout

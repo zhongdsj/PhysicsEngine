@@ -4,22 +4,22 @@
 
 ZDSJ::Camera::Camera(ZDSJ::Context* _context, float _window_rate) : m_view_pos(new ZDSJ::Point())
 {
-	_context->Keyboard()->registeKeyboard(ZDSJ::Key::nothing, ZDSJ::Key::mouse_wheel, "change camera position z, scroll up close to the object, scroll down away from the object", [&](float _data) {
+	_context->keyboard()->registeKeyboard(ZDSJ::Key::nothing, ZDSJ::Key::mouse_wheel, "change camera position z, scroll up close to the object, scroll down away from the object", [&](float _data) {
 		this->m_pos.z += (_data * this->m_pos_z_step);
 		this->calsulateViewMatrix();
 	});
-	_context->Keyboard()->registeKeyboard(ZDSJ::Key::nothing, ZDSJ::Key::mouse_drag, "change camera position (x,y)", [&](float _data) {
+	_context->keyboard()->registeKeyboard(ZDSJ::Key::nothing, ZDSJ::Key::mouse_drag, "change camera position (x,y)", [&](float _data) {
 		short x;
 		short y;
-		ZDSJ::Context::getInstance()->Keyboard()->splitFloatToShorts(_data, x, y);
-		ZDSJ::Point drag_pos = ZDSJ::Context::getInstance()->Keyboard()->mouseDrag();
+		ZDSJ::Context::getInstance()->keyboard()->splitFloatToShorts(_data, x, y);
+		ZDSJ::Point drag_pos = ZDSJ::Context::getInstance()->keyboard()->mouseDrag();
 		x -= drag_pos.x;
 		y -= drag_pos.y;
 		this->m_pos.x -= x;
 		this->m_pos.y += y;
 		this->calsulateViewMatrix();
 	});
-	_context->Keyboard()->registeKeyboard(ZDSJ::Key::ctrl, 'R', "reset camera position (x,y,z)", [&](float _data) {
+	_context->keyboard()->registeKeyboard(ZDSJ::Key::ctrl, 'R', "reset camera position (x,y,z)", [&](float _data) {
 		this->m_pos.x = 0.0f;
 		this->m_pos.y = 0.0f;
 		this->m_pos.z = -200.0f;

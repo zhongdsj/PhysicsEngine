@@ -125,9 +125,7 @@ void ZDSJ::DrawAbleManager::CategoryRender(ID3D11DeviceContext* _context)
 	for (auto pair : *container) {
 		pair.second.at(0)->bindStatic(_context);
 		for (auto item : pair.second) {
-			item->update(_context);
-			item->bind(_context);
-			item->drawIndex(_context, 0u, 0u);
+			item->draw(_context, false);
 		}
 	}
 }

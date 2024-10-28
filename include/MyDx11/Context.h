@@ -25,6 +25,8 @@ namespace ZDSJ {
 	public: inline type func_name() { return this->m_##fields_name; } \
 	private: \
 
+	class MyDx11;
+
 	class Context {
 	public:
 		static Context* getInstance();
@@ -40,7 +42,8 @@ namespace ZDSJ {
 			this->m_window_rate = this->m_window_width / this->m_window_height;
 			return this;
 		}
-
+		MyDx11* dx11() const;
+		void dx11(MyDx11* _dx11);
 	private:
 		fields(float, fps, 0.0f, fps)
 		fields(float, use_time, 0.0f, useTime)
@@ -52,7 +55,10 @@ namespace ZDSJ {
 		GetPtr(Camera*, camera, nullptr, camera)
 		GetPtr(RingBuffer<std::string>*, ring_buffer, nullptr, ringBuffer)
 		GetPtr(Command*, command, nullptr, command)
-		GetPtr(Keyboard*, keyboard, nullptr, Keyboard);
+		GetPtr(Keyboard*, keyboard, nullptr, keyboard);
+		MyDx11* m_dx11 = nullptr;
+		
+		// GetPtr(MyDx11*, dx11, nullptr, dx11);
 		Context();
 	protected:
 		~Context();

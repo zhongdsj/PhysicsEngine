@@ -15,7 +15,6 @@ ZDSJ::IndexBufferBindAble::IndexBufferBindAble(ID3D11Device* _device, const UINT
 void ZDSJ::IndexBufferBindAble::bind(ID3D11DeviceContext* _context)
 {
 	_context->IASetIndexBuffer(this->m_buffer.Get(), DXGI_FORMAT_R16_UINT, 0);
-	_context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 }
 
 void ZDSJ::IndexBufferBindAble::getData(ID3D11Device* _device, ID3D11DeviceContext* _context, void** _data, size_t& _size) const

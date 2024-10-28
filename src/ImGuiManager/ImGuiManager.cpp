@@ -14,12 +14,12 @@ ZDSJ::ImGuiManager::ImGuiManager(HWND _hwnd, ID3D11Device* _device, ID3D11Device
 	ImGui_ImplDX11_Init(_device, _context);
 	
 	// ctrl+F 显示fps
-	ZDSJ::Context::getInstance()->Keyboard()->registeKeyboard(ZDSJ::Key::ctrl, 'F', "show fps", [&](float _ignore) {
+	ZDSJ::Context::getInstance()->keyboard()->registeKeyboard(ZDSJ::Key::ctrl, 'F', "show fps", [&](float _ignore) {
 		this->m_show_fps = !this->m_show_fps;
 	});
 
 	// `打开控制台
-	ZDSJ::Context::getInstance()->Keyboard()->registeKeyboard(ZDSJ::Key::nothing, ZDSJ::Key::tilde, "open console", [&](float _ignore) {
+	ZDSJ::Context::getInstance()->keyboard()->registeKeyboard(ZDSJ::Key::nothing, ZDSJ::Key::tilde, "open console", [&](float _ignore) {
 		this->m_show_console = !this->m_show_console;
 		// ImGui::getwindow
 	});

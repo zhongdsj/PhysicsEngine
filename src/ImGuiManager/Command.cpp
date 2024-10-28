@@ -113,7 +113,7 @@ int ZDSJ::Command::textEditCallback(ImGuiInputTextCallbackData* _data)
 		switch (_data->EventKey)
 		{
 		case ImGuiKey_UpArrow:
-			this->m_history_pos = std::max(0, this->m_history_pos - 1);
+			this->m_history_pos = (std::max)(0, this->m_history_pos - 1);
 			break;
 		case ImGuiKey_DownArrow:
 			this->m_history_pos += 1;

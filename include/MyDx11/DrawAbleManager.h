@@ -8,8 +8,8 @@ namespace ZDSJ {
 
 	enum RenderType
 	{
-		Default = 1,
-		Category = 2
+		Default = 0,
+		Category,
 	};
 
 	struct Vertex2D;
@@ -17,7 +17,7 @@ namespace ZDSJ {
 
 	class DrawAbleManager {
 	public:
-		DrawAbleManager(RenderType _render_type = Default);
+		DrawAbleManager(RenderType _render_type = RenderType::Default);
 
 		DrawAbleInterface* pointInPolgon2D(float _x, float _y);
 
@@ -27,7 +27,7 @@ namespace ZDSJ {
 
 		~DrawAbleManager();
 	private:
-		RenderType m_render_type = Default;
+		RenderType m_render_type = RenderType::Default;
 		void* m_container = nullptr;
 
 		void defaultRender(ID3D11DeviceContext* _context);

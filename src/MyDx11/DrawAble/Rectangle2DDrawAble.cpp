@@ -27,8 +27,8 @@ ZDSJ::Rectangle2DDrawAble::Rectangle2DDrawAble(ID3D11Device* _device, ID3D11Devi
 			3, 2, 0
 		};
 		// 顶点缓存
-		this->addStaticBind(new ZDSJ::VertexBufferBindAble(_device, vertices));
-		// this->m_bind_able->push_back();
+		// this->addStaticBind(new ZDSJ::VertexBufferBindAble(_device, vertices));
+		this->setVertexBindAble(_device, _context, new ZDSJ::VertexBufferBindAble(_device, vertices));
 		// 顶点索引
 		this->addStaticIndexBuffer(new ZDSJ::IndexBufferBindAble(_device, indices, sizeof(indices)), sizeof(indices) / sizeof(UINT16));
 		// 顶点着色器
@@ -41,6 +41,13 @@ ZDSJ::Rectangle2DDrawAble::Rectangle2DDrawAble(ID3D11Device* _device, ID3D11Devi
 		this->addStaticBind(new ZDSJ::InputLayoutBindAble(_device, ied, g_main_vertex_shader, sizeof(g_main_vertex_shader)));
 		// 像素着色器
 		this->addStaticBind(new ZDSJ::PixelShaderBindAble(_device, g_main_pixel_shader, sizeof(g_main_pixel_shader)));
+		// 边框
+		std::vector<ZDSJ::Vertex2D> border_vertices = {
+			{-0.5f, 1.0f, 255, 255, 255, 255},
+			{0.5f, 1.0f, 255, 255, 255, 255},
+			{-0.5f, 0.0f, 255, 255, 255, 255},
+			{0.5f, 0.0f, 255, 255, 255, 255},
+		};
 	}
 	const ZDSJ::VertexBufferBindAble* vertex_buffer_bindable = nullptr;
 	const ZDSJ::IndexBufferBindAble* index_buffer_bindable = nullptr;
