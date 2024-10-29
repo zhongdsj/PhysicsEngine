@@ -1,5 +1,6 @@
 # pragma once
 # include <ostream>
+# include <vector>
 
 struct ID3D11DeviceContext;
 
@@ -37,7 +38,7 @@ namespace ZDSJ {
 		char* defaultSave(size_t& _size) const;
 		char* categorySave(size_t& _size) const;
 
-		void itemRender(ZDSJ::DrawAbleInterface* _item, ID3D11DeviceContext* _context, const ZDSJ::Point& _mouse_word, bool _draw_static);
+		void itemRender(std::vector<ZDSJ::DrawAbleInterface*>::iterator& _iterator, ID3D11DeviceContext* _context, std::vector<ZDSJ::DrawAbleInterface*>& _container, const ZDSJ::Point& _mouse_word, bool _draw_static);
 		void defaultRender(ID3D11DeviceContext* _context);
 		void categoryRender(ID3D11DeviceContext* _context);
 

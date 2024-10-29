@@ -53,6 +53,7 @@ namespace ZDSJ {
 		ReadOnly(float, window_rate, 800.0f / 600.0f, windowRate)
 		ReadOnly(Point, mouse_word, Point(0.0f, 0.0f), mouseWord)
 		fields(bool, mouse_click, false, mouseClick)
+		fields(bool, mouse_right, false, mouseRight)
 		
 		GetPtr(Camera*, camera, nullptr, camera)
 		GetPtr(RingBuffer<std::string>*, ring_buffer, nullptr, ringBuffer)

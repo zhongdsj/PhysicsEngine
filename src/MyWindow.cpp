@@ -64,6 +64,10 @@ LRESULT ZDSJ::MyWindow::handelMessage(HWND handle, UINT msg, WPARAM wParam, LPAR
 		break;
 	case WM_LBUTTONDOWN:
 		ZDSJ::Context::getInstance()->keyboard()->execKeyboard(VK_LBUTTON, lParam);
+		break;
+	case WM_RBUTTONDOWN:
+		ZDSJ::Context::getInstance()->keyboard()->execKeyboard(VK_RBUTTON, lParam);
+		break;
 	case WM_SYSKEYDOWN:
 		return true;
 		break;

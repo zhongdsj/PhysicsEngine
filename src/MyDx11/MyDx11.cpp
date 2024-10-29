@@ -189,6 +189,7 @@ void ZDSJ::MyDx11::endRender()
 {
 	this->m_swap_chain->Present(0, 0);
 	ZDSJ::Context::getInstance()->mouseClick(false);
+	ZDSJ::Context::getInstance()->mouseRight(false);
 }
 
 void ZDSJ::MyDx11::solid()

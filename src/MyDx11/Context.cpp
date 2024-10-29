@@ -32,6 +32,9 @@ ZDSJ::Context::Context() {
 	this->m_keyboard->registeKeyboard(ZDSJ::Key::nothing, ZDSJ::Key::mouse_left, "mouse click in frame", [&](float _data) {
 		this->mouseClick(true);
 	});
+	this->m_keyboard->registeKeyboard(ZDSJ::Key::nothing, ZDSJ::Key::mouse_right, "mouse right click in frame", [&](float _data) {
+		this->mouseRight(true);
+	});
 	// 注册command
 	this->m_command->registeCommand("word", "run", "stop word if data is false, continue with true", [&](std::string& _data) {
 		if (_data == "true") {

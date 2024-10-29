@@ -166,20 +166,35 @@ char* ZDSJ::DrawAbleManager::categorySave(size_t& _size) const
 	return result;
 }
 
-void ZDSJ::DrawAbleManager::itemRender(ZDSJ::DrawAbleInterface* _item, ID3D11DeviceContext* _context, const ZDSJ::Point& _mouse_word, bool _draw_static)
+void ZDSJ::DrawAbleManager::itemRender(std::vector<ZDSJ::DrawAbleInterface*>::iterator& _iterator, ID3D11DeviceContext* _context, std::vector<ZDSJ::DrawAbleInterface*>& _container, const ZDSJ::Point& _mouse_word, bool _draw_static)
 {
-	if (_item->pointInPolgon2D(_mouse_word.x, _mouse_word.y) && ZDSJ::Context::getInstance()->mouseClick()) {
-		_item->click();
+	if (ZDSJ::Context::getInstance()->wordActive()) {
+		// 活动
+		if ((*_iterator)->pointInPolgon2D(_mouse_word.x, _mouse_word.y)) {
+			// hover
+			if (ZDSJ::Context::getInstance()->mouseClick()) {
+				// click 仅绘制边框
+				(*_iterator)->click();
+			}
+			if (ZDSJ::Context::getInstance()->mouseRight()) {
+				std::vector<ZDSJ::DrawAbleInterface*>::iterator temp = _iterator;
+				delete (*temp);
+				_iterator = _container.erase(temp);
+				return;
+			}
+		}
 	}
-	_item->draw(_context, _draw_static);
+	(*_iterator)->draw(_context, _draw_static);
+	_iterator++;
 }
 
 void ZDSJ::DrawAbleManager::defaultRender(ID3D11DeviceContext* _context)
 {
 	ZDSJ::Point mouse_word = ZDSJ::Context::getInstance()->mouseWord();
 	std::vector<ZDSJ::DrawAbleInterface*>* container = reinterpret_cast<std::vector<ZDSJ::DrawAbleInterface*>*>(this->m_container);
-	for (auto item : *container) {
-		this->itemRender(item, _context, mouse_word, true);
+	std::vector<ZDSJ::DrawAbleInterface*>::iterator item = container->begin();
+	while (item != container->end()) {
+		this->itemRender(item, _context, *container, mouse_word, true);
 	}
 }
 
@@ -187,11 +202,15 @@ void ZDSJ::DrawAbleManager::categoryRender(ID3D11DeviceContext* _context)
 {
 	ZDSJ::Point mouse_word = ZDSJ::Context::getInstance()->mouseWord();
 	std::map<std::string, std::vector<ZDSJ::DrawAbleInterface*>>* container = reinterpret_cast<std::map<std::string, std::vector<ZDSJ::DrawAbleInterface*>>*>(this->m_container);
-	for (auto pair : *container) {
-		pair.second.at(0)->bindStatic(_context);
-		for (auto item : pair.second) {
-			this->itemRender(item, _context, mouse_word, false);
+	auto pair = container->begin();
+	std::vector<ZDSJ::DrawAbleInterface*>::iterator item;
+	while (pair != container->end()) {
+		pair->second.at(0)->bindStatic(_context);
+		item = pair->second.begin();
+		while (item != pair->second.end()) {
+			this->itemRender(item, _context, pair->second, mouse_word, false);
 		}
+		pair++;
 	}
 }
 
