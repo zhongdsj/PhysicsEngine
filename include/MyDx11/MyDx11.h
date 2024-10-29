@@ -14,7 +14,7 @@ namespace ZDSJ {
 	#define SAFE_RELEASE(p) {if(p != nullptr){(p)->Release(); p=nullptr;}}
 	class DrawAbleInterface;
 	class DrawAbleManager;
-	enum RenderType;
+	enum class RenderType;
 
 	class MyDx11 {
 	public:

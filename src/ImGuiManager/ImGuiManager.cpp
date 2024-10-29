@@ -56,6 +56,10 @@ void ZDSJ::ImGuiManager::render()
 		ImGui::Begin("console", NULL, this->m_window_flag);
 		if (this->m_show_fps) {
 			ImGui::Text("fps: %.2f, frame_time: %.5fms", ZDSJ::Context::getInstance()->fps(), ZDSJ::Context::getInstance()->useTime());
+			if (!ZDSJ::Context::getInstance()->wordActive()) {
+				ImGui::SameLine();
+				ImGui::Text("pause");
+			}
 			ZDSJ::float4 camera_pos = ZDSJ::Context::getInstance()->camera()->cameraPos();
 			ImGui::Text("fov: %.1f, camera_pos: { %.1f, %.1f, %.1f }", ZDSJ::Context::getInstance()->camera()->fov(), camera_pos.x, camera_pos.y, camera_pos.z);
 		}

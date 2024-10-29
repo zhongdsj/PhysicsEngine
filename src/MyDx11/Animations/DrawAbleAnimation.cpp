@@ -10,31 +10,12 @@ ZDSJ::DrawAbleAnimation::DrawAbleAnimation(float _change_value, long long _anima
 {
 	// 计算出在当前时间基下(帧数)下需要多少帧
 	this->m_animation_fps = round((_fps / 1000.0f) * _animation_time);
-
-	// 注册command
-	ZDSJ::Context::getInstance()->command()->registeCommand("animation", "run", "stop animation if data is false, continue with true", [&](std::string& _data) {
-		if (_data == "true") {
-			ZDSJ::Context::getInstance()->animationRun(true);
-		}
-		else if(_data == "false") {
-			ZDSJ::Context::getInstance()->animationRun(false);
-		}
-		else {
-			return false;
-		}
-
-		return true;
-	});
-	// 注册keyboard
-	ZDSJ::Context::getInstance()->keyboard()->registeKeyboard(ZDSJ::Key::nothing, ZDSJ::Key::space, "pause animation", [&](float _data) {
-		ZDSJ::Context::getInstance()->animationRun(!ZDSJ::Context::getInstance()->animationRun());
-	});
 }
 
 
 void ZDSJ::DrawAbleAnimation::update(DrawAbleAdapter* _drawable, bool _continue)
 {
-	if (!ZDSJ::Context::getInstance()->animationRun()) {
+	if (!ZDSJ::Context::getInstance()->wordActive()) {
 		// 暂停动画
 		return;
 	}

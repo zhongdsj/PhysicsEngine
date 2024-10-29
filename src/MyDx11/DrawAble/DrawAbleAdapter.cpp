@@ -9,6 +9,10 @@
 # include <MyDx11/BindAble/VertexBufferBindAble.h>
 # include <MyDx11/MyDx11.h>
 
+# include <MyDx11/DrawAble/Triangle2DDrawAble.h>
+# include <MyDx11/DrawAble/Rectangle2DDrawAble.h>
+# include <MyDx11/DrawAble/Arc2DDrawAble.h>
+
 ZDSJ::DrawAbleAdapter::DrawAbleAdapter(const DrawAbleData& _data) : m_bind_able(new std::vector<ZDSJ::BindAbleInterface*>), m_data(new DrawAbleData(_data))
 {
 
@@ -107,6 +111,62 @@ bool ZDSJ::DrawAbleAdapter::pointInPolgon2D(float _x, float _y)
 		this->removeState(ZDSJ::DrawAbleState::Hover);
 	}
 	return result;
+}
+
+char* ZDSJ::DrawAbleAdapter::save(size_t& _size)
+{
+	size_t offset = 0;
+	size_t data_size = sizeof(ZDSJ::DrawAbleData);
+	size_t type_size = sizeof(ZDSJ::DrawAbleClass);
+	_size += type_size;
+	_size += data_size;
+	char* data = nullptr;
+	data = new char[_size];
+	memcpy_s(data + offset, type_size, &this->m_drawable_class, type_size);
+	offset += type_size;
+	memcpy_s(data + offset, data_size, this->m_data, data_size);
+	return data;
+}
+
+ZDSJ::DrawAbleInterface* ZDSJ::DrawAbleAdapter::load(ID3D11Device* _device, ID3D11DeviceContext* _context, const char* _data, size_t& _offset, size_t _size)
+{
+	ZDSJ::DrawAbleInterface* node = nullptr;
+	ZDSJ::DrawAbleClass type = ZDSJ::DrawAbleClass::Default;
+	ZDSJ::DrawAbleData data;
+	size_t len = _size - _offset;
+	size_t type_size = sizeof(ZDSJ::DrawAbleClass);
+	size_t data_size = sizeof(ZDSJ::DrawAbleData);
+	if (len < type_size) {
+		return node;
+	}
+	memcpy_s(&type, type_size, _data + _offset, type_size);
+	if (type == ZDSJ::DrawAbleClass::Default) {
+		return node;
+	}
+	_offset += type_size;
+	len = _size - _offset;
+	if (len < data_size) {
+		return node;
+	}
+	memcpy_s(&data, data_size, _data + _offset, data_size);
+	switch (type)
+	{
+	case ZDSJ::DrawAbleClass::Default:
+		break;
+	case ZDSJ::DrawAbleClass::Triangle2D:
+		node = new Triangle2DDrawAble(_device, _context, data);
+		break;
+	case ZDSJ::DrawAbleClass::Rectangle2D:
+		node = new Rectangle2DDrawAble(_device, _context, data);
+		break;
+	case ZDSJ::DrawAbleClass::Arc2D:
+		node = new Arc2DDrawAble(_device, _context, 20, 360, data);
+		break;
+	default:
+		break;
+	}
+	_offset += data_size;
+	return node;
 }
 
 void ZDSJ::DrawAbleAdapter::drawBorder(ID3D11DeviceContext* _context)

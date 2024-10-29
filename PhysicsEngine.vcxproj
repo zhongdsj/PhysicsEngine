@@ -162,6 +162,7 @@
     <ClCompile Include="src\MyDx11\VertexStructure.cpp" />
     <ClCompile Include="src\MyWindow.cpp" />
     <ClCompile Include="src\MyWindowClass.cpp" />
+    <ClCompile Include="src\Persistence.cpp" />
     <ClCompile Include="src\Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -201,6 +202,7 @@
     <ClInclude Include="include\MyWindow.h" />
     <ClInclude Include="include\MyWindowClass.h" />
     <ClInclude Include="include\MyWindowInterface.h" />
+    <ClInclude Include="include\Persistence.h" />
     <ClInclude Include="include\RingBuffer.h" />
     <ClInclude Include="include\Timer.h" />
   </ItemGroup>

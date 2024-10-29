@@ -1,14 +1,16 @@
 # pragma once
+# include <ostream>
 
 struct ID3D11DeviceContext;
 
 namespace ZDSJ {
 
+	struct Point;
 	class DrawAbleInterface;
 
-	enum RenderType
+	enum class RenderType
 	{
-		Default = 0,
+		Default,
 		Category,
 	};
 
@@ -16,10 +18,9 @@ namespace ZDSJ {
 	typedef unsigned short      UINT16;
 
 	class DrawAbleManager {
+		friend class Persistence;
 	public:
 		DrawAbleManager(RenderType _render_type = RenderType::Default);
-
-		DrawAbleInterface* pointInPolgon2D(float _x, float _y);
 
 		void add(DrawAbleInterface* _drawable);
 
@@ -30,8 +31,15 @@ namespace ZDSJ {
 		RenderType m_render_type = RenderType::Default;
 		void* m_container = nullptr;
 
+		char* save(size_t& _size) const;
+
+		void itemSave(ZDSJ::DrawAbleInterface* _item, std::ostringstream* _oss, size_t& _size) const;
+		char* defaultSave(size_t& _size) const;
+		char* categorySave(size_t& _size) const;
+
+		void itemRender(ZDSJ::DrawAbleInterface* _item, ID3D11DeviceContext* _context, const ZDSJ::Point& _mouse_word, bool _draw_static);
 		void defaultRender(ID3D11DeviceContext* _context);
-		void CategoryRender(ID3D11DeviceContext* _context);
+		void categoryRender(ID3D11DeviceContext* _context);
 
 		void vectorContainerAdd(DrawAbleInterface* _drawable);
 		void mapContainerAdd(DrawAbleInterface* _drawable);

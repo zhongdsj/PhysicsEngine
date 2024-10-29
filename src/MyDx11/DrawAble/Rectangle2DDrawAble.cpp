@@ -13,6 +13,7 @@
 
 ZDSJ::Rectangle2DDrawAble::Rectangle2DDrawAble(ID3D11Device* _device, ID3D11DeviceContext* _context, const DrawAbleData& _data) : DrawAbleBase<Rectangle2DDrawAble>(_data)
 {
+	this->m_drawable_class = ZDSJ::DrawAbleClass::Rectangle2D;
 	if (!this->isStaticInitialized()) {
 		// 顶点缓存
 		std::vector<ZDSJ::Vertex2D> vertices = {

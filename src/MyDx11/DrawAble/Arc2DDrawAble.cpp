@@ -13,6 +13,7 @@
 
 ZDSJ::Arc2DDrawAble::Arc2DDrawAble(ID3D11Device* _device, ID3D11DeviceContext* _context, int _divisions, float _rotate, const DrawAbleData& _data) : DrawAbleBase<Arc2DDrawAble>(_data)
 {
+	this->m_drawable_class = ZDSJ::DrawAbleClass::Arc2D;
 	if (!this->isStaticInitialized()) {
 		float r = 0.5f;
 		// 顶点缓存

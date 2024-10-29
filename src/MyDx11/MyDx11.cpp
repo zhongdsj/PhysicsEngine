@@ -9,8 +9,9 @@
 # include <MyDx11/Context.h>
 # include <MyDx11/VertexStructure.h>
 # include <sstream>
+# include <Persistence.h>
 
-ZDSJ::MyDx11::MyDx11(HWND _hwnd, int _window_width, int _window_height, RenderType _render_type)
+ZDSJ::MyDx11::MyDx11(HWND _hwnd, int _window_width, int _window_height, ZDSJ::RenderType _render_type)
 {
 	// 创建设备及交换链
 	DXGI_MODE_DESC bufferDesc;
@@ -130,6 +131,29 @@ ZDSJ::MyDx11::MyDx11(HWND _hwnd, int _window_width, int _window_height, RenderTy
 			return true;
 		}
 		return false;
+	});
+
+	ZDSJ::Context::getInstance()->command()->registeCommand("dx11", "save", "save now node to file. dx11:save:filename", [&](std::string& _data)->bool {
+		ZDSJ::Persistence* persistence = new ZDSJ::Persistence(_data, true);
+		if (!persistence->save(this->m_drawable_manager)) {
+			ZDSJ::Context::getInstance()->command()->write("can not open file");
+			return false;
+		}
+		delete persistence;
+		ZDSJ::Context::getInstance()->command()->write("save to file: " + _data + ".nodes");
+		return true;
+	});
+
+	ZDSJ::Context::getInstance()->command()->registeCommand("dx11", "load", "load node from file. dx11:save:filename", [&](std::string& _data)->bool {
+		ZDSJ::Context::getInstance()->wordActive(false);
+		ZDSJ::Persistence* persistence = new ZDSJ::Persistence(_data);
+		ZDSJ::Context::getInstance()->command()->write("load from file: " + _data + ".nodes");
+		if (!persistence->load(this->m_device, this->m_context, this->m_drawable_manager)) {
+			ZDSJ::Context::getInstance()->command()->write("can not open file");
+			return false;
+		}
+		delete persistence;
+		return true;
 	});
 
 	D3D11_RASTERIZER_DESC solid_desc;

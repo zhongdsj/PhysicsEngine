@@ -47,7 +47,7 @@ namespace ZDSJ {
 	private:
 		fields(float, fps, 0.0f, fps)
 		fields(float, use_time, 0.0f, useTime)
-		fields(bool, animation_run, true, animationRun)
+		fields(bool, word_active, true, wordActive)
 		ReadOnly(float, window_width, 800.0f, windowWidth)
 		ReadOnly(float, window_height, 600.0f, windowHeight)
 		ReadOnly(float, window_rate, 800.0f / 600.0f, windowRate)

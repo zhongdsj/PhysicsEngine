@@ -153,6 +153,9 @@
     <ClCompile Include="src\MyDx11\DrawAble\Arc2DDrawAble.cpp">
       <Filter>源文件\src\MyDx11\DrawAble</Filter>
     </ClCompile>
+    <ClCompile Include="src\Persistence.cpp">
+      <Filter>源文件\src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\MyWindow.h">
@@ -268,6 +271,9 @@
     </ClInclude>
     <ClInclude Include="include\MyDx11\DrawAble\Arc2DDrawAble.h">
       <Filter>头文件\include\MyDx11\DrawAble</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Persistence.h">
+      <Filter>头文件\include</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

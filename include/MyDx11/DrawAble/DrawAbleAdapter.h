@@ -13,7 +13,14 @@ namespace ZDSJ {
 	class VertexBufferBindAble;
 	class IndexBufferBindAble;
 
-	enum class DrawAbleState : unsigned int {
+	enum class DrawAbleClass {
+		Default,
+		Triangle2D,
+		Rectangle2D,
+		Arc2D,
+	};
+
+	enum class DrawAbleState {
 		Default = 0,
 		Hover = 1,
 		Check = 2,
@@ -41,7 +48,9 @@ namespace ZDSJ {
 		void draw(ID3D11DeviceContext* _context, bool _bind_static = true) override;
 		const DrawAbleData* getData() const;
 		bool pointInPolgon2D(float _x, float _y) override;
-		
+		char* save(size_t& _size) override;
+		static DrawAbleInterface* load(ID3D11Device* _device, ID3D11DeviceContext* _context, const char* _data, size_t& _offset, size_t _size);
+
 		inline void click() override { this->hasState(ZDSJ::DrawAbleState::Check) ? this->removeState(ZDSJ::DrawAbleState::Check) : this->addState(ZDSJ::DrawAbleState::Check); };
 		inline void addState(DrawAbleState _state){ this->m_state = DrawAbleAdapter::addState(this->m_state, _state); }
 		inline void removeState(DrawAbleState _state){ this->m_state = DrawAbleAdapter::removeState(this->m_state, _state); }
@@ -69,6 +78,7 @@ namespace ZDSJ {
 
 		std::vector<ZDSJ::DrawAbleAnimation*> m_animation;
 		DrawAbleData* m_data = nullptr;
+		DrawAbleClass m_drawable_class = ZDSJ::DrawAbleClass::Default;
 		std::vector<Vertex2D> m_vertices;
 		std::vector<UINT16> m_indices;
 
