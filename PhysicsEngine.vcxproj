@@ -152,6 +152,7 @@
     <ClCompile Include="src\MyDx11\BindAble\VertexShaderBindAble.cpp" />
     <ClCompile Include="src\MyDx11\Camera.cpp" />
     <ClCompile Include="src\MyDx11\Context.cpp" />
+    <ClCompile Include="src\MyDx11\DrawAble\Arc2DDrawAble.cpp" />
     <ClCompile Include="src\MyDx11\DrawAble\DrawAbleAdapter.cpp" />
     <ClCompile Include="src\MyDx11\DrawAble\Rectangle2DDrawAble.cpp" />
     <ClCompile Include="src\MyDx11\DrawAble\Triangle2DDrawAble.cpp" />
@@ -185,6 +186,7 @@
     <ClInclude Include="include\MyDx11\BindAble\VertexShaderBindAble.h" />
     <ClInclude Include="include\MyDx11\Camera.h" />
     <ClInclude Include="include\MyDx11\Context.h" />
+    <ClInclude Include="include\MyDx11\DrawAble\Arc2DDrawAble.h" />
     <ClInclude Include="include\MyDx11\DrawAble\DrawAbleAdapter.h" />
     <ClInclude Include="include\MyDx11\DrawAble\DrawAbleBase.h" />
     <ClInclude Include="include\MyDx11\DrawAble\DrawAbleInterface.h" />

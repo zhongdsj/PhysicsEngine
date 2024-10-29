@@ -11,7 +11,7 @@
 
 ZDSJ::DrawAbleAdapter::DrawAbleAdapter(const DrawAbleData& _data) : m_bind_able(new std::vector<ZDSJ::BindAbleInterface*>), m_data(new DrawAbleData(_data))
 {
-	
+
 }
 
 void ZDSJ::DrawAbleAdapter::draw(ID3D11DeviceContext* _context, bool _bind_static)

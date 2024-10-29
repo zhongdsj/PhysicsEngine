@@ -13,6 +13,7 @@ namespace ZDSJ {
 		friend class DrawAbleManager;
 	public:
 		virtual void draw(ID3D11DeviceContext* _context, bool _bind_static=true) = 0;
+		virtual void click() = 0;
 		virtual bool pointInPolgon2D(float _x, float _y) = 0;
 		virtual ~DrawAbleInterface() {};
 	protected:

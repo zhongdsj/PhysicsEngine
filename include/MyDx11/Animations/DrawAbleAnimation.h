@@ -9,9 +9,9 @@ namespace ZDSJ {
 	public:
 		DrawAbleAnimation(float _change_value, long long _animation_time, short _fps, std::function<void(DrawAbleAdapter*, float)> _update_function, std::function<float(float, float)> _exchange_function, bool _loop = false);
 		// -method: update
-		// -brief: ¶¯»­¸üĞÂ(ÖğÖ¡)
-		// -param: DrawAbleAdapter* _drawable ¶¯»­Ó¦ÓÃµÄ¶ÔÏó
-		// -param: bool _continue ÊÇ·ñ¼ÌĞø¶¯»­£¬×ö¶¯»­ÖĞ¶Ï£¬false±íÊ¾¶¯»­½áÊø
+		// -brief: åŠ¨ç”»æ›´æ–°(é€å¸§)
+		// -param: DrawAbleAdapter* _drawable åŠ¨ç”»åº”ç”¨çš„å¯¹è±¡
+		// -param: bool _continue æ˜¯å¦ç»§ç»­åŠ¨ç”»ï¼ŒåšåŠ¨ç”»ä¸­æ–­ï¼Œfalseè¡¨ç¤ºåŠ¨ç”»ç»“æŸ
 		void update(DrawAbleAdapter* _drawable, bool _continue);
 
 		static ZDSJ::DrawAbleAnimation* rotationZAnimation(float _change_value, long long _amination_time, short _fps, bool _loop = false);
@@ -20,7 +20,7 @@ namespace ZDSJ {
 	private:
 		float m_change_value = 0.0f;
 		float m_step = 0.0f;
-		short m_animation_fps = 0;
+		long long m_animation_fps = 90000;
 		short m_time_base = 60;
 		bool m_loop = false;
 		std::function<void(DrawAbleAdapter*, float)> m_update_function;

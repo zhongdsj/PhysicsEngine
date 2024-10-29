@@ -42,6 +42,7 @@ namespace ZDSJ {
 		const DrawAbleData* getData() const;
 		bool pointInPolgon2D(float _x, float _y) override;
 		
+		inline void click() override { this->hasState(ZDSJ::DrawAbleState::Check) ? this->removeState(ZDSJ::DrawAbleState::Check) : this->addState(ZDSJ::DrawAbleState::Check); };
 		inline void addState(DrawAbleState _state){ this->m_state = DrawAbleAdapter::addState(this->m_state, _state); }
 		inline void removeState(DrawAbleState _state){ this->m_state = DrawAbleAdapter::removeState(this->m_state, _state); }
 		inline bool hasState(DrawAbleState _state) { return DrawAbleAdapter::hasState(this->m_state, _state); };

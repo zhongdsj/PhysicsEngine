@@ -1,4 +1,4 @@
-# include <iostream>
+﻿# include <iostream>
 # include <Windows.h>
 # include <MyWindow.h>
 # include <MyWindowClass.h>
@@ -24,7 +24,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	short fps = 60;
 	ZDSJ::MyWindow* window = new ZDSJ::MyWindow();
 	ZDSJ::MyWindowClass* window_class = new ZDSJ::MyWindowClass(GetModuleHandle(nullptr), L"ZDSJWindow");
-	window_class->creatWindow(window, 200, 300, 800, 600, L"hello");
+	// unicode带签名
+	window_class->creatWindow(window, 200, 300, 800, 600, L"引擎");
 	window->run(fps);
 	delete window;
 	delete window_class;

@@ -5,6 +5,7 @@
 # include <map>
 # include <string>
 # include <MyDx11/VertexStructure.h>
+# include <MyDx11/Context.h>
 
 
 ZDSJ::DrawAbleManager::DrawAbleManager(RenderType _render_type) : m_render_type(_render_type)
@@ -39,7 +40,7 @@ ZDSJ::DrawAbleManager::~DrawAbleManager()
 }
 
 ZDSJ::DrawAbleInterface* ZDSJ::DrawAbleManager::pointInPolgon2D(float _x, float _y) {
-	// TODO bug
+	// 
 	ZDSJ::DrawAbleInterface* result = nullptr;
 	std::map<std::string, std::vector<ZDSJ::DrawAbleInterface*>>* container = reinterpret_cast<std::map<std::string, std::vector<ZDSJ::DrawAbleInterface*>>*>(this->m_container);
 	std::map<std::string, std::vector<ZDSJ::DrawAbleInterface*>>::iterator type_container = container->end();
@@ -121,10 +122,16 @@ void ZDSJ::DrawAbleManager::defaultRender(ID3D11DeviceContext* _context)
 
 void ZDSJ::DrawAbleManager::CategoryRender(ID3D11DeviceContext* _context)
 {
+	bool on_hover = false;
+	ZDSJ::Point mouse_word = ZDSJ::Context::getInstance()->mouseWord();
 	std::map<std::string, std::vector<ZDSJ::DrawAbleInterface*>>* container = reinterpret_cast<std::map<std::string, std::vector<ZDSJ::DrawAbleInterface*>>*>(this->m_container);
 	for (auto pair : *container) {
 		pair.second.at(0)->bindStatic(_context);
 		for (auto item : pair.second) {
+			on_hover = item->pointInPolgon2D(mouse_word.x, mouse_word.y);
+			if (on_hover && ZDSJ::Context::getInstance()->mouseClick()) {
+				item->click();
+			}
 			item->draw(_context, false);
 		}
 	}

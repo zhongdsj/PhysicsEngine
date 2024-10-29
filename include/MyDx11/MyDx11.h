@@ -1,6 +1,7 @@
 #pragma once
 # include <windows.h>
 # include <vector>
+# include <functional>
 
 struct IDXGISwapChain;
 struct ID3D11Device;
@@ -38,7 +39,12 @@ namespace ZDSJ {
 		float m_background[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
 
 		void clearByBackground();
-		void createTriangle2D();
+		void createTriangle2D(float _x, float _y, float _width, float _height);
+		void createRectangle2D(float _x, float _y, float _width, float _height);
+		void createCircle2D(float _x, float _y, float _width, float _height);
+		std::function<void(float, float, float, float)> m_create = std::bind(&MyDx11::createCircle2D, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4);
+		float m_create_width = 20.0f;
+		float m_create_height = 20.0f;
 		// ID3D11Texture2D* m_texture = nullptr;
 	};
 
