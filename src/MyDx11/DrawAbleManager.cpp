@@ -205,7 +205,9 @@ void ZDSJ::DrawAbleManager::categoryRender(ID3D11DeviceContext* _context)
 	auto pair = container->begin();
 	std::vector<ZDSJ::DrawAbleInterface*>::iterator item;
 	while (pair != container->end()) {
-		pair->second.at(0)->bindStatic(_context);
+		if (pair->second.size() > 0) {
+			pair->second.at(0)->bindStatic(_context);
+		}
 		item = pair->second.begin();
 		while (item != pair->second.end()) {
 			this->itemRender(item, _context, pair->second, mouse_word, false);
