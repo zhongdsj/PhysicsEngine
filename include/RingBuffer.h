@@ -1,4 +1,4 @@
-# pragma once
+﻿# pragma once
 # include <string>
 # include <sstream> 
 # include <shared_mutex>
@@ -27,10 +27,16 @@ namespace ZDSJ {
 			}
 		}
 
+		bool enablePush()
+		{
+			std::shared_lock<std::shared_mutex> lock(this->m_mutex);
+			return this->m_enable_push;
+		}
+
 		void enablePush(bool _enable) {
-			this->m_mutex.lock_shared();
+			this->m_mutex.lock();
 			this->m_enable_push = _enable;
-			this->m_mutex.unlock_shared();
+			this->m_mutex.unlock();
 		}
 
 		void push(const T& _val) {

@@ -8,7 +8,7 @@
 
 ZDSJ::Command::Command(ZDSJ::Context* _context)
 {
-	this->registeCommand("command", "history", "clear command history", [&](std::string& _data) -> bool {
+	this->registerCommand("command", "history", "clear command history", [&](const std::string& _data) -> bool {
 		if (_data.empty()) {
 			this->m_history.clear();
 			return true;
@@ -16,7 +16,7 @@ ZDSJ::Command::Command(ZDSJ::Context* _context)
 		return false;
 	});
 
-	this->registeCommand("command", "clear", "clear command", [](std::string& _data) -> bool {
+	this->registerCommand("command", "clear", "clear command", [](const std::string& _data) -> bool {
 		if (_data.empty()) {
 			ZDSJ::Context::getInstance()->ringBuffer()->clear();
 			return true;
@@ -24,27 +24,28 @@ ZDSJ::Command::Command(ZDSJ::Context* _context)
 		return false;
 	});
 
-	this->registeCommand("help", "", "show help", [&](std::string& _data) -> bool {
+	this->registerCommand("help", "", "show help", [&](const std::string& _data) -> bool {
 		if (_data.empty()) {
 			this->help();
 		}
 		else {
 			std::istringstream iss(_data);
-			std::ostringstream oss;
+			
 			std::string category;
 			std::string operation;
 			std::getline(iss, category, ':');
 			std::getline(iss, operation, ':');
-			auto category_map = this->m_command_handlers.find(category);
+			const auto category_map = this->m_command_handlers.find(category);
 			if (category_map != this->m_command_handlers.end()) {
+				std::ostringstream oss;
 				if (operation.empty()) {
 					oss << "- " << category << "\n";
-					for (auto item : category_map->second) {
+					for (const auto& item : category_map->second) {
 						oss << "\t- " << item.first << ":" << item.second.first << "\n";
 					}
 				}
 				else {
-					auto item = category_map->second.find(operation);
+					const auto item = category_map->second.find(operation);
 					if (item != category_map->second.end()) {
 						oss << "- " << category << "-" << operation << ":" << item->first << " " << item->second.first << "\n";
 					}
@@ -63,7 +64,8 @@ void ZDSJ::Command::execCommand(std::string& _command)
 {
 	if (std::all_of(_command.begin(), _command.end(), [](unsigned char _c) {
 		return std::isspace(static_cast<int>(_c));
-		})) {
+	})) {
+		return;
 	}
 	this->write(_command);
 	std::istringstream iss(_command);
@@ -90,14 +92,14 @@ ZDSJ::Command::~Command()
 {
 }
 
-bool ZDSJ::Command::registeCommand(const std::string& _category, const std::string& _operation, const std::string& _description, HandlerFunc _handle_func)
+bool ZDSJ::Command::registerCommand(const std::string& _category, const std::string& _operation, const std::string& _description, HandlerFunc _handle_func)
 {
 	auto category_map = this->m_command_handlers.find(_category);
 	if (category_map == this->m_command_handlers.end()) {
 		this->m_command_handlers.insert(std::make_pair(_category, std::unordered_map<std::string, std::pair<std::string, HandlerFunc>>()));
 	}
 	category_map = this->m_command_handlers.find(_category);
-	auto operation = category_map->second.find(_operation);
+	const auto operation = category_map->second.find(_operation);
 	if (operation != category_map->second.end()) {
 		return false;
 	}
@@ -121,19 +123,23 @@ int ZDSJ::Command::textEditCallback(ImGuiInputTextCallbackData* _data)
 				this->m_history_pos = this->m_history.size() - 1;
 			}
 			break;
+		default:
+			break;
 		}
 		if (this->m_history_pos < this->m_history.size()) {
 			_data->DeleteChars(0, _data->BufTextLen);
 			_data->InsertChars(0, this->m_history.at(this->m_history_pos).data());
 		}
 		break;
+	default: 
+		break;
 	}
 	return 0;
 }
 
-void ZDSJ::Command::exec(std::string& _category, std::string& _operation, std::string& _data)
+void ZDSJ::Command::exec(const std::string& _category, const std::string& _operation, const std::string& _data)
 {
-	auto category_map = this->m_command_handlers.find(_category);
+	const auto category_map = this->m_command_handlers.find(_category);
 	if (category_map == this->m_command_handlers.end()) {
 		// this->write("error category");
 		return;
@@ -141,7 +147,7 @@ void ZDSJ::Command::exec(std::string& _category, std::string& _operation, std::s
 	auto operation = category_map->second.find(_operation);
 	if (_category == "help" && !_operation.empty()) {
 		operation = category_map->second.find("");
-		std::string data = _operation + ":" + _data;
+		const std::string data = _operation + ":" + _data;
 		if (!operation->second.second(data)) {
 			this->write("error data");
 		}
@@ -162,9 +168,9 @@ void ZDSJ::Command::help()
 		std::ostringstream oss;
 		oss << "---------\n";
 		oss << "[category]:[operation]:[data] like help:animation_run to see animation_run description\n";
-		for (auto category_map : this->m_command_handlers) {
+		for (const auto& category_map : this->m_command_handlers) {
 			oss << "- " << category_map.first << "\n";
-			for (auto operation : category_map.second) {
+			for (const auto& operation : category_map.second) {
 				oss << "\t- " << operation.first << ": " << operation.second.first << "\n";
 			}
 		}

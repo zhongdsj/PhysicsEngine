@@ -85,7 +85,7 @@ DirectX::XMMATRIX ZDSJ::DrawAbleAdapter::getTransformMatix() const
 	DirectX::XMMATRIX pos = DirectX::XMMatrixTranslation(this->m_data->pos.x, this->m_data->pos.y, this->m_data->pos.z);
 	DirectX::XMMATRIX word = size * rotation * pos;
 	
-	DirectX::XMMATRIX matrix = word * ZDSJ::Context::getInstance()->camera()->getCarmeraMatrix();
+	DirectX::XMMATRIX matrix = word * ZDSJ::Context::getInstance()->camera()->getCameraMatrix();
 	return DirectX::XMMatrixTranspose(matrix);
 }
 

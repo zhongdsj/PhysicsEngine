@@ -21,11 +21,11 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	//if (model == nullptr || (model->mFlags & AI_SCENE_FLAGS_INCOMPLETE) || !model->HasMeshes()) {
 	//	return 1;
 	//}
-	short fps = 60;
+	constexpr short fps = 60;
 	ZDSJ::MyWindow* window = new ZDSJ::MyWindow();
 	ZDSJ::MyWindowClass* window_class = new ZDSJ::MyWindowClass(GetModuleHandle(nullptr), L"ZDSJWindow");
 	// unicode带签名
-	window_class->creatWindow(window, 200, 300, 800, 600, L"引擎");
+	window_class->creatWindow(window, 500, 100, 1600, 1200, L"引擎");
 	window->run(fps);
 	delete window;
 	delete window_class;

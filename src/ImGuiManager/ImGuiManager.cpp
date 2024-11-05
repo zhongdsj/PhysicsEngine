@@ -14,12 +14,12 @@ ZDSJ::ImGuiManager::ImGuiManager(HWND _hwnd, ID3D11Device* _device, ID3D11Device
 	ImGui_ImplDX11_Init(_device, _context);
 	
 	// ctrl+F 显示fps
-	ZDSJ::Context::getInstance()->keyboard()->registeKeyboard(ZDSJ::Key::ctrl, 'F', "show fps", [&](float _ignore) {
+	ZDSJ::Context::getInstance()->keyboard()->registerKeyboard(ZDSJ::Key::ctrl, 'F', "show fps", [&](float _ignore) {
 		this->m_show_fps = !this->m_show_fps;
 	});
 
 	// `打开控制台
-	ZDSJ::Context::getInstance()->keyboard()->registeKeyboard(ZDSJ::Key::nothing, ZDSJ::Key::tilde, "open console", [&](float _ignore) {
+	ZDSJ::Context::getInstance()->keyboard()->registerKeyboard(ZDSJ::Key::nothing, ZDSJ::Key::tilde, "open console", [&](float _ignore) {
 		this->m_show_console = !this->m_show_console;
 		// ImGui::getwindow
 	});
@@ -53,20 +53,25 @@ void ZDSJ::ImGuiManager::render()
 	if (this->m_show_fps || this->m_show_console) {
 		ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_Appearing);
 		ImGui::SetNextWindowSize(ImVec2(0, 0));
-		ImGui::Begin("console", NULL, this->m_window_flag);
+		ImGui::Begin("console", nullptr, this->m_window_flag);
 		if (this->m_show_fps) {
 			ImGui::Text("fps: %.2f, frame_time: %.5fms", ZDSJ::Context::getInstance()->fps(), ZDSJ::Context::getInstance()->useTime());
 			if (!ZDSJ::Context::getInstance()->wordActive()) {
 				ImGui::SameLine();
 				ImGui::Text("pause");
 			}
-			ZDSJ::float4 camera_pos = ZDSJ::Context::getInstance()->camera()->cameraPos();
+			const ZDSJ::float4 camera_pos = ZDSJ::Context::getInstance()->camera()->cameraPos();
 			ImGui::Text("fov: %.1f, camera_pos: { %.1f, %.1f, %.1f }", ZDSJ::Context::getInstance()->camera()->fov(), camera_pos.x, camera_pos.y, camera_pos.z);
 		}
 		
 		// 控制台输入/输出
 		if (this->m_show_console) {
-			ZDSJ::Context::getInstance()->ringBuffer()->enablePush(true);
+			if(!ZDSJ::Context::getInstance()->ringBuffer()->enablePush())
+			{
+				ImGui::SetKeyboardFocusHere();
+				ZDSJ::Context::getInstance()->ringBuffer()->enablePush(true);
+			}
+			
 			ImGui::Separator();
 			ImGui::BeginChild("ScrollingRegion", ImVec2(ZDSJ::Context::getInstance()->windowWidth() * 0.6, ZDSJ::Context::getInstance()->windowHeight() * 0.6), false, ImGuiWindowFlags_HorizontalScrollbar);
 			ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(4, 1));
@@ -99,6 +104,9 @@ void ZDSJ::ImGuiManager::render()
 		}
 
 		ImGui::End();
+	}else
+	{
+		ZDSJ::Context::getInstance()->ringBuffer()->enablePush(false);
 	}
 
 	ImGui::Render();

@@ -1,11 +1,11 @@
-# include <MyDx11/Keyboard.h>
+﻿# include <MyDx11/Keyboard.h>
 # include <MyDx11/Context.h>
 # include <imgui/imgui.h>
 
 ZDSJ::Keyboard::Keyboard(ZDSJ::Context* _context)
 {
 	this->m_mouse_drag = new ZDSJ::Point(-1.0f, -1.0f);
-	_context->command()->registeCommand("keyboard", "", "keyboard description", [&](std::string& _data) -> bool {
+	_context->command()->registerCommand("keyboard", "", "keyboard description", [&](const std::string& _data) -> bool {
 		if (_data.empty()) {
 			ZDSJ::Context::getInstance()->command()->write(this->outputToCommand());
 			return true;
@@ -19,10 +19,10 @@ std::string ZDSJ::Keyboard::outputToCommand() const
 	std::ostringstream oss;
 	std::string mod;
 	std::string key;
-	for (auto mod_map : this->m_keyboard_handle) {
-		for (auto item : mod_map.second) {
-			mod = this->keyToString(ZDSJ::Key(mod_map.first));
-			key = this->keyToString(ZDSJ::Key(item.first));
+	for (const auto& mod_map : this->m_keyboard_handle) {
+		for (const auto& item : mod_map.second) {
+			mod = this->keyToString(static_cast<ZDSJ::Key>(mod_map.first));
+			key = this->keyToString(static_cast<ZDSJ::Key>(item.first));
 			oss << "\t- ";
 			if (!mod.empty()) {
 				oss << mod << "+";
@@ -40,14 +40,14 @@ void ZDSJ::Keyboard::mod(int _mod)
 
 bool ZDSJ::Keyboard::execKeyboard(int _key, float _data)
 {
-	auto mod_map = this->m_keyboard_handle.find(this->m_mod);
+	const auto mod_map = this->m_keyboard_handle.find(this->m_mod);
 	if (mod_map == this->m_keyboard_handle.end()) {
 		return true;
 	}
 	if (_key == ZDSJ::Key::mouse_wheel) {
 		// 鼠标滚轮事件
 	}
-	auto key = mod_map->second.find(_key);
+	const auto key = mod_map->second.find(_key);
 	if (key == mod_map->second.end()) {
 		return true;
 	}
@@ -93,6 +93,9 @@ std::string ZDSJ::Keyboard::keyToString(Key _key) const
 	case ZDSJ::tilde:
 		oss << "`";
 		break;
+	case mouse_move:
+		oss << "mouse move";
+		break;
 	default:
 		oss << static_cast<char>(_key);
 		break;
@@ -133,7 +136,7 @@ void ZDSJ::Keyboard::splitFloatToShorts(float value, short& first, short& second
 	second = (temp >> 16) & 0xffff;
 }
 
-bool ZDSJ::Keyboard::registeKeyboard(int _mod, int _key, const std::string& _description, HandlerFunc _handle_func)
+bool ZDSJ::Keyboard::registerKeyboard(int _mod, int _key, const std::string& _description, HandlerFunc _handle_func)
 {
 	auto mod_map = this->m_keyboard_handle.find(_mod);
 	if (mod_map == this->m_keyboard_handle.end()) {

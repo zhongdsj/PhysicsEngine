@@ -1,4 +1,4 @@
-# include <MyDx11/DrawAbleManager.h>
+﻿# include <MyDx11/DrawAbleManager.h>
 # include <MyDx11/DrawAble/DrawAbleInterface.h>
 # include <d3d11.h>
 # include <typeinfo>
@@ -8,7 +8,7 @@
 # include <MyDx11/Context.h>
 
 
-ZDSJ::DrawAbleManager::DrawAbleManager(RenderType _render_type) : m_render_type(_render_type)
+ZDSJ::DrawAbleManager::DrawAbleManager(const RenderType _render_type) : m_render_type(_render_type)
 {
 	switch (this->m_render_type)
 	{
@@ -88,17 +88,17 @@ char* ZDSJ::DrawAbleManager::save(size_t& _size) const
 
 void ZDSJ::DrawAbleManager::vectorContainerClear()
 {
-	std::vector<ZDSJ::DrawAbleInterface*>* container = reinterpret_cast<std::vector<ZDSJ::DrawAbleInterface*>*>(this->m_container);
-	for (auto item : *container) {
+	const auto container = static_cast<std::vector<ZDSJ::DrawAbleInterface*>*>(this->m_container);
+	for (const auto item : *container) {
 		delete item;
 	}
 }
 
 void ZDSJ::DrawAbleManager::mapContainerClear()
 {
-	std::map<std::string, std::vector<ZDSJ::DrawAbleInterface*>>* container = reinterpret_cast<std::map<std::string, std::vector<ZDSJ::DrawAbleInterface*>>*>(this->m_container);
+	const auto container = static_cast<std::map<std::string, std::vector<ZDSJ::DrawAbleInterface*>>*>(this->m_container);
 	for (auto pair : *container) {
-		for (auto item : pair.second) {
+		for (const auto item : pair.second) {
 			delete item;
 		}
 	}
@@ -106,15 +106,15 @@ void ZDSJ::DrawAbleManager::mapContainerClear()
 
 void ZDSJ::DrawAbleManager::vectorContainerAdd(ZDSJ::DrawAbleInterface* _drawable)
 {
-	std::vector<ZDSJ::DrawAbleInterface*>* container = reinterpret_cast<std::vector<ZDSJ::DrawAbleInterface*>*>(this->m_container);
+	const auto container = static_cast<std::vector<ZDSJ::DrawAbleInterface*>*>(this->m_container);
 	container->push_back(_drawable);
 }
 
 void ZDSJ::DrawAbleManager::mapContainerAdd(ZDSJ::DrawAbleInterface* _drawable)
 {
-	std::map<std::string, std::vector<ZDSJ::DrawAbleInterface*>>* container = reinterpret_cast<std::map<std::string, std::vector<ZDSJ::DrawAbleInterface*>>*>(this->m_container);
+	const auto container = static_cast<std::map<std::string, std::vector<ZDSJ::DrawAbleInterface*>>*>(this->m_container);
 	std::string type_name(typeid(*_drawable).name());
-	std::map<std::string, std::vector<ZDSJ::DrawAbleInterface*>>::iterator item = container->end();
+	auto item = container->end();
 	do {
 		item = container->find(type_name);
 		if (item != container->end()) {
@@ -141,8 +141,8 @@ void ZDSJ::DrawAbleManager::itemSave(ZDSJ::DrawAbleInterface* _item, std::ostrin
 char* ZDSJ::DrawAbleManager::defaultSave(size_t& _size) const
 {
 	std::ostringstream oss;
-	std::vector<ZDSJ::DrawAbleInterface*>* container = reinterpret_cast<std::vector<ZDSJ::DrawAbleInterface*>*>(this->m_container);
-	for (auto item : *container) {
+	const auto container = static_cast<std::vector<ZDSJ::DrawAbleInterface*>*>(this->m_container);
+	for (const auto item : *container) {
 		this->itemSave(item, &oss, _size);
 	}
 	char* result = nullptr;
@@ -177,7 +177,7 @@ void ZDSJ::DrawAbleManager::itemRender(std::vector<ZDSJ::DrawAbleInterface*>::it
 				(*_iterator)->click();
 			}
 			if (ZDSJ::Context::getInstance()->mouseRight()) {
-				std::vector<ZDSJ::DrawAbleInterface*>::iterator temp = _iterator;
+				const auto temp = _iterator;
 				delete (*temp);
 				_iterator = _container.erase(temp);
 				return;
@@ -185,13 +185,13 @@ void ZDSJ::DrawAbleManager::itemRender(std::vector<ZDSJ::DrawAbleInterface*>::it
 		}
 	}
 	(*_iterator)->draw(_context, _draw_static);
-	_iterator++;
+	++_iterator;
 }
 
 void ZDSJ::DrawAbleManager::defaultRender(ID3D11DeviceContext* _context)
 {
 	ZDSJ::Point mouse_word = ZDSJ::Context::getInstance()->mouseWord();
-	std::vector<ZDSJ::DrawAbleInterface*>* container = reinterpret_cast<std::vector<ZDSJ::DrawAbleInterface*>*>(this->m_container);
+	std::vector<ZDSJ::DrawAbleInterface*>* container = static_cast<std::vector<ZDSJ::DrawAbleInterface*>*>(this->m_container);
 	std::vector<ZDSJ::DrawAbleInterface*>::iterator item = container->begin();
 	while (item != container->end()) {
 		this->itemRender(item, _context, *container, mouse_word, true);
@@ -201,7 +201,7 @@ void ZDSJ::DrawAbleManager::defaultRender(ID3D11DeviceContext* _context)
 void ZDSJ::DrawAbleManager::categoryRender(ID3D11DeviceContext* _context)
 {
 	ZDSJ::Point mouse_word = ZDSJ::Context::getInstance()->mouseWord();
-	std::map<std::string, std::vector<ZDSJ::DrawAbleInterface*>>* container = reinterpret_cast<std::map<std::string, std::vector<ZDSJ::DrawAbleInterface*>>*>(this->m_container);
+	std::map<std::string, std::vector<ZDSJ::DrawAbleInterface*>>* container = static_cast<std::map<std::string, std::vector<ZDSJ::DrawAbleInterface*>>*>(this->m_container);
 	auto pair = container->begin();
 	std::vector<ZDSJ::DrawAbleInterface*>::iterator item;
 	while (pair != container->end()) {
@@ -212,7 +212,7 @@ void ZDSJ::DrawAbleManager::categoryRender(ID3D11DeviceContext* _context)
 		while (item != pair->second.end()) {
 			this->itemRender(item, _context, pair->second, mouse_word, false);
 		}
-		pair++;
+		++pair;
 	}
 }
 

@@ -1,4 +1,4 @@
-# include <MyDx11/Context.h>
+﻿# include <MyDx11/Context.h>
 # include <MyDx11/MyDx11.h>
 
 ZDSJ::Context* ZDSJ::Context::getInstance()
@@ -22,21 +22,20 @@ ZDSJ::Context::Context() {
 	this->m_command = new ZDSJ::Command(this);
 	this->m_keyboard = new ZDSJ::Keyboard(this);
 	this->m_camera = new ZDSJ::Camera(this, this->m_window_rate);
-	this->m_keyboard->registeKeyboard(ZDSJ::Key::nothing, ZDSJ::Key::mouse_move, "change mouse to word", [&](float _data) {
+	this->m_keyboard->registerKeyboard(ZDSJ::Key::nothing, ZDSJ::Key::mouse_move, "change mouse to word", [&](float _data) {
 		short x;
 		short y;
 		this->m_keyboard->splitFloatToShorts(_data, x, y);
-		ZDSJ::Point word_pos = this->m_camera->viewPosToWordPos(ZDSJ::Point(x, y));
-		this->m_mouse_word = word_pos;
+		this->m_mouse_word = this->m_camera->viewPosToWordPos(ZDSJ::Point(x, y));
 	});
-	this->m_keyboard->registeKeyboard(ZDSJ::Key::nothing, ZDSJ::Key::mouse_left, "mouse click in frame", [&](float _data) {
+	this->m_keyboard->registerKeyboard(ZDSJ::Key::nothing, ZDSJ::Key::mouse_left, "mouse click in frame", [&](float _data) {
 		this->mouseClick(true);
 	});
-	this->m_keyboard->registeKeyboard(ZDSJ::Key::nothing, ZDSJ::Key::mouse_right, "mouse right click in frame", [&](float _data) {
+	this->m_keyboard->registerKeyboard(ZDSJ::Key::nothing, ZDSJ::Key::mouse_right, "mouse right click in frame", [&](float _data) {
 		this->mouseRight(true);
 	});
 	// 注册command
-	this->m_command->registeCommand("word", "run", "stop word if data is false, continue with true", [&](std::string& _data) {
+	this->m_command->registerCommand("word", "run", "stop word if data is false, continue with true", [&](const std::string& _data) {
 		if (_data == "true") {
 			this->wordActive(true);
 		}
@@ -49,7 +48,7 @@ ZDSJ::Context::Context() {
 		return true;
 	});
 	// 注册keyboard
-	this->m_keyboard->registeKeyboard(ZDSJ::Key::nothing, ZDSJ::Key::space, "pause word", [&](float _data) {
+	this->m_keyboard->registerKeyboard(ZDSJ::Key::nothing, ZDSJ::Key::space, "pause word", [&](float _data) {
 		this->wordActive(!this->wordActive());
 	});
 }

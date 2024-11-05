@@ -61,6 +61,12 @@
     <Filter Include="源文件\src\ImGuiManager">
       <UniqueIdentifier>{910e5070-68d2-423c-a981-0610266c99c1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\include\MyDx11\Physics">
+      <UniqueIdentifier>{b1b6a9ba-e739-4024-a816-9652ee93d13b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\src\MyDx11\Physics">
+      <UniqueIdentifier>{daeb0204-b13b-4bd5-9e8b-fda5bfdec69c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">

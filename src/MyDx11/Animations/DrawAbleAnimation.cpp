@@ -1,4 +1,4 @@
-# include <MyDx11/Animations/DrawAbleAnimation.h>
+﻿# include <MyDx11/Animations/DrawAbleAnimation.h>
 # include <MyDx11/DrawAble/DrawAbleAdapter.h>
 # include <DirectXMath.h>
 # include <cmath>
@@ -11,7 +11,6 @@ ZDSJ::DrawAbleAnimation::DrawAbleAnimation(float _change_value, long long _anima
 	// 计算出在当前时间基下(帧数)下需要多少帧
 	this->m_animation_fps = round((_fps / 1000.0f) * _animation_time);
 }
-
 
 void ZDSJ::DrawAbleAnimation::update(DrawAbleAdapter* _drawable, bool _continue)
 {
@@ -38,8 +37,8 @@ void ZDSJ::DrawAbleAnimation::update(DrawAbleAdapter* _drawable, bool _continue)
 ZDSJ::DrawAbleAnimation* ZDSJ::DrawAbleAnimation::rotationZAnimation(float _change_value, long long _amination_time, short _fps, bool _loop)
 {
 	return new ZDSJ::DrawAbleAnimation((_change_value / 180.0f) * DirectX::XM_PI, _amination_time, _fps, [](DrawAbleAdapter* _drawable, float _value) {
-		_drawable->setRotationZ(_value);
-		}, [](float _step, float _change)->float {
-			return _step * _change;
-		});
+		                                   _drawable->setRotationZ(_value);
+	                                   }, [](float _step, float _change)->float {
+		                                   return _step * _change;
+	                                   });
 }

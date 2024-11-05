@@ -1,14 +1,14 @@
-# include <Persistence.h>
+﻿# include <Persistence.h>
 # include <MyDx11/DrawAbleManager.h>
 # include <MyDx11/DrawAble/DrawAbleAdapter.h>
 
 ZDSJ::Persistence::Persistence(std::string _filename, bool _out)
 {
 	if (_out) {
-		this->m_output_stream = new std::ofstream(_filename + ".nodes", std::ios::out | std::ios::trunc);
+		this->m_output_stream = new std::ofstream(_filename, std::ios::out | std::ios::trunc);
 	}
 	else {
-		this->m_input_stream = new std::ifstream(_filename + ".nodes", std::ios::in);
+		this->m_input_stream = new std::ifstream(_filename, std::ios::in);
 	}
 }
 
@@ -51,6 +51,27 @@ bool ZDSJ::Persistence::save(const DrawAbleManager* _manager)
 		this->m_output_stream->write(data, size);
 		delete[] data;
 	}
+	return true;
+}
+
+bool ZDSJ::Persistence::save(const uint8_t* _data, const size_t _size) const
+{
+	if(this->m_output_stream == nullptr)
+	{
+		return false;
+	}
+	this->m_output_stream->write(reinterpret_cast<const char*>(_data), _size);
+
+	return true;
+}
+
+bool ZDSJ::Persistence::load(uint8_t* _data, const size_t _size) const
+{
+	if(this->m_input_stream == nullptr)
+	{
+		return false;
+	}
+	this->m_input_stream->read(reinterpret_cast<char*>(_data), _size);
 	return true;
 }
 

@@ -1,4 +1,4 @@
-# pragma once
+﻿# pragma once
 # include <string>
 # include <unordered_map>
 # include <functional>
@@ -35,13 +35,13 @@ namespace ZDSJ {
 
 		// 将一个float分解为两个short  
 		void splitFloatToShorts(float value, short& first, short& second);
-		// -method: registeKeyboard
+		// -method: registerKeyboard
 		// -brief: 注册快捷键
 		// -param: int _mod 需要的mod，如ctrl等，不需要时参数为nothing
 		// -param: int _key 键位
 		// -param: const std::string& _description 快捷键描述
 		// -param: void(float _data) _handle_func 快捷键触发回调
-		bool registeKeyboard(int _mod, int _key, const std::string& _description, HandlerFunc _handle_func);
+		bool registerKeyboard(int _mod, int _key, const std::string& _description, HandlerFunc _handle_func);
 	private:
 		std::unordered_map<int, std::unordered_map<int, std::pair<std::string, HandlerFunc>>> m_keyboard_handle;
 		int m_mod = 0;

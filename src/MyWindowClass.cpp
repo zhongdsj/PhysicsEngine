@@ -1,4 +1,4 @@
-# include <MyWindowClass.h>
+ï»¿# include <MyWindowClass.h>
 # include <MyWindowInterface.h>
 
 ZDSJ::MyWindowClass::MyWindowClass(HINSTANCE _instance, LPCWSTR _class_name, UINT _style, HICON _icon, HICON _icon_sm, HCURSOR _cursor, LPCWSTR _menue_name, int _cls_extra, int _wnd_extra, HBRUSH _background)
@@ -15,7 +15,7 @@ ZDSJ::MyWindowClass::MyWindowClass(HINSTANCE _instance, LPCWSTR _class_name, UIN
 	this->m_window_class.cbClsExtra = _cls_extra;
 	this->m_window_class.cbWndExtra = _wnd_extra;
 	this->m_window_class.hbrBackground = _background;
-	auto res = RegisterClassExW(&this->m_window_class);// ×¢²á´°¿ÚÀà
+	auto res = RegisterClassExW(&this->m_window_class);// æ³¨å†Œçª—å£ç±»
 }
 
 bool ZDSJ::MyWindowClass::creatWindow(ZDSJ::MyWindowInterface* _window, int _x, int _y, int _width, int _height, LPCWSTR _window_name, HWND _parent, DWORD _ex_style, DWORD _style, HMENU _menu)
@@ -33,16 +33,16 @@ ZDSJ::MyWindowClass::~MyWindowClass()
 LRESULT ZDSJ::MyWindowClass::handelMessageSetUp(HWND handle, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	if (msg == WM_NCCREATE) {
-		// ´´½¨´°¿ÚÊ±´¥·¢
-		// lParam Ö¸Ïò CREATESTRUCT ½á¹¹µÄÖ¸Õë£¬ÆäÖĞ°üº¬ÓĞ¹ØÕıÔÚ´´½¨µÄ´°¿ÚµÄĞÅÏ¢¡£
-		// CREATESTRUCT.lpCreateParams Ò²¾ÍÊÇCreateWindowExWµÄLPVOIDÖ¸ÏòµÄÖ¸Õë
+		// åˆ›å»ºçª—å£æ—¶è§¦å‘
+		// lParam æŒ‡å‘ CREATESTRUCT ç»“æ„çš„æŒ‡é’ˆï¼Œå…¶ä¸­åŒ…å«æœ‰å…³æ­£åœ¨åˆ›å»ºçš„çª—å£çš„ä¿¡æ¯ã€‚
+		// CREATESTRUCT.lpCreateParams ä¹Ÿå°±æ˜¯CreateWindowExWçš„LPVOIDæŒ‡å‘çš„æŒ‡é’ˆ
 		const CREATESTRUCTW* const pCreat = reinterpret_cast<CREATESTRUCTW*>(lParam);
 		ZDSJ::MyWindowInterface* const pwnd = static_cast<ZDSJ::MyWindowInterface*>(pCreat->lpCreateParams);
-		// ½«Ö´ĞĞCreateWindowExWµÄthisÖ¸Õë´æÈë´°¿Ú
+		// å°†æ‰§è¡ŒCreateWindowExWçš„thisæŒ‡é’ˆå­˜å…¥çª—å£
 		SetWindowLongPtrW(handle, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(pwnd));
-		// ²»ÄÜÍ¨¹ıWINAPIµ÷ÓÃ³ÉÔ±º¯Êı, ÔÚ½«´Ëº¯ÊıÉèÖÃÎªÏûÏ¢´¦Àíº¯Êıºó£¬±»µ±×÷WINAPIÁË
-		// ½«ÏûÏ¢×ª·¢µ½¾²Ì¬·½·¨
-		// GWLP_WNDPROCÉèÖÃ´°¿Ú¹ı³ÌµÄĞÂµØÖ·
+		// ä¸èƒ½é€šè¿‡WINAPIè°ƒç”¨æˆå‘˜å‡½æ•°, åœ¨å°†æ­¤å‡½æ•°è®¾ç½®ä¸ºæ¶ˆæ¯å¤„ç†å‡½æ•°åï¼Œè¢«å½“ä½œWINAPIäº†
+		// å°†æ¶ˆæ¯è½¬å‘åˆ°é™æ€æ–¹æ³•
+		// GWLP_WNDPROCè®¾ç½®çª—å£è¿‡ç¨‹çš„æ–°åœ°å€
 		SetWindowLongPtrW(handle, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(&ZDSJ::MyWindowClass::handelMessageForward));
 		return pwnd->handelMessage(handle, msg, wParam, lParam);
 	}

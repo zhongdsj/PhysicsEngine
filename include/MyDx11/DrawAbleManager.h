@@ -16,12 +16,12 @@ namespace ZDSJ {
 	};
 
 	struct Vertex2D;
-	typedef unsigned short      UINT16;
+	typedef unsigned short UINT16;
 
 	class DrawAbleManager {
 		friend class Persistence;
 	public:
-		DrawAbleManager(RenderType _render_type = RenderType::Default);
+		explicit DrawAbleManager(const RenderType _render_type = RenderType::Default);
 
 		void add(DrawAbleInterface* _drawable);
 

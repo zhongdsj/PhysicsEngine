@@ -1,7 +1,6 @@
-# pragma once
+﻿# pragma once
 # include <MyDx11/DrawAble/DrawAbleInterface.h>
 # include <MyDx11/Animations/DrawAbleAnimation.h>
-# include <atomic>
 
 namespace DirectX {
 	struct XMMATRIX;
