@@ -90,6 +90,9 @@ std::string ZDSJ::Keyboard::keyToString(Key _key) const
 	case ZDSJ::space:
 		oss << "space";
 		break;
+	case ZDSJ::alt:
+		oss << "alt";
+		break;
 	case ZDSJ::tilde:
 		oss << "`";
 		break;

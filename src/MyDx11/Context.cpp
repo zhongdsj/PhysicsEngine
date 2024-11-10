@@ -23,6 +23,7 @@ ZDSJ::Context::Context() {
 	this->m_keyboard = new ZDSJ::Keyboard(this);
 	this->m_camera = new ZDSJ::Camera(this, this->m_window_rate);
 	this->m_keyboard->registerKeyboard(ZDSJ::Key::nothing, ZDSJ::Key::mouse_move, "change mouse to word", [&](float _data) {
+		std::ostringstream oss;
 		short x;
 		short y;
 		this->m_keyboard->splitFloatToShorts(_data, x, y);

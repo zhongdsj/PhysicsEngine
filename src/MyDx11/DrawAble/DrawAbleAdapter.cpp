@@ -99,7 +99,11 @@ bool ZDSJ::DrawAbleAdapter::pointInPolgon2D(float _x, float _y)
 	DirectX::XMMATRIX pos = DirectX::XMMatrixTranslation(this->m_data->pos.x, this->m_data->pos.y, this->m_data->pos.z);
 	DirectX::XMMATRIX word = size * rotation * pos;
 	for (int i = 0; i < this->m_indices.size(); i += 3) {
+#ifdef RADIOGRAPHIC_INSPECTION
+		result = this->rayInTriangle2D(_x, _y, i, word);
+#else
 		result = this->pointInTriangle2D(_x, _y, i, word);
+#endif
 		if (result) {
 			break;
 		}
@@ -199,7 +203,7 @@ void ZDSJ::DrawAbleAdapter::setVertexBufferAndIndexBuffer(ID3D11Device* _device,
 	delete[] index_buffer;
 }
 
-bool ZDSJ::DrawAbleAdapter::pointInTriangle2D(float _x, float _y, short _triangle_index, DirectX::XMMATRIX& _word_matrix)
+bool ZDSJ::DrawAbleAdapter::pointInTriangle2D(float _x, float _y, short _triangle_index, DirectX::XMMATRIX& _word_matrix) const
 {
 	DirectX::XMVECTOR x_0 = DirectX::XMVectorSet(this->m_vertices.at(this->m_indices[_triangle_index]).pos.x, this->m_vertices.at(this->m_indices[_triangle_index]).pos.y, 1, 1);
 	DirectX::XMVECTOR x_1 = DirectX::XMVectorSet(this->m_vertices.at(this->m_indices[_triangle_index + 1]).pos.x, this->m_vertices.at(this->m_indices[_triangle_index + 1]).pos.y, 1, 1);
@@ -220,6 +224,63 @@ bool ZDSJ::DrawAbleAdapter::pointInTriangle2D(float _x, float _y, short _triangl
 	float d_0 = DirectX::XMVectorGetX(DirectX::XMVector3Dot(r_0, normal));
 	float d_1 = DirectX::XMVectorGetX(DirectX::XMVector3Dot(r_1, normal));
 	float d_2 = DirectX::XMVectorGetX(DirectX::XMVector3Dot(r_2, normal));
-	bool isInside = (d_0 >= 0.0f && d_1 >= 0.0f && d_2 >= 0.0f);
-	return isInside;
+	bool is_inside = (d_0 >= 0.0f && d_1 >= 0.0f && d_2 >= 0.0f);
+	return is_inside;
+}
+
+bool ZDSJ::DrawAbleAdapter::rayInTriangle2D(float _x, float _y, short _triangle_index, DirectX::XMMATRIX& _word_matrix) const
+{
+	// M-T算法
+	DirectX::XMVECTOR x_0 = DirectX::XMVectorSet(this->m_vertices.at(this->m_indices[_triangle_index]).pos.x, this->m_vertices.at(this->m_indices[_triangle_index]).pos.y, 1, 1);
+	DirectX::XMVECTOR x_1 = DirectX::XMVectorSet(this->m_vertices.at(this->m_indices[_triangle_index + 1]).pos.x, this->m_vertices.at(this->m_indices[_triangle_index + 1]).pos.y, 1, 1);
+	DirectX::XMVECTOR x_2 = DirectX::XMVectorSet(this->m_vertices.at(this->m_indices[_triangle_index + 2]).pos.x, this->m_vertices.at(this->m_indices[_triangle_index + 2]).pos.y, 1, 1);
+	x_0 = DirectX::XMVector4Transform(x_0, _word_matrix);
+	x_1 = DirectX::XMVector4Transform(x_1, _word_matrix);
+	x_2 = DirectX::XMVector4Transform(x_2, _word_matrix);
+	DirectX::XMVECTOR x_10 = DirectX::XMVectorSubtract(x_1, x_0);
+	DirectX::XMVECTOR x_20 = DirectX::XMVectorSubtract(x_2, x_0);
+	auto camera_pos = ZDSJ::Context::getInstance()->camera()->cameraPos();
+	DirectX::XMVECTOR origin = { camera_pos.x, camera_pos.y, camera_pos.z, camera_pos.w };
+	DirectX::XMFLOAT3 direction = { _x - camera_pos.x, _y - camera_pos.y, -camera_pos.z };
+	DirectX::XMVECTOR dir_vec = DirectX::XMVector3Normalize(DirectX::XMLoadFloat3(&direction));
+	DirectX::XMStoreFloat3(&direction, dir_vec);
+	// 计算向量叉乘
+	DirectX::XMVECTOR p = DirectX::XMVector3Cross(DirectX::XMLoadFloat3(&direction), x_20);
+	float det = DirectX::XMVectorGetX(DirectX::XMVector3Dot(x_10, p));
+	if(det == 0)
+	{
+		return false;
+	}
+	float inv_det = 1.0f / det;
+	
+	DirectX::XMVECTOR t = DirectX::XMVectorSubtract(origin, x_0);
+	float u = DirectX::XMVectorGetX(DirectX::XMVector3Dot(t, p)) * inv_det;
+	if (u < 0.0f || u > 1.0f)
+	{
+		return false;
+	}
+
+	DirectX::XMVECTOR q = DirectX::XMVector3Cross(t, x_10);
+	float v = DirectX::XMVectorGetX(DirectX::XMVector3Dot(DirectX::XMLoadFloat3(&direction), q)) * inv_det;
+	if (v < 0.0f || u + v > 1.0f)
+	{
+		return false;
+	}
+
+	// 计算 t 值（射线参数）
+	float t_ = DirectX::XMVectorGetX(DirectX::XMVector3Dot(x_20, q)) * inv_det;
+
+	// 如果 t 是负的，表示交点在射线起点之后（即不在射线上），因此不相交
+	if (t_ < 0.0f)
+	{
+		return false;
+	}
+	auto d = DirectX::XMLoadFloat3(&direction);
+	auto d_x = DirectX::XMVectorGetX(d);
+	auto d_y = DirectX::XMVectorGetY(d);
+	auto d_z = DirectX::XMVectorGetZ(d);
+	DirectX::XMVectorSetZ(d, 1.0f);
+	auto intersection = DirectX::XMVectorAdd(origin, DirectX::XMVectorScale(DirectX::XMLoadFloat3(&direction), t_));
+	// 计算交点
+	return true;
 }

@@ -60,8 +60,9 @@ void ZDSJ::ImGuiManager::render()
 				ImGui::SameLine();
 				ImGui::Text("pause");
 			}
-			const ZDSJ::float4 camera_pos = ZDSJ::Context::getInstance()->camera()->cameraPos();
-			ImGui::Text("fov: %.1f, camera_pos: { %.1f, %.1f, %.1f }", ZDSJ::Context::getInstance()->camera()->fov(), camera_pos.x, camera_pos.y, camera_pos.z);
+			auto camera = ZDSJ::Context::getInstance()->camera();
+			const ZDSJ::float4 camera_pos = camera->cameraPos();
+			ImGui::Text("fov: %.1f, camera_pos: { %.1f, %.1f, %.1f }, step: %.1f", ZDSJ::Context::getInstance()->camera()->fov(), camera_pos.x, camera_pos.y, camera_pos.z, camera->cameraStep());
 		}
 		
 		// 控制台输入/输出

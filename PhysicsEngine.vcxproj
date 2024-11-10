@@ -196,6 +196,7 @@
     <ClInclude Include="include\MyDx11\Keyboard.h" />
     <ClInclude Include="include\MyDx11\MyDx11.h" />
     <ClInclude Include="include\MyDx11\DrawAbleManager.h" />
+    <ClInclude Include="include\MyDx11\Physics\MovementInterface.h" />
     <ClInclude Include="include\MyDx11\Shader\TrianglePixelShader2D.h" />
     <ClInclude Include="include\MyDx11\Shader\TriangleVertexShader2D.h" />
     <ClInclude Include="include\MyDx11\VertexStructure.h" />

@@ -16,6 +16,7 @@ namespace ZDSJ {
 		mouse_middle = 4,
 		ctrl = 17,
 		space = 32,
+		alt = 164,
 		tilde=192,
 	};
 

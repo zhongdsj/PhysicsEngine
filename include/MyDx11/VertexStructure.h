@@ -1,7 +1,14 @@
-#pragma once
+﻿#pragma once
 # include <DirectXMath.h>
 
 namespace ZDSJ {
+
+	struct Vector
+	{
+		float x;
+		float y;
+		float z;
+	};
 
 	struct TransformConstantBuffer {
 		DirectX::XMMATRIX translation;

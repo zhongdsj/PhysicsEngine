@@ -281,6 +281,9 @@
     <ClInclude Include="include\Persistence.h">
       <Filter>头文件\include</Filter>
     </ClInclude>
+    <ClInclude Include="include\MyDx11\Physics\MovementInterface.h">
+      <Filter>头文件\include\MyDx11\Physics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="shader\TriangleVertexShader2D.hlsl">

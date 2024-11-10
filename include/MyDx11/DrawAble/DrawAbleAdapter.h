@@ -87,11 +87,13 @@ namespace ZDSJ {
 
 		void setVertexBufferAndIndexBuffer(ID3D11Device* _device, ID3D11DeviceContext* _context, const VertexBufferBindAble*& _vertex_buffer_bindable, const IndexBufferBindAble*& _index_buffer_bindable);
 		virtual const std::vector<BindAbleInterface*>& getStaticBindAble() const = 0;
-		virtual const size_t getStaticIndexSize() const = 0;
+		virtual size_t getStaticIndexSize() const = 0;
 		virtual BindAbleInterface* getColorVertex() const = 0;
 		virtual BindAbleInterface* getBorderVertex() const = 0;
 
-		bool pointInTriangle2D(float _x, float _y, short _triangle_index, DirectX::XMMATRIX& _word_matrix);
+		bool pointInTriangle2D(float _x, float _y, short _triangle_index, DirectX::XMMATRIX& _word_matrix) const;
+
+		bool rayInTriangle2D(float _x, float _y, short _triangle_index, DirectX::XMMATRIX& _word_matrix) const;
 
 		static inline bool hasState(DrawAbleState _combined, DrawAbleState _state) {
 			return static_cast<unsigned int>(_combined) & static_cast<unsigned int>(_state);

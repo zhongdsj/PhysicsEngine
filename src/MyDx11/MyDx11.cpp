@@ -86,6 +86,7 @@ ZDSJ::MyDx11::MyDx11(HWND _hwnd, int _window_width, int _window_height, ZDSJ::Re
 		short y;
 		ZDSJ::Context::getInstance()->keyboard()->splitFloatToShorts(_data, x, y);
 		const ZDSJ::Point word_pos = ZDSJ::Context::getInstance()->camera()->viewPosToWordPos(ZDSJ::Point(x, y));
+		// const ZDSJ::Point word_pos = ZDSJ::Context::getInstance()->mouseWord();
 		this->m_create(word_pos.x, word_pos.y, this->m_create_width, this->m_create_height);
 	});
 

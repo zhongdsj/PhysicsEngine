@@ -1,4 +1,4 @@
-# pragma once
+﻿# pragma once
 # include <MyDx11/DrawAble/DrawAbleAdapter.h>
 # include <MyDx11/BindAble/BindAbleInterface.h>
 # include <MyDx11/BindAble/IndexBufferBindAble.h>
@@ -66,7 +66,7 @@ namespace ZDSJ {
 			return this->m_static_bindable;
 		}
 
-		const size_t getStaticIndexSize() const override {
+		size_t getStaticIndexSize() const override {
 			return this->m_index_size;
 		}
 

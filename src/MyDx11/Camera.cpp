@@ -10,6 +10,11 @@ ZDSJ::Camera::Camera(ZDSJ::Context* _context, float _window_rate) : m_view_pos(n
 		this->m_pos.z += (_data * this->m_pos_z_step);
 		this->calculateViewMatrix();
 	});
+	_context->keyboard()->registerKeyboard(ZDSJ::Key::ctrl, ZDSJ::Key::mouse_wheel, "change camera fov", [&](float _data)
+	{
+		this->m_fov -= _data;
+		this->calculateProjectionMatrix();
+	});
 	_context->keyboard()->registerKeyboard(ZDSJ::Key::nothing, ZDSJ::Key::mouse_drag, "change camera position (x,y)", [&](float _data) {
 		short x;
 		short y;
@@ -22,10 +27,13 @@ ZDSJ::Camera::Camera(ZDSJ::Context* _context, float _window_rate) : m_view_pos(n
 		this->calculateViewMatrix();
 	});
 	_context->keyboard()->registerKeyboard(ZDSJ::Key::ctrl, 'R', "reset camera position (x,y,z)", [&](float _data) {
-		this->m_pos.x = 0.0f;
-		this->m_pos.y = 0.0f;
-		this->m_pos.z = -200.0f;
+		this->loadFromFile();
+		this->calculateProjectionMatrix();
 		this->calculateViewMatrix();
+	});
+	_context->keyboard()->registerKeyboard(ZDSJ::Key::alt, ZDSJ::Key::mouse_wheel, "change camera pos_z_step", [&](float _data)
+	{
+		this->m_pos_z_step -= _data;
 	});
 	_context->command()->registerCommand("camera", "pos", "change camera position, for example camera:pos:x:[yor data], camera:pos:reset to reset camera position", [&](const std::string& _data) {
 		std::istringstream iss(_data);
@@ -79,7 +87,28 @@ ZDSJ::Camera::Camera(ZDSJ::Context* _context, float _window_rate) : m_view_pos(n
 		this->m_fov = data;
 		this->calculateProjectionMatrix();
 		return true;
-		});
+	});
+	_context->command()->registerCommand("camera", "pos_z_step", "change camera pos_z_step", [&](const std::string& _data)->bool
+	{
+		if(_data.empty())
+		{
+			_context->command()->write("camera pos_z_step: " + std::to_string(this->m_pos_z_step));
+			return true;
+		}
+		float data = 0.0f;
+		try
+		{
+			data = std::stof(_data);
+
+		}
+		catch (const std::exception&)
+		{
+			return false;
+		}
+		this->m_pos_z_step = data;
+		return true;
+
+	});
 	this->calculateProjectionMatrix(_window_rate);
 	this->calculateViewMatrix(_window_rate);
 }
@@ -107,6 +136,11 @@ void ZDSJ::Camera::fov(float _value)
 ZDSJ::float4 ZDSJ::Camera::cameraPos() const
 {
 	return this->m_pos;
+}
+
+float ZDSJ::Camera::cameraStep() const
+{
+	return this->m_pos_z_step;
 }
 
 void ZDSJ::Camera::cameraAway()

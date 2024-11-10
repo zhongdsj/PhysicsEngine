@@ -69,16 +69,19 @@ LRESULT ZDSJ::MyWindow::handelMessage(HWND handle, UINT msg, WPARAM wParam, LPAR
 		ZDSJ::Context::getInstance()->keyboard()->execKeyboard(VK_RBUTTON, lParam);
 		break;
 	case WM_SYSKEYDOWN:
-		return true;
+		ZDSJ::Context::getInstance()->keyboard()->mod(VK_LMENU);
 		break;
 	case WM_SYSKEYUP:
 		switch (wParam)
 		{
 		case VK_CONTROL:
 			ZDSJ::Context::getInstance()->keyboard()->mod(ZDSJ::Key::nothing);
+			return true;
+			// break;
 		default:
 			break;
 		}
+		ZDSJ::Context::getInstance()->keyboard()->mod(ZDSJ::Key::nothing);
 		break;
 	case WM_MOUSEWHEEL:
 		ZDSJ::Context::getInstance()->keyboard()->execKeyboard(WM_MOUSEWHEEL, static_cast<short>(HIWORD(wParam))/120);
@@ -89,6 +92,7 @@ LRESULT ZDSJ::MyWindow::handelMessage(HWND handle, UINT msg, WPARAM wParam, LPAR
 		case VK_CONTROL:
 			ZDSJ::Context::getInstance()->keyboard()->mod(VK_CONTROL);
 			break;
+		
 		default:
 			ZDSJ::Context::getInstance()->keyboard()->execKeyboard(wParam, 0.0f);
 			break;
@@ -98,7 +102,7 @@ LRESULT ZDSJ::MyWindow::handelMessage(HWND handle, UINT msg, WPARAM wParam, LPAR
 		switch (wParam) {
 		case VK_CONTROL:
 			ZDSJ::Context::getInstance()->keyboard()->mod(ZDSJ::Key::nothing);
-			break;
+			break;;
 		default:
 			break;
 		}

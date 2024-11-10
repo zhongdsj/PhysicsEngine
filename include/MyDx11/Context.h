@@ -1,8 +1,10 @@
-# pragma once
+﻿# pragma once
 # include <MyDx11/Camera.h>
 # include <RingBuffer.h>
 # include <ImGuiManager/Command.h>
 # include <MyDx11/Keyboard.h>
+
+# define RADIOGRAPHIC_INSPECTION
 
 namespace ZDSJ {
 	struct Point {
