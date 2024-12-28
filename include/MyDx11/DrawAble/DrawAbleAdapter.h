@@ -25,12 +25,6 @@ namespace ZDSJ {
 		Check = 2,
 	};
 
-	struct float3 {
-		float x;
-		float y;
-		float z;
-	};
-
 	struct DrawAbleData
 	{
 		float3 size;
@@ -45,7 +39,11 @@ namespace ZDSJ {
 	public:
 		DrawAbleAdapter(const DrawAbleData& _data = DrawAbleData());
 		void draw(ID3D11DeviceContext* _context, bool _bind_static = true) override;
-		const DrawAbleData* getData() const;
+		const float3& position() const override;
+		const float3& size() const override;
+		MovementInterface* getMovement() const override;
+		void calculateForce(DrawAbleInterface* _other) override;
+		void moveByAcceleration() override;
 		bool pointInPolgon2D(float _x, float _y) override;
 		char* save(size_t& _size) override;
 		static DrawAbleInterface* load(ID3D11Device* _device, ID3D11DeviceContext* _context, const char* _data, size_t& _offset, size_t _size);
@@ -53,7 +51,7 @@ namespace ZDSJ {
 		inline void click() override { this->hasState(ZDSJ::DrawAbleState::Check) ? this->removeState(ZDSJ::DrawAbleState::Check) : this->addState(ZDSJ::DrawAbleState::Check); };
 		inline void addState(DrawAbleState _state){ this->m_state = DrawAbleAdapter::addState(this->m_state, _state); }
 		inline void removeState(DrawAbleState _state){ this->m_state = DrawAbleAdapter::removeState(this->m_state, _state); }
-		inline bool hasState(DrawAbleState _state) { return DrawAbleAdapter::hasState(this->m_state, _state); };
+		inline bool hasState(DrawAbleState _state) { return DrawAbleAdapter::hasState(this->m_state, _state); }
 		inline DrawAbleAdapter* setSizeX(float _value) { this->m_data->size.x = _value; return this; }
 		inline DrawAbleAdapter* setSizeY(float _value) { this->m_data->size.y = _value; return this;}
 		inline DrawAbleAdapter* setSizeZ(float _value) { this->m_data->size.z = _value; return this;}
@@ -76,6 +74,7 @@ namespace ZDSJ {
 		DirectX::XMMATRIX getTransformMatix() const;
 
 		std::vector<ZDSJ::DrawAbleAnimation*> m_animation;
+		MovementInterface* m_movement;
 		DrawAbleData* m_data = nullptr;
 		DrawAbleClass m_drawable_class = ZDSJ::DrawAbleClass::Default;
 		std::vector<Vertex2D> m_vertices;

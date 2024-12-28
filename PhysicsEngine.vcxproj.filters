@@ -162,6 +162,9 @@
     <ClCompile Include="src\Persistence.cpp">
       <Filter>源文件\src</Filter>
     </ClCompile>
+    <ClCompile Include="src\MyDx11\Physics\BaseMovement.cpp">
+      <Filter>源文件\src\MyDx11\Physics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\MyWindow.h">
@@ -282,6 +285,9 @@
       <Filter>头文件\include</Filter>
     </ClInclude>
     <ClInclude Include="include\MyDx11\Physics\MovementInterface.h">
+      <Filter>头文件\include\MyDx11\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MyDx11\Physics\BaseMovement.h">
       <Filter>头文件\include\MyDx11\Physics</Filter>
     </ClInclude>
   </ItemGroup>

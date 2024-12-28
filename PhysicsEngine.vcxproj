@@ -159,6 +159,7 @@
     <ClCompile Include="src\MyDx11\Keyboard.cpp" />
     <ClCompile Include="src\MyDx11\MyDx11.cpp" />
     <ClCompile Include="src\MyDx11\DrawAbleManager.cpp" />
+    <ClCompile Include="src\MyDx11\Physics\BaseMovement.cpp" />
     <ClCompile Include="src\MyDx11\VertexStructure.cpp" />
     <ClCompile Include="src\MyWindow.cpp" />
     <ClCompile Include="src\MyWindowClass.cpp" />
@@ -196,6 +197,7 @@
     <ClInclude Include="include\MyDx11\Keyboard.h" />
     <ClInclude Include="include\MyDx11\MyDx11.h" />
     <ClInclude Include="include\MyDx11\DrawAbleManager.h" />
+    <ClInclude Include="include\MyDx11\Physics\BaseMovement.h" />
     <ClInclude Include="include\MyDx11\Physics\MovementInterface.h" />
     <ClInclude Include="include\MyDx11\Shader\TrianglePixelShader2D.h" />
     <ClInclude Include="include\MyDx11\Shader\TriangleVertexShader2D.h" />

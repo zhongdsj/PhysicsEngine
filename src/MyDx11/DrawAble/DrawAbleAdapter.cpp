@@ -13,9 +13,11 @@
 # include <MyDx11/DrawAble/Rectangle2DDrawAble.h>
 # include <MyDx11/DrawAble/Arc2DDrawAble.h>
 
+#include "MyDx11/Physics/BaseMovement.h"
+
 ZDSJ::DrawAbleAdapter::DrawAbleAdapter(const DrawAbleData& _data) : m_bind_able(new std::vector<ZDSJ::BindAbleInterface*>), m_data(new DrawAbleData(_data))
 {
-
+	this->m_movement = new BaseMovement(this);
 }
 
 void ZDSJ::DrawAbleAdapter::draw(ID3D11DeviceContext* _context, bool _bind_static)
@@ -34,9 +36,27 @@ void ZDSJ::DrawAbleAdapter::draw(ID3D11DeviceContext* _context, bool _bind_stati
 	
 }
 
-const ZDSJ::DrawAbleData* ZDSJ::DrawAbleAdapter::getData() const
+const ZDSJ::float3& ZDSJ::DrawAbleAdapter::position() const
 {
-	return this->m_data;
+	return this->m_data->pos;
+}
+
+const ZDSJ::float3& ZDSJ::DrawAbleAdapter::size() const
+{
+	return this->m_data->size;
+}
+
+void ZDSJ::DrawAbleAdapter::calculateForce(DrawAbleInterface* _other)
+{
+	this->m_movement->calculateForce(_other->getMovement());
+}
+
+void ZDSJ::DrawAbleAdapter::moveByAcceleration()
+{
+	const auto a = this->m_movement->calculateAcceleration();
+	this->m_data->pos.x += a.x;
+	this->m_data->pos.y += a.y;
+	this->m_data->pos.z += a.z;
 }
 
 ZDSJ::DrawAbleAdapter::~DrawAbleAdapter()
@@ -74,6 +94,11 @@ void ZDSJ::DrawAbleAdapter::bindStatic(ID3D11DeviceContext* _context)
 void ZDSJ::DrawAbleAdapter::drawIndex(ID3D11DeviceContext* _context, unsigned int _start_index_location, int _base_vertex_location)
 {
 	_context->DrawIndexed(this->getStaticIndexSize(), _start_index_location, _base_vertex_location);
+}
+
+ZDSJ::MovementInterface* ZDSJ::DrawAbleAdapter::getMovement() const
+{
+	return this->m_movement;
 }
 
 DirectX::XMMATRIX ZDSJ::DrawAbleAdapter::getTransformMatix() const

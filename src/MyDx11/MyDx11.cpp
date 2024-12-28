@@ -90,10 +90,10 @@ ZDSJ::MyDx11::MyDx11(HWND _hwnd, int _window_width, int _window_height, ZDSJ::Re
 		this->m_create(word_pos.x, word_pos.y, this->m_create_width, this->m_create_height);
 	});
 
-	ZDSJ::Context::getInstance()->command()->registerCommand("dx11", "createSize", "change create node size. dx11:createSize:width:height", [&](const std::string& _data) -> bool {
+	ZDSJ::Context::getInstance()->command()->registerCommand("dx11", "create_size", "change create node size. dx11:create_size:width:height", [&](const std::string& _data) -> bool {
 		std::ostringstream oss;
 		if (_data.empty()) {
-			oss << "dx11:createSize:(" << this->m_create_width << ", " << this->m_create_height << ")";
+			oss << "dx11:create_size:(" << this->m_create_width << ", " << this->m_create_height << ")";
 			ZDSJ::Context::getInstance()->command()->write(oss.str());
 			return true;
 		}

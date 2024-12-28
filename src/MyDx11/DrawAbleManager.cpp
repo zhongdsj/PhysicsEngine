@@ -168,20 +168,39 @@ char* ZDSJ::DrawAbleManager::categorySave(size_t& _size) const
 
 void ZDSJ::DrawAbleManager::itemRender(std::vector<ZDSJ::DrawAbleInterface*>::iterator& _iterator, ID3D11DeviceContext* _context, std::vector<ZDSJ::DrawAbleInterface*>& _container, const ZDSJ::Point& _mouse_word, bool _draw_static)
 {
-	if (ZDSJ::Context::getInstance()->wordActive()) {
+	if(ZDSJ::Context::getInstance()->wordActive())
+	{
 		// 活动
-		if ((*_iterator)->pointInPolgon2D(_mouse_word.x, _mouse_word.y)) {
-			// hover
-			if (ZDSJ::Context::getInstance()->mouseClick()) {
-				// click 仅绘制边框
-				(*_iterator)->click();
+		// 计算受力
+		auto next = _iterator + 1;
+		while (next != _iterator)
+		{
+			if (next == _container.end())
+			{
+				next = _container.begin();
 			}
-			if (ZDSJ::Context::getInstance()->mouseRight()) {
-				const auto temp = _iterator;
-				delete (*temp);
-				_iterator = _container.erase(temp);
-				return;
+			if (next == _iterator)
+			{
+				break;
 			}
+			(*_iterator)->calculateForce(*next);
+			++next;
+		}
+		// 计算加速度并移动
+		(*_iterator)->moveByAcceleration();
+	}
+
+	if ((*_iterator)->pointInPolgon2D(_mouse_word.x, _mouse_word.y)) {
+		// hover
+		if (ZDSJ::Context::getInstance()->mouseClick()) {
+			// click 仅绘制边框
+			(*_iterator)->click();
+		}
+		if (ZDSJ::Context::getInstance()->mouseRight()) {
+			const auto temp = _iterator;
+			delete (*temp);
+			_iterator = _container.erase(temp);
+			return;
 		}
 	}
 	(*_iterator)->draw(_context, _draw_static);
