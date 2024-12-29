@@ -13,27 +13,30 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="源文件\src">
-      <UniqueIdentifier>{82ed6ba3-2ee4-4c0b-9ac0-97789b1a4de0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="头文件\include">
-      <UniqueIdentifier>{69762714-048b-461f-bcbe-0af780c55145}</UniqueIdentifier>
+      <UniqueIdentifier>{21fd193c-211c-4bc8-ad33-890a9bfe5446}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\src">
+      <UniqueIdentifier>{1b98bbe7-b4ac-4620-92c5-3c044c5580b6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Application.cpp">
-      <Filter>源文件\src</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ClassDiagram.cd" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="include\Application.h">
+    <ClInclude Include="include\CommonMacro.h">
       <Filter>头文件\include</Filter>
     </ClInclude>
+    <ClInclude Include="include\Context.h">
+      <Filter>头文件\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CommonExport.h">
+      <Filter>头文件\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ApplicationWindowInterface.h">
+      <Filter>头文件\include</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Context.cpp">
+      <Filter>源文件\src</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

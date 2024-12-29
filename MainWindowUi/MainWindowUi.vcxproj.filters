@@ -14,26 +14,32 @@
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
     <Filter Include="源文件\src">
-      <UniqueIdentifier>{82ed6ba3-2ee4-4c0b-9ac0-97789b1a4de0}</UniqueIdentifier>
+      <UniqueIdentifier>{afef6db7-aee3-40ec-ae79-d44aeacca0aa}</UniqueIdentifier>
     </Filter>
     <Filter Include="头文件\include">
-      <UniqueIdentifier>{69762714-048b-461f-bcbe-0af780c55145}</UniqueIdentifier>
+      <UniqueIdentifier>{2cd291a2-d412-498b-a02f-3d45968b3e3a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Application.cpp">
-      <Filter>源文件\src</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ClassDiagram.cd" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="include\Application.h">
+    <ClInclude Include="include\MyWindowClass.h">
       <Filter>头文件\include</Filter>
     </ClInclude>
+    <ClInclude Include="include\MyWindowInterface.h">
+      <Filter>头文件\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MyMainWindow.h">
+      <Filter>头文件\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MainWindowUiExport.h">
+      <Filter>头文件\include</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\MyWindowClass.cpp">
+      <Filter>源文件\src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MyMainWindow.cpp">
+      <Filter>源文件\src</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
