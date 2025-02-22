@@ -27,12 +27,18 @@
     <ClCompile Include="src\Application.cpp">
       <Filter>源文件\src</Filter>
     </ClCompile>
+    <ClCompile Include="src\DllLoader.cpp">
+      <Filter>源文件\src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Application.h">
+      <Filter>头文件\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DllLoader.h">
       <Filter>头文件\include</Filter>
     </ClInclude>
   </ItemGroup>

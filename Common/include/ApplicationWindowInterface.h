@@ -1,5 +1,6 @@
 ﻿# pragma once
 # include "CommonExport.h"
+# include <wtypes.h>
 
 namespace ZDSJ
 {

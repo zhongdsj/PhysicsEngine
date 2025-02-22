@@ -1,7 +1,7 @@
 ﻿# include "Application.h"
 
 #include "Context.h"
-#include "MyMainWindow.h"
+#include "ApplicationWindowInterface.h"
 
 ZDSJ::Application::Application()
 {

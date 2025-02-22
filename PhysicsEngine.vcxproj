@@ -64,11 +64,17 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <DelayLoadDLLs>Common.dll;MainWindowUi.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
     </Link>
     <PostBuildEvent>
       <Command>robocopy $(SolutionDir)bin\$(ProjectName)\$(Platform)\$(Configuration) $(SolutionDir)bin\$(Platform)\$(Configuration) $(TargetName)$(TargetExt)
-if ERRORLEVEL 1 set ERRORLEVEL=0</Command>
+if ERRORLEVEL 1 set ERRORLEVEL=0
+xcopy /y /d "$(ProjectDir)thirdparty\*.dll" "$(SolutionDir)bin\$(Platform)\$(Configuration)\dll"
+</Command>
     </PostBuildEvent>
+    <ProjectReference>
+      <LinkLibraryDependencies>true</LinkLibraryDependencies>
+    </ProjectReference>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -85,21 +91,26 @@ if ERRORLEVEL 1 set ERRORLEVEL=0</Command>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <DelayLoadDLLs>Common.dll;MainWindowUi.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
     </Link>
     <PostBuildEvent>
       <Command>robocopy $(SolutionDir)bin\$(ProjectName)\$(Platform)\$(Configuration) $(SolutionDir)bin\$(Platform)\$(Configuration) $(TargetName)$(TargetExt)
-if ERRORLEVEL 1 set ERRORLEVEL=0</Command>
+if ERRORLEVEL 1 set ERRORLEVEL=0
+xcopy /y /d "$(ProjectDir)thirdparty\*.dll" "$(SolutionDir)bin\$(Platform)\$(Configuration)\dll"
+</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="src\Application.cpp" />
+    <ClCompile Include="src\DllLoader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Application.h" />
+    <ClInclude Include="include\DllLoader.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Common\Common.vcxproj">
