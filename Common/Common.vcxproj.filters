@@ -36,12 +36,18 @@
     <ClInclude Include="include\Config.h">
       <Filter>头文件\include</Filter>
     </ClInclude>
+    <ClInclude Include="include\Logger.h">
+      <Filter>头文件\include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Context.cpp">
       <Filter>源文件\src</Filter>
     </ClCompile>
     <ClCompile Include="src\Config.cpp">
+      <Filter>源文件\src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Logger.cpp">
       <Filter>源文件\src</Filter>
     </ClCompile>
   </ItemGroup>

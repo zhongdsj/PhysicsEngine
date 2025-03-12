@@ -2,6 +2,7 @@
 # include <memory>
 # include "CommonExport.h"
 # include "CommonMacro.h"
+# include "Logger.h"
 
 # define Context_Instance ZDSJ::Context::getInstance()
 
@@ -27,8 +28,13 @@ namespace ZDSJ
 		 */
 		Context();
 		ReadOnly(std::shared_ptr<Config>, config, nullptr, Config)
-		ReadWrite(float, window_width, 800.0f, WindowWidth)
-		ReadWrite(float, window_height, 600.0f, WindowHeight)
+		ReadWrite(int, window_x, 200, WindowX)
+		ReadWrite(int, window_y, 100, WindowY)
+		ReadWrite(int, window_width, 800, WindowWidth)
+		ReadWrite(int, window_height, 600, WindowHeight)
 
+		void readFromConfig();
+
+		void writeToConfig() const;
 	};
 }

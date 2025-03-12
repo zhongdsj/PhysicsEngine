@@ -101,10 +101,12 @@ if ERRORLEVEL 1 set ERRORLEVEL=0</Command>
     <ClInclude Include="include\CommonMacro.h" />
     <ClInclude Include="include\Config.h" />
     <ClInclude Include="include\Context.h" />
+    <ClInclude Include="include\Logger.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Config.cpp" />
     <ClCompile Include="src\Context.cpp" />
+    <ClCompile Include="src\Logger.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

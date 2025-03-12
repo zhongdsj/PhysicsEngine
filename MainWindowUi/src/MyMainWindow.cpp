@@ -1,4 +1,6 @@
 ﻿# include "MyMainWindow.h"
+
+# include "Context.h"
 # include "MyWindowClass.h"
 
 ZDSJ::MyMainWindow::MyMainWindow(DWORD _ex_style, LPCWSTR _class_name, LPCWSTR _window_name, DWORD _style, int _x,
@@ -25,7 +27,19 @@ ZDSJ::MyMainWindow::MyMainWindow(DWORD _ex_style, LPCWSTR _class_name, LPCWSTR _
 LRESULT ZDSJ::MyMainWindow::handelMessage(HWND handle, UINT msg, WPARAM w_param, LPARAM l_param)
 {
 	// todo 处理消息
-
+	switch (msg)
+	{
+	case WM_MOVE:
+		{
+			const int x_pos = (int)static_cast<short>(LOWORD(l_param));   // horizontal position 
+			const int y_pos = (int)static_cast<short>(HIWORD(l_param));   // vertical position 
+			Context_Instance->setWindowX(x_pos);
+			Context_Instance->setWindowY(y_pos);
+			break;
+		}
+	default:
+		break;
+	}
 	return DefWindowProc(handle, msg, w_param, l_param);
 }
 
@@ -53,11 +67,12 @@ bool ZDSJ::MyMainWindow::getMessage(MSG& _msg)
 ZDSJ::MyMainWindow::~MyMainWindow()
 {
 	DestroyWindow(this->m_handle);
+	Log_Info("[win api]: window destroy");
 }
 
 ZDSJ::ApplicationWindowInterface* ZDSJ::createWindow(const wchar_t* _window_name, int _x, int _y, int _width, int _height)
 {
-	// todo 读取配置文件
+	Log_Info("[win api]: create window");
 	constexpr DWORD ex_style = NULL;
 	const auto class_name = L"ZDSJWindow";
 	constexpr DWORD style = WS_SYSMENU;

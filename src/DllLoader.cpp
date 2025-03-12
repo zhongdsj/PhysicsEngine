@@ -1,4 +1,5 @@
 ﻿# include <DllLoader.h>
+# include <Logger.h>
 
 ZDSJ::DllLoader::DllLoader()
 {
@@ -12,6 +13,7 @@ bool ZDSJ::DllLoader::load()
 	bool indispensable_loaded = true;
 	for (auto indispensable : this->m_indispensable)
 	{
+		Log_Debug("load dll: {}", Logger::wchar_to_char(indispensable));
 		if(DllLoader::isLoaded(indispensable))
 		{
 			continue;
