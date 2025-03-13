@@ -1,9 +1,12 @@
 ﻿# pragma once
-# include "CommonMacro.h"
+# include <CommonMacro.h>
+# include <vector>
+# include <ComponentInterface.h>
 
 namespace ZDSJ
 {
 	class ApplicationWindowInterface;
+	class ConsoleInterface;
 	class Application
 	{
 	public:
@@ -17,5 +20,9 @@ namespace ZDSJ
 
 	private:
 		ApplicationWindowInterface* m_window = nullptr;
+		ConsoleInterface* m_console = nullptr;
+		std::vector<ComponentInterface*> m_tick_component;
+
+		void tick(float _use_time) const;
 	};
 }

@@ -1,7 +1,7 @@
-﻿# include "MyMainWindow.h"
+﻿# include <MyMainWindow.h>
 
-# include "Context.h"
-# include "MyWindowClass.h"
+# include <Context.h>
+# include <MyWindowClass.h>
 
 ZDSJ::MyMainWindow::MyMainWindow(DWORD _ex_style, LPCWSTR _class_name, LPCWSTR _window_name, DWORD _style, int _x,
                                  int _y, int _width, int _height, HWND _parent, HMENU _menu, HINSTANCE _instance)
@@ -27,6 +27,13 @@ ZDSJ::MyMainWindow::MyMainWindow(DWORD _ex_style, LPCWSTR _class_name, LPCWSTR _
 LRESULT ZDSJ::MyMainWindow::handelMessage(HWND handle, UINT msg, WPARAM w_param, LPARAM l_param)
 {
 	// todo 处理消息
+	for (auto message_handler : this->m_messageHandler)
+	{
+		if(message_handler.second(handle, msg, w_param, l_param))
+		{
+			return true;
+		}
+	}
 	switch (msg)
 	{
 	case WM_MOVE:
@@ -37,31 +44,54 @@ LRESULT ZDSJ::MyMainWindow::handelMessage(HWND handle, UINT msg, WPARAM w_param,
 			Context_Instance->setWindowY(y_pos);
 			break;
 		}
+	case WM_CLOSE:
+		PostQuitMessage(0);
+		break;
 	default:
 		break;
 	}
 	return DefWindowProc(handle, msg, w_param, l_param);
 }
 
+void ZDSJ::MyMainWindow::addHandelMessage(const char* _id, std::function<LRESULT(HWND handle, UINT msg, WPARAM w_param, LPARAM l_param)> _handler)
+{
+	this->m_messageHandler.insert(std::make_pair(_id, _handler));
+}
+
 bool ZDSJ::MyMainWindow::getMessage(MSG& _msg)
 {
 	// 处理消息, 退出/异常消息返回false，外部视情况处理
-	BOOL res = GetMessage(&_msg, this->m_handle, 0, 0);
-	switch (res)
+	BOOL res = PeekMessage(&_msg, nullptr, 0U, 0U, PM_REMOVE);
+	if(res == 0)
 	{
-	case 0:
-		// log quit
-		return false;
-	case -1:
-		// log err
-		return false;
-	default:
-		// 非0 非-1 为正常消息
-		TranslateMessage(&_msg);
-		DispatchMessageW(&_msg);
-		break;
+		return true;
 	}
+	if (_msg.message == WM_QUIT)
+	{
+		return false;
+	}
+	TranslateMessage(&_msg);
+	DispatchMessageW(&_msg);
+	//switch (res)
+	//{
+	//case 0:
+	//	// log quit
+	//	return false;
+	//case -1:
+	//	// log err
+	//	return false;
+	//default:
+	//	// 非0 非-1 为正常消息
+	//	TranslateMessage(&_msg);
+	//	DispatchMessageW(&_msg);
+	//	break;
+	//}
 	return true;
+}
+
+HWND ZDSJ::MyMainWindow::getHandle() const
+{
+	return this->m_handle;
 }
 
 ZDSJ::MyMainWindow::~MyMainWindow()

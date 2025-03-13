@@ -8,8 +8,6 @@
 
 namespace ZDSJ
 {
-	class Config;
-
 	class Common_Api Context
 	{
 	public:
@@ -27,11 +25,11 @@ namespace ZDSJ
 		 * @brief 构造函数
 		 */
 		Context();
-		ReadOnly(std::shared_ptr<Config>, config, nullptr, Config)
 		ReadWrite(int, window_x, 200, WindowX)
 		ReadWrite(int, window_y, 100, WindowY)
 		ReadWrite(int, window_width, 800, WindowWidth)
 		ReadWrite(int, window_height, 600, WindowHeight)
+		ReadOnly(LoggerConfig, log_config, {}, LoggerConfig)
 
 		void readFromConfig();
 

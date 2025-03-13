@@ -39,6 +39,12 @@
     <ClInclude Include="include\Logger.h">
       <Filter>头文件\include</Filter>
     </ClInclude>
+    <ClInclude Include="include\ConsoleInterface.h">
+      <Filter>头文件\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ComponentInterface.h">
+      <Filter>头文件\include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Context.cpp">

@@ -1,5 +1,5 @@
 ﻿# pragma once
-# include "MainWindowUiExport.h"
+# include <MainWindowUiExport.h>
 
 namespace ZDSJ
 {

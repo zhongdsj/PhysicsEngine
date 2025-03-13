@@ -1,6 +1,6 @@
 ﻿# pragma once
 # include <Windows.h>
-# include "CommonMacro.h"
+# include <CommonMacro.h>
 
 namespace ZDSJ {
 

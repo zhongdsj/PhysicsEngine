@@ -15,6 +15,12 @@ ZDSJ::Config::Config(const char* _filename): m_file_name(_filename)
 	input_stream.close();
 }
 
+ZDSJ::Config* ZDSJ::Config::getInstance()
+{
+	static ZDSJ::Config instance("./config.json");
+	return &instance;
+}
+
 ryml::NodeRef ZDSJ::Config::root()
 {
 	return this->m_tree.rootref();

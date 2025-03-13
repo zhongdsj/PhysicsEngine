@@ -1,6 +1,7 @@
 ﻿# include "Application.h"
 # include "Context.h"
 # include "ApplicationWindowInterface.h"
+# include <ConsoleInterface.h>
 
 ZDSJ::Application::Application()
 {
@@ -17,6 +18,9 @@ ZDSJ::Application::Application()
 			welcome to my engine
 )");
 	this->m_window = ZDSJ::createWindow(L"引擎", Context_Instance->getWindowX(), Context_Instance->getWindowY(), Context_Instance->getWindowWidth(), Context_Instance->getWindowHeight());
+	this->m_console = ZDSJ::createConsole(this->m_window->getHandle());
+	this->m_window->addHandelMessage("console", std::bind(&ConsoleInterface::messageHandle, this->m_console, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
+	this->m_tick_component.push_back(this->m_console);
 }
 
 void ZDSJ::Application::run() const
@@ -32,12 +36,22 @@ void ZDSJ::Application::run() const
 				break;
 			}
 		}
+		this->tick(1.0);
 	}
 	Log_Info("message loop end");
 }
 
 ZDSJ::Application::~Application()
 {
+	delete this->m_console;
 	delete this->m_window;
 	Log_Info("exit engine");
+}
+
+void ZDSJ::Application::tick(float _use_time) const
+{
+	for (auto item : this->m_tick_component)
+	{
+		item->tick(_use_time);
+	}
 }

@@ -1,5 +1,5 @@
-﻿# include "MyWindowClass.h"
-# include "MyWindowInterface.h"
+﻿# include <MyWindowClass.h>
+# include <MyWindowInterface.h>
 
 ZDSJ::MyWindowClass::MyWindowClass(HINSTANCE _instance, LPCWSTR _class_name, UINT _style, HICON _icon, HICON _icon_sm, HCURSOR _cursor, LPCWSTR _menu_name, int _cls_extra, int _wnd_extra, HBRUSH _background)
 {

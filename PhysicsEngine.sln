@@ -9,6 +9,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MainWindowUi", "MainWindowU
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Common", "Common\Common.vcxproj", "{0EFFD7FC-FBE1-4CEC-8E92-5F39C3B26CC5}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Console", "Console\Console.vcxproj", "{DDA69490-3DF7-4691-8E4B-4D57B8CA8816}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -35,6 +37,12 @@ Global
 		{0EFFD7FC-FBE1-4CEC-8E92-5F39C3B26CC5}.Release|x64.ActiveCfg = Release|x64
 		{0EFFD7FC-FBE1-4CEC-8E92-5F39C3B26CC5}.Release|x64.Build.0 = Release|x64
 		{0EFFD7FC-FBE1-4CEC-8E92-5F39C3B26CC5}.Release|x86.ActiveCfg = Release|x64
+		{DDA69490-3DF7-4691-8E4B-4D57B8CA8816}.Debug|x64.ActiveCfg = Debug|x64
+		{DDA69490-3DF7-4691-8E4B-4D57B8CA8816}.Debug|x64.Build.0 = Debug|x64
+		{DDA69490-3DF7-4691-8E4B-4D57B8CA8816}.Debug|x86.ActiveCfg = Debug|x64
+		{DDA69490-3DF7-4691-8E4B-4D57B8CA8816}.Release|x64.ActiveCfg = Release|x64
+		{DDA69490-3DF7-4691-8E4B-4D57B8CA8816}.Release|x64.Build.0 = Release|x64
+		{DDA69490-3DF7-4691-8E4B-4D57B8CA8816}.Release|x86.ActiveCfg = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

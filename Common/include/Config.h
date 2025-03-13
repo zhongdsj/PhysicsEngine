@@ -2,6 +2,8 @@
 # include <ryml_all.hpp>
 # include "CommonMacro.h"
 
+# define Config_Instance ZDSJ::Config::getInstance()
+
 namespace c4
 {
 	namespace yml
@@ -17,21 +19,21 @@ namespace ZDSJ
 	class Config
 	{
 	public:
+		static Config* getInstance();
+		Delete_Copy_And_Move(Config);
+		c4::yml::NodeRef root();
+	private:
 		/**
 		 * @brief 构造函数
 		 */
 		Config(const char* filename);
-		Delete_Copy_And_Move(Config);
-
-		c4::yml::NodeRef root();
-
+		c4::yml::Tree m_tree;
+		std::string m_buffer;
+		std::string m_file_name;
+	protected:
 		/**
 		 * @brief 析构函数
 		 */
 		~Config();
-	private:
-		c4::yml::Tree m_tree;
-		std::string m_buffer;
-		std::string m_file_name;
 	};
 }
