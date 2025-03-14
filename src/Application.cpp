@@ -2,6 +2,7 @@
 # include <Context.h>
 # include <ApplicationWindowInterface.h>
 # include <ConsoleInterface.h>
+# include <Slot.h>
 
 ZDSJ::Application::Application()
 {
@@ -19,7 +20,6 @@ ZDSJ::Application::Application()
 )");
 	this->m_window = ZDSJ::createWindow(L"引擎", Context_Instance->getWindowX(), Context_Instance->getWindowY(), Context_Instance->getWindowWidth(), Context_Instance->getWindowHeight());
 	this->m_console = ZDSJ::createConsole(this->m_window->getHandle());
-	this->m_window->addHandelMessage("console", std::bind(&ConsoleInterface::messageHandle, this->m_console, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
 	this->m_tick_component.push_back(this->m_console);
 }
 

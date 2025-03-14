@@ -13,7 +13,8 @@ namespace ZDSJ
 		ApplicationWindowInterface() = default;
 		Delete_Copy_And_Move(ApplicationWindowInterface);
 		virtual HWND getHandle() const = 0;
-		virtual void addHandelMessage(const char* _id, std::function<LRESULT(HWND handle, UINT msg, WPARAM w_param, LPARAM l_param)> _handler) = 0;
+		virtual void addHandleMessage(const char* _id, std::function<LRESULT(HWND handle, UINT msg, WPARAM w_param, LPARAM l_param)> _handler) = 0;
+		virtual void removeHandleMessage(const char* _id) = 0;
 		virtual bool getMessage(MSG& _msg) = 0;
 		virtual ~ApplicationWindowInterface() = default;
 	protected:

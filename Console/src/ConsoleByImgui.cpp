@@ -22,6 +22,7 @@ ZDSJ::ConsoleByImgui::ConsoleByImgui(HWND _handle)
 	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.2f, 0.2f, 0.2f, 0.5f));
 	ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
 	auto window = Context_Instance->getWindow();
+	window->addHandleMessage("console", std::bind(&ConsoleInterface::messageHandle, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
 	if(window != nullptr)
 	{
 		this->m_slots.push_back(window->connect(ZDSJ::KEY::wavy, new Slot([this]()
@@ -54,6 +55,11 @@ ZDSJ::ConsoleByImgui::~ConsoleByImgui()
 	for (auto value : this->m_slots)
 	{
 		value->useful(false);
+	}
+	auto window = Context_Instance->getWindow();
+	if (window != nullptr)
+	{
+		window->removeHandleMessage("console");
 	}
 	ImGui::PopStyleColor(2);
 	ImGui_ImplDX11_Shutdown();

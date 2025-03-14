@@ -1,8 +1,6 @@
 ﻿# pragma once
-#include <atomic>
+# include <atomic>
 # include <functional>
-# include <string>
-# include <unordered_map>
 # include <CommonMacro.h>
 # include <CommonExport.h>
 
@@ -76,7 +74,7 @@ namespace ZDSJ
 
 		private:
 			std::function<void(void*)> m_slot;
-			std::atomic_bool m_useful;
+			std::atomic_bool m_useful{ true };
 
 #ifdef Less_Cxx17
 			// 辅助函数模板，用于展开元组

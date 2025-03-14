@@ -40,7 +40,7 @@ LRESULT ZDSJ::MyWindowClass::handelMessageSetUp(HWND handle, UINT msg, WPARAM w_
 		// 将消息转发到静态方法
 		// GWLP_WNDPROC设置窗口过程的新地址
 		SetWindowLongPtrW(handle, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(&ZDSJ::MyWindowClass::handelMessageForward));
-		return pwnd->handelMessage(handle, msg, w_param, l_param);
+		return pwnd->handleMessage(handle, msg, w_param, l_param);
 	}
 	return DefWindowProc(handle, msg, w_param, l_param);
 }
@@ -48,5 +48,5 @@ LRESULT ZDSJ::MyWindowClass::handelMessageSetUp(HWND handle, UINT msg, WPARAM w_
 LRESULT ZDSJ::MyWindowClass::handelMessageForward(HWND handle, UINT msg, WPARAM w_param, LPARAM l_param)
 {
 	ZDSJ::MyWindowInterface* const pwnd = reinterpret_cast<ZDSJ::MyWindowInterface*>(GetWindowLongPtrW(handle, GWLP_USERDATA));
-	return pwnd->handelMessage(handle, msg, w_param, l_param);
+	return pwnd->handleMessage(handle, msg, w_param, l_param);
 }

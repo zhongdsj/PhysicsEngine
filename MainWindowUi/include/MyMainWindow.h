@@ -23,14 +23,24 @@ namespace ZDSJ
 			auto pair = this->m_slots.find(signal);
 			if(pair != this->m_slots.end())
 			{
-				for (auto slot : std::get<1>(pair->second))
-				{
-					slot->emit(std::forward<Args>(args)...);
+				std::vector<Slot*>& temp = std::get<1>(pair->second);
+				for (auto iterator = temp.begin(); iterator != temp.end(); ) {
+					if((*iterator)->useful())
+					{
+						(*iterator)->emit(std::forward<Args>(args)...);
+						++iterator;
+					}else
+					{
+						const Slot* erase = (*iterator);
+						delete erase;
+						iterator = temp.erase(iterator);
+					}
 				}
 			}
 		}
-		LRESULT handelMessage(HWND handle, UINT msg, WPARAM w_param, LPARAM l_param) override;
-		void addHandelMessage(const char* _id, std::function<LRESULT(HWND handle, UINT msg, WPARAM w_param, LPARAM l_param)> _handler) override;
+		LRESULT handleMessage(HWND handle, UINT msg, WPARAM w_param, LPARAM l_param) override;
+		void addHandleMessage(const char* _id, std::function<LRESULT(HWND handle, UINT msg, WPARAM w_param, LPARAM l_param)> _handler) override;
+		void removeHandleMessage(const char* _id) override;
 		bool getMessage(MSG& _msg) override;
 		HWND getHandle() const override;
 		~MyMainWindow() override;

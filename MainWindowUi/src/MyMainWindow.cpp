@@ -36,7 +36,7 @@ ZDSJ::Slot* ZDSJ::MyMainWindow::connect(const std::string& signal, Slot* slot)
 	return slot;
 }
 
-LRESULT ZDSJ::MyMainWindow::handelMessage(HWND handle, UINT msg, WPARAM w_param, LPARAM l_param)
+LRESULT ZDSJ::MyMainWindow::handleMessage(HWND handle, UINT msg, WPARAM w_param, LPARAM l_param)
 {
 	// todo 处理消息
 	for (auto message_handler : this->m_messageHandler)
@@ -54,6 +54,9 @@ LRESULT ZDSJ::MyMainWindow::handelMessage(HWND handle, UINT msg, WPARAM w_param,
 			{
 			case VK_OEM_3:
 				this->emit(KEY::wavy);
+				break;
+			case VK_CONTROL:
+				this->emit(KEY::ctrl);
 				break;
 			}
 		}
@@ -75,9 +78,18 @@ LRESULT ZDSJ::MyMainWindow::handelMessage(HWND handle, UINT msg, WPARAM w_param,
 	return DefWindowProc(handle, msg, w_param, l_param);
 }
 
-void ZDSJ::MyMainWindow::addHandelMessage(const char* _id, std::function<LRESULT(HWND handle, UINT msg, WPARAM w_param, LPARAM l_param)> _handler)
+void ZDSJ::MyMainWindow::addHandleMessage(const char* _id, std::function<LRESULT(HWND handle, UINT msg, WPARAM w_param, LPARAM l_param)> _handler)
 {
 	this->m_messageHandler.insert(std::make_pair(_id, _handler));
+}
+
+void ZDSJ::MyMainWindow::removeHandleMessage(const char* _id)
+{
+	auto pair = this->m_messageHandler.find(_id);
+	if(pair != this->m_messageHandler.end())
+	{
+		this->m_messageHandler.erase(pair);
+	}
 }
 
 bool ZDSJ::MyMainWindow::getMessage(MSG& _msg)
@@ -111,6 +123,7 @@ ZDSJ::MyMainWindow::~MyMainWindow()
 void ZDSJ::MyMainWindow::registerSignal()
 {
 	this->m_slots.insert(std::make_pair(KEY::wavy, std::tuple<std::string, std::vector<Slot*>>("波浪键弹起触发", std::vector<Slot*>())));
+	this->m_slots.insert(std::make_pair(KEY::ctrl, std::tuple<std::string, std::vector<Slot*>>("ctrl弹起触发", std::vector<Slot*>())));
 }
 
 ZDSJ::ApplicationWindowInterface* ZDSJ::createWindow(const wchar_t* _window_name, int _x, int _y, int _width, int _height)
