@@ -1,9 +1,7 @@
 ﻿# include <MyMainWindow.h>
-
 # include <Context.h>
 # include <MyWindowClass.h>
-
-#include "KeyEnum.h"
+# include <KeyEnum.h>
 
 ZDSJ::MyMainWindow::MyMainWindow(DWORD _ex_style, LPCWSTR _class_name, LPCWSTR _window_name, DWORD _style, int _x,
                                  int _y, int _width, int _height, HWND _parent, HMENU _menu, HINSTANCE _instance)
@@ -96,20 +94,6 @@ bool ZDSJ::MyMainWindow::getMessage(MSG& _msg)
 	}
 	TranslateMessage(&_msg);
 	DispatchMessageW(&_msg);
-	//switch (res)
-	//{
-	//case 0:
-	//	// log quit
-	//	return false;
-	//case -1:
-	//	// log err
-	//	return false;
-	//default:
-	//	// 非0 非-1 为正常消息
-	//	TranslateMessage(&_msg);
-	//	DispatchMessageW(&_msg);
-	//	break;
-	//}
 	return true;
 }
 

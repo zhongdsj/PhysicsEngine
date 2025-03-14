@@ -1,5 +1,4 @@
 ﻿# pragma once
-# include <memory>
 # include "CommonExport.h"
 # include "CommonMacro.h"
 # include "Logger.h"

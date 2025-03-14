@@ -6,7 +6,7 @@
 # include <ApplicationWindowInterface.h>
 # include <string>
 # include <unordered_map>
-# include "Slot.h"
+# include <Slot.h>
 
 namespace ZDSJ
 {

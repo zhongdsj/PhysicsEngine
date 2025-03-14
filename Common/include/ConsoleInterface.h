@@ -1,5 +1,5 @@
 ﻿# pragma once
-# include "CommonExport.h"
+# include <CommonExport.h>
 # include <wtypes.h>
 # include <ComponentInterface.h>
 

@@ -4,9 +4,9 @@
 # include <imgui/imgui_impl_win32.h>
 # include <imgui/imgui_impl_dx11.h>
 # include <Context.h>
-# include "ApplicationWindowInterface.h"
-# include "KeyEnum.h"
-#include "Slot.h"
+# include <ApplicationWindowInterface.h>
+# include <KeyEnum.h>
+# include <Slot.h>
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
@@ -37,7 +37,6 @@ void ZDSJ::ConsoleByImgui::tick(float _use_time)
 	{
 		this->rend();
 	}
-	// this->rend();
 }
 
 LRESULT ZDSJ::ConsoleByImgui::messageHandle(HWND _handle, UINT _msg, WPARAM _w_param, LPARAM _l_param)

@@ -1,5 +1,5 @@
 ﻿# pragma once
-#include <atomic>
+# include <atomic>
 # include <ConsoleInterface.h>
 # include <ConsoleExport.h>
 # include <CommonMacro.h>
