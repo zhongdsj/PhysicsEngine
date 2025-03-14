@@ -1,8 +1,10 @@
 ﻿# pragma once
+#include <atomic>
 # include <ConsoleInterface.h>
 # include <ConsoleExport.h>
 # include <CommonMacro.h>
 # include <memory>
+# include <vector>
 
 struct ID3D11Device;
 struct IDXGISwapChain;
@@ -11,6 +13,7 @@ struct ID3D11RenderTargetView;
 
 namespace ZDSJ
 {
+	class Slot;
 	class Console_Api ConsoleByImgui : public ConsoleInterface
 	{
 	public:
@@ -26,6 +29,9 @@ namespace ZDSJ
 		std::shared_ptr<ID3D11Device> m_device;
 		std::shared_ptr<ID3D11DeviceContext> m_context;
 		std::shared_ptr<ID3D11RenderTargetView> m_render_target_view;
+		std::atomic_bool m_show{false};
+		std::vector<Slot*> m_slots;
+
 		void rend();
 
 		void createDeviceD3D(HWND _handle);

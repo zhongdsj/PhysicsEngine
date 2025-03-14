@@ -4,6 +4,9 @@
 # include <imgui/imgui_impl_win32.h>
 # include <imgui/imgui_impl_dx11.h>
 # include <Context.h>
+# include "ApplicationWindowInterface.h"
+# include "KeyEnum.h"
+#include "Slot.h"
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
@@ -18,11 +21,23 @@ ZDSJ::ConsoleByImgui::ConsoleByImgui(HWND _handle)
 
 	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.2f, 0.2f, 0.2f, 0.5f));
 	ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
+	auto window = Context_Instance->getWindow();
+	if(window != nullptr)
+	{
+		this->m_slots.push_back(window->connect(ZDSJ::KEY::wavy, new Slot([this]()
+		{
+			this->m_show.store(!this->m_show.load());
+		})));
+	}
 }
 
 void ZDSJ::ConsoleByImgui::tick(float _use_time)
 {
-	this->rend();
+	if (this->m_show.load())
+	{
+		this->rend();
+	}
+	// this->rend();
 }
 
 LRESULT ZDSJ::ConsoleByImgui::messageHandle(HWND _handle, UINT _msg, WPARAM _w_param, LPARAM _l_param)
@@ -37,6 +52,10 @@ bool ZDSJ::ConsoleByImgui::show()
 
 ZDSJ::ConsoleByImgui::~ConsoleByImgui()
 {
+	for (auto value : this->m_slots)
+	{
+		value->useful(false);
+	}
 	ImGui::PopStyleColor(2);
 	ImGui_ImplDX11_Shutdown();
 	ImGui_ImplWin32_Shutdown();

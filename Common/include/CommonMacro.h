@@ -1,5 +1,9 @@
 ﻿# pragma once
 
+#if __cplusplus < 201703L
+#define Less_Cxx17
+#endif
+
 # define Delete_Copy_Construction(_class_name) \
 	_class_name(const _class_name&) = delete
 

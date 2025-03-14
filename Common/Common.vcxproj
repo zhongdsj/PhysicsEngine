@@ -103,9 +103,13 @@ if ERRORLEVEL 1 set ERRORLEVEL=0</Command>
     <ClInclude Include="include\Config.h" />
     <ClInclude Include="include\ConsoleInterface.h" />
     <ClInclude Include="include\Context.h" />
+    <ClInclude Include="include\KeyEnum.h" />
+    <ClInclude Include="include\Slot.h" />
     <ClInclude Include="include\Logger.h" />
+    <ClInclude Include="include\SignalSender.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\ApplicationWindowInterface.cpp" />
     <ClCompile Include="src\Config.cpp" />
     <ClCompile Include="src\Context.cpp" />
     <ClCompile Include="src\Logger.cpp" />

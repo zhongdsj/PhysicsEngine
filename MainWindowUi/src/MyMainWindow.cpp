@@ -3,6 +3,8 @@
 # include <Context.h>
 # include <MyWindowClass.h>
 
+#include "KeyEnum.h"
+
 ZDSJ::MyMainWindow::MyMainWindow(DWORD _ex_style, LPCWSTR _class_name, LPCWSTR _window_name, DWORD _style, int _x,
                                  int _y, int _width, int _height, HWND _parent, HMENU _menu, HINSTANCE _instance)
 {
@@ -22,6 +24,18 @@ ZDSJ::MyMainWindow::MyMainWindow(DWORD _ex_style, LPCWSTR _class_name, LPCWSTR _
 		_x, _y, _width, _height, _parent, _menu, _instance, this
 	);
 	ShowWindow(this->m_handle, SW_SHOWDEFAULT);
+	this->registerSignal();
+	this->registerToContext();
+}
+
+ZDSJ::Slot* ZDSJ::MyMainWindow::connect(const std::string& signal, Slot* slot)
+{
+	auto pair = this->m_slots.find(signal);
+	if(pair != this->m_slots.end())
+	{
+		std::get<1>(pair->second).push_back(slot);
+	}
+	return slot;
 }
 
 LRESULT ZDSJ::MyMainWindow::handelMessage(HWND handle, UINT msg, WPARAM w_param, LPARAM l_param)
@@ -36,6 +50,16 @@ LRESULT ZDSJ::MyMainWindow::handelMessage(HWND handle, UINT msg, WPARAM w_param,
 	}
 	switch (msg)
 	{
+	case WM_KEYUP:
+		{
+			switch (w_param)
+			{
+			case VK_OEM_3:
+				this->emit(KEY::wavy);
+				break;
+			}
+		}
+		break;
 	case WM_MOVE:
 		{
 			const int x_pos = (int)static_cast<short>(LOWORD(l_param));   // horizontal position 
@@ -98,6 +122,11 @@ ZDSJ::MyMainWindow::~MyMainWindow()
 {
 	DestroyWindow(this->m_handle);
 	Log_Info("[win api]: window destroy");
+}
+
+void ZDSJ::MyMainWindow::registerSignal()
+{
+	this->m_slots.insert(std::make_pair(KEY::wavy, std::tuple<std::string, std::vector<Slot*>>("波浪键弹起触发", std::vector<Slot*>())));
 }
 
 ZDSJ::ApplicationWindowInterface* ZDSJ::createWindow(const wchar_t* _window_name, int _x, int _y, int _width, int _height)

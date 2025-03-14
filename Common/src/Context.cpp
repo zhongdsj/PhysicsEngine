@@ -36,6 +36,11 @@ void ZDSJ::Context::writeToConfig() const
 	root["height"] << this->m_window_height;
 }
 
+void ZDSJ::Context::registerWindow(ApplicationWindowInterface* _window)
+{
+	this->m_window = _window;
+}
+
 ZDSJ::Context::~Context()
 {
 	this->writeToConfig();
