@@ -4,6 +4,7 @@
 # include <MainWindowUiExport.h>
 # include <MyWindowInterface.h>
 # include <ApplicationWindowInterface.h>
+#include <memory>
 # include <string>
 # include <unordered_map>
 # include <Slot.h>
@@ -52,7 +53,7 @@ namespace ZDSJ
 
 	private:
 		HWND m_handle = nullptr;
-		MyWindowClass* m_windowClass = nullptr;
+		std::shared_ptr<MyWindowClass> m_windowClass;
 		std::unordered_map<const char*, std::function<LRESULT(HWND handle, UINT msg, WPARAM w_param, LPARAM l_param)>> m_messageHandler;
 		std::unordered_map<std::string, std::tuple<std::string, std::vector<Slot*>>> m_slots;
 	};

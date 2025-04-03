@@ -5,6 +5,8 @@ ZDSJ::DllLoader::DllLoader()
 {
 	this->m_indispensable.push_back(L"Common.dll");
 	this->m_indispensable.push_back(L"MainWindowUi.dll");
+	this->m_indispensable.push_back(L"Console.dll");
+	this->m_indispensable.push_back(L"Renderer.dll");
 }
 
 bool ZDSJ::DllLoader::load()

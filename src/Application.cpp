@@ -1,6 +1,7 @@
 ﻿# include <Application.h>
 # include <Context.h>
 # include <ApplicationWindowInterface.h>
+# include <Dx11Interface.h>
 # include <ConsoleInterface.h>
 # include <Slot.h>
 
@@ -18,9 +19,10 @@ ZDSJ::Application::Application()
 	-------------------------------------
 			welcome to my engine
 )");
-	this->m_window = ZDSJ::createWindow(L"引擎", Context_Instance->getWindowX(), Context_Instance->getWindowY(), Context_Instance->getWindowWidth(), Context_Instance->getWindowHeight());
-	this->m_console = ZDSJ::createConsole(this->m_window->getHandle());
-	this->m_tick_component.push_back(this->m_console);
+	this->m_window = std::shared_ptr<ApplicationWindowInterface>(ZDSJ::createWindow(L"引擎", Context_Instance->getWindowX(), Context_Instance->getWindowY(), Context_Instance->getWindowWidth(), Context_Instance->getWindowHeight()));
+	ZDSJ::createDx11(this->m_window->getHandle(), Context_Instance->getWindowWidth(), Context_Instance->getWindowHeight(), 0);
+	this->m_console = std::shared_ptr<ConsoleInterface>(ZDSJ::createConsole(this->m_window->getHandle()));
+	this->m_tick_component.push_back(this->m_console.get());
 }
 
 void ZDSJ::Application::run() const
@@ -28,6 +30,7 @@ void ZDSJ::Application::run() const
 	Log_Info("start message loop");
 	while(true)
 	{
+		Context_Instance->getDx11()->beginTick();
 		if (this->m_window != nullptr)
 		{
 			MSG msg;
@@ -43,9 +46,7 @@ void ZDSJ::Application::run() const
 
 ZDSJ::Application::~Application()
 {
-	delete this->m_console;
-	delete this->m_window;
-	Log_Info("exit engine");
+	Log_Info("exit Application");
 }
 
 void ZDSJ::Application::tick(float _use_time) const
@@ -54,4 +55,5 @@ void ZDSJ::Application::tick(float _use_time) const
 	{
 		item->tick(_use_time);
 	}
+	Context_Instance->getDx11()->tick(_use_time);
 }

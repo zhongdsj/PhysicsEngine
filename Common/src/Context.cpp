@@ -14,6 +14,11 @@ ZDSJ::Context::Context()
 	Log_Info("context init complete");
 }
 
+void ZDSJ::Context::registerDx11(Dx11Interface* _ptr)
+{
+	this->m_dx11 = _ptr;
+}
+
 void ZDSJ::Context::readFromConfig()
 {
 	// 读取配置文件
@@ -43,5 +48,11 @@ void ZDSJ::Context::registerWindow(ApplicationWindowInterface* _window)
 
 ZDSJ::Context::~Context()
 {
+	delete this->m_dx11;
 	this->writeToConfig();
+}
+
+float ZDSJ::Context::windowRate() const
+{
+	return static_cast<float>(this->m_window_width) / this->m_window_height;
 }

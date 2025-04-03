@@ -1,0 +1,162 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="头文件\include">
+      <UniqueIdentifier>{c2197048-7c53-40b5-9ba0-6b0cd2f1d0a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\src">
+      <UniqueIdentifier>{45138d2a-e45e-4ae5-8f4b-cb88da376154}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\include\MyDx11">
+      <UniqueIdentifier>{bef9230f-b33a-4936-b777-fc417c7daf2e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\include\MyDx11\DrawAble">
+      <UniqueIdentifier>{a0aede1c-7d41-4e98-9a64-73f2cc04b2dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\include\MyDx11\BindAble">
+      <UniqueIdentifier>{dc30627e-fe47-4269-9358-c5e8ddc7f675}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\include\MyDx11\Shader">
+      <UniqueIdentifier>{94031d77-6f21-4b5a-9c83-4a80768215fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\src\MyDx11">
+      <UniqueIdentifier>{cb5f860e-2509-4a77-b1ec-4cfbf212e4fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\src\MyDx11\BindAble">
+      <UniqueIdentifier>{470b9ce5-18ae-4bbb-b8fa-46867ab70df3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\src\MyDx11\DrawAble">
+      <UniqueIdentifier>{5c08c998-31dd-422c-b9f0-301fb7529b1c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\MyDx11\BindAble\BindAbleInterface.h">
+      <Filter>头文件\include\MyDx11\BindAble</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MyDx11\BindAble\ConstantBufferBindAble.h">
+      <Filter>头文件\include\MyDx11\BindAble</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MyDx11\BindAble\IndexBufferBindAble.h">
+      <Filter>头文件\include\MyDx11\BindAble</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MyDx11\BindAble\InputLayoutBindAble.h">
+      <Filter>头文件\include\MyDx11\BindAble</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MyDx11\BindAble\PixelShaderBindAble.h">
+      <Filter>头文件\include\MyDx11\BindAble</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MyDx11\BindAble\VertexBufferBindAble.h">
+      <Filter>头文件\include\MyDx11\BindAble</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MyDx11\BindAble\VertexConstantBufferBindAble.h">
+      <Filter>头文件\include\MyDx11\BindAble</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MyDx11\BindAble\VertexShaderBindAble.h">
+      <Filter>头文件\include\MyDx11\BindAble</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MyDx11\DrawAble\Arc2DDrawAble.h">
+      <Filter>头文件\include\MyDx11\DrawAble</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MyDx11\DrawAble\DrawAbleAdapter.h">
+      <Filter>头文件\include\MyDx11\DrawAble</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MyDx11\DrawAble\DrawAbleBase.h">
+      <Filter>头文件\include\MyDx11\DrawAble</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MyDx11\DrawAble\DrawAbleInterface.h">
+      <Filter>头文件\include\MyDx11\DrawAble</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MyDx11\DrawAble\Rectangle2DDrawAble.h">
+      <Filter>头文件\include\MyDx11\DrawAble</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MyDx11\DrawAble\Triangle2DDrawAble.h">
+      <Filter>头文件\include\MyDx11\DrawAble</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MyDx11\Camera.h">
+      <Filter>头文件\include\MyDx11</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MyDx11\DrawAbleManager.h">
+      <Filter>头文件\include\MyDx11</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MyDx11\MyDx11.h">
+      <Filter>头文件\include\MyDx11</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MyDx11\VertexStructure.h">
+      <Filter>头文件\include\MyDx11</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Persistence.h">
+      <Filter>头文件\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RendererExport.h">
+      <Filter>头文件\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MyDx11\Shader\TrianglePixelShader2D.h">
+      <Filter>头文件\include\MyDx11\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MyDx11\Shader\TriangleVertexShader2D.h">
+      <Filter>头文件\include\MyDx11\Shader</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\MyDx11\Camera.cpp">
+      <Filter>源文件\src\MyDx11</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MyDx11\DrawAbleManager.cpp">
+      <Filter>源文件\src\MyDx11</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MyDx11\MyDx11.cpp">
+      <Filter>源文件\src\MyDx11</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MyDx11\VertexStructure.cpp">
+      <Filter>源文件\src\MyDx11</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MyDx11\BindAble\ConstantBufferBindAble.cpp">
+      <Filter>源文件\src\MyDx11\BindAble</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MyDx11\BindAble\IndexBufferBindAble.cpp">
+      <Filter>源文件\src\MyDx11\BindAble</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MyDx11\BindAble\InputLayoutBindAble.cpp">
+      <Filter>源文件\src\MyDx11\BindAble</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MyDx11\BindAble\PixelShaderBindAble.cpp">
+      <Filter>源文件\src\MyDx11\BindAble</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MyDx11\BindAble\VertexBufferBindAble.cpp">
+      <Filter>源文件\src\MyDx11\BindAble</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MyDx11\BindAble\VertexConstantBufferBindAble.cpp">
+      <Filter>源文件\src\MyDx11\BindAble</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MyDx11\BindAble\VertexShaderBindAble.cpp">
+      <Filter>源文件\src\MyDx11\BindAble</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MyDx11\DrawAble\Arc2DDrawAble.cpp">
+      <Filter>源文件\src\MyDx11\DrawAble</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MyDx11\DrawAble\DrawAbleAdapter.cpp">
+      <Filter>源文件\src\MyDx11\DrawAble</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MyDx11\DrawAble\Rectangle2DDrawAble.cpp">
+      <Filter>源文件\src\MyDx11\DrawAble</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MyDx11\DrawAble\Triangle2DDrawAble.cpp">
+      <Filter>源文件\src\MyDx11\DrawAble</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Persistence.cpp">
+      <Filter>源文件\src</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

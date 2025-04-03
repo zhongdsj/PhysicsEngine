@@ -54,6 +54,12 @@
     <ClInclude Include="include\KeyEnum.h">
       <Filter>头文件\include</Filter>
     </ClInclude>
+    <ClInclude Include="include\Dx11Interface.h">
+      <Filter>头文件\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Types.h">
+      <Filter>头文件\include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Context.cpp">
@@ -66,6 +72,9 @@
       <Filter>源文件\src</Filter>
     </ClCompile>
     <ClCompile Include="src\ApplicationWindowInterface.cpp">
+      <Filter>源文件\src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Dx11Interface.cpp">
       <Filter>源文件\src</Filter>
     </ClCompile>
   </ItemGroup>

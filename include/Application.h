@@ -2,6 +2,7 @@
 # include <CommonMacro.h>
 # include <vector>
 # include <ComponentInterface.h>
+#include <memory>
 
 namespace ZDSJ
 {
@@ -19,8 +20,8 @@ namespace ZDSJ
 		~Application();
 
 	private:
-		ApplicationWindowInterface* m_window = nullptr;
-		ConsoleInterface* m_console = nullptr;
+		std::shared_ptr<ApplicationWindowInterface> m_window = nullptr;
+		std::shared_ptr<ConsoleInterface> m_console = nullptr;
 		std::vector<ComponentInterface*> m_tick_component;
 
 		void tick(float _use_time) const;

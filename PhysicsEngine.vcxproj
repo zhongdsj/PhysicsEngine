@@ -65,7 +65,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <DelayLoadDLLs>Common.dll;MainWindowUi.dll;Console.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
+      <DelayLoadDLLs>Common.dll;MainWindowUi.dll;Renderer.dll;Console.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
     </Link>
     <PostBuildEvent>
       <Command>robocopy $(SolutionDir)bin\$(ProjectName)\$(Platform)\$(Configuration) $(SolutionDir)bin\$(Platform)\$(Configuration) $(TargetName)$(TargetExt)
@@ -92,7 +92,7 @@ xcopy /y /d "$(ProjectDir)thirdparty\*.dll" "$(SolutionDir)bin\$(Platform)\$(Con
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <DelayLoadDLLs>Common.dll;MainWindowUi.dll;Console.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
+      <DelayLoadDLLs>Common.dll;MainWindowUi.dll;Renderer.dll;Console.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
     </Link>
     <PostBuildEvent>
       <Command>robocopy $(SolutionDir)bin\$(ProjectName)\$(Platform)\$(Configuration) $(SolutionDir)bin\$(Platform)\$(Configuration) $(TargetName)$(TargetExt)
@@ -122,6 +122,9 @@ xcopy /y /d "$(ProjectDir)thirdparty\*.dll" "$(SolutionDir)bin\$(Platform)\$(Con
     </ProjectReference>
     <ProjectReference Include="MainWindowUi\MainWindowUi.vcxproj">
       <Project>{ccf70e39-a948-40c2-af56-b21ddd7122cd}</Project>
+    </ProjectReference>
+    <ProjectReference Include="Renderer\Renderer.vcxproj">
+      <Project>{f86ff19c-5406-4c34-bc2c-f74eb7f53bb4}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

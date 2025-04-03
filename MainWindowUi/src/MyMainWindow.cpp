@@ -6,7 +6,7 @@
 ZDSJ::MyMainWindow::MyMainWindow(DWORD _ex_style, LPCWSTR _class_name, LPCWSTR _window_name, DWORD _style, int _x,
                                  int _y, int _width, int _height, HWND _parent, HMENU _menu, HINSTANCE _instance)
 {
-	this->m_windowClass = new ZDSJ::MyWindowClass(_instance, _class_name);
+	this->m_windowClass = std::make_shared<MyWindowClass>(_instance, _class_name);
 	this->m_handle = CreateWindowExW(
 		_ex_style,
 		// WS_EX_TOPMOST: 置顶, 调试ui时可用

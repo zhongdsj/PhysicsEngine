@@ -25,21 +25,12 @@ namespace ZDSJ
 		~ConsoleByImgui() override;
 	private:
 		int m_console_flag = 0;
-		std::shared_ptr<IDXGISwapChain> m_swap_chain;
-		std::shared_ptr<ID3D11Device> m_device;
-		std::shared_ptr<ID3D11DeviceContext> m_context;
-		std::shared_ptr<ID3D11RenderTargetView> m_render_target_view;
+		ID3D11Device* m_device;
+		ID3D11DeviceContext* m_context;
 		std::atomic_bool m_show{false};
 		std::vector<Slot*> m_slots;
 
 		void rend();
-
-		void createDeviceD3D(HWND _handle);
-		void createRenderTarget();
 	};
 
-	ConsoleInterface* createConsole(HWND _handle)
-	{
-		return new ConsoleByImgui(_handle);
-	}
 }

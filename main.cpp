@@ -3,6 +3,8 @@
 # include <Application.h>
 # include <DllLoader.h>
 
+#include "Logger.h"
+
 
 int WINAPI WinMain(_In_ HINSTANCE _hInstance, _In_opt_ HINSTANCE _hPrevInstance, _In_ LPSTR _lpCmdLine, _In_ int _nShowCmd) {
 	if (SetDllDirectory(L"dll\\") == 0) {
@@ -18,5 +20,6 @@ int WINAPI WinMain(_In_ HINSTANCE _hInstance, _In_opt_ HINSTANCE _hPrevInstance,
 	auto app = new ZDSJ::Application();
 	app->run();
 	delete app;
+	ZDSJ::Log_Info("exit engine");
 	return 0;
 }
