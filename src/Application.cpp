@@ -40,6 +40,7 @@ void ZDSJ::Application::run() const
 			}
 		}
 		this->tick(1.0);
+		Context_Instance->getDx11()->endTick();
 	}
 	Log_Info("message loop end");
 }
@@ -51,9 +52,9 @@ ZDSJ::Application::~Application()
 
 void ZDSJ::Application::tick(float _use_time) const
 {
+	Context_Instance->getDx11()->tick(_use_time);
 	for (auto item : this->m_tick_component)
 	{
 		item->tick(_use_time);
 	}
-	Context_Instance->getDx11()->tick(_use_time);
 }

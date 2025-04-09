@@ -205,6 +205,11 @@ void ZDSJ::MyDx11::beginTick()
 void ZDSJ::MyDx11::tick(float _use_time)
 {
 	this->m_drawable_manager->render(m_context);
+}
+
+
+void ZDSJ::MyDx11::endTick()
+{
 	this->m_swap_chain->Present(1, 0);
 }
 

@@ -188,7 +188,7 @@ void ZDSJ::DrawAbleManager::itemRender(std::vector<ZDSJ::DrawAbleInterface*>::it
 			++next;
 		}
 		// 计算加速度并移动
-		(*_iterator)->moveByAcceleration();
+		// (*_iterator)->moveByAcceleration();
 	}
 
 	//if ((*_iterator)->pointInPolgon2D(_mouse_word.x, _mouse_word.y)) {

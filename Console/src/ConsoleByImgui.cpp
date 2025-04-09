@@ -12,6 +12,7 @@ extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg
 
 ZDSJ::ConsoleByImgui::ConsoleByImgui(HWND _handle)
 {
+	// TODO 改为创建子窗口, 在子窗口中创建dx11与ImGui, 将控制台使用的dx11与渲染端使用的dx11分开
 	Log_Info("[console]: create console");
 	// this->createDeviceD3D(_handle);
 	this->m_device = Context_Instance->getDx11()->device();

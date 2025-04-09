@@ -17,6 +17,7 @@ namespace ZDSJ
 		virtual ID3D11Device* device() const = 0;
 		virtual ID3D11DeviceContext* context() const = 0;
 		virtual void beginTick() = 0;
+		virtual void endTick() = 0;
 		virtual void solid() = 0;
 		virtual void wireframe() = 0;
 		virtual ~Dx11Interface() override = default;

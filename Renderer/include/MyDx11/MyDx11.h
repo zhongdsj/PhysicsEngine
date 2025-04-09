@@ -18,9 +18,10 @@ namespace ZDSJ {
 	class Renderer_Api MyDx11: public Dx11Interface {
 	public:
 		Delete_Copy_And_Move(MyDx11);
-		void tick(float _use_time) override;
 		MyDx11(HWND _hwnd, int _window_width, int _window_height, RenderType _render_type);
 		void beginTick() override;
+		void tick(float _use_time) override;
+		void endTick() override;
 		void solid() override;
 		void wireframe() override;
 		ID3D11Device* device() const override;

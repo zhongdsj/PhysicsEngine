@@ -13,7 +13,7 @@ ZDSJ::Camera* ZDSJ::Camera::getInstance()
 
 ZDSJ::Camera::Camera(ZDSJ::Context* _context, float _window_rate) : m_view_pos(new ZDSJ::Point())
 {
-	this->loadFromFile();
+	// this->loadFromFile();
 	/*_context->keyboard()->registerKeyboard(ZDSJ::Key::nothing, ZDSJ::Key::mouse_wheel, "change camera position z, scroll up close to the object, scroll down away from the object", [&](float _data) {
 		this->m_pos.z += (_data * this->m_pos_z_step);
 		this->calculateViewMatrix();
@@ -119,6 +119,12 @@ ZDSJ::Camera::Camera(ZDSJ::Context* _context, float _window_rate) : m_view_pos(n
 	});*/
 	this->calculateProjectionMatrix(_window_rate);
 	this->calculateViewMatrix(_window_rate);
+	this->printCameraParams();
+}
+
+void ZDSJ::Camera::printCameraParams() const
+{
+	Log_Info("[camera]: ({}, {}, {}, {}), (fov, near, far): ({}, {}, {})", this->m_pos.x, this->m_pos.y, this->m_pos.z, this->m_pos.w, this->m_fov, this->m_near_plane, this->m_far_plane);
 }
 
 ZDSJ::Point ZDSJ::Camera::viewPosToWordPos(ZDSJ::Point _pos) const
@@ -214,6 +220,7 @@ ZDSJ::Point ZDSJ::Camera::viewPosSize() const
 
 void ZDSJ::Camera::saveToFile() const
 {
+	// TODO 转为通过配置类写入配置文件
 	ZDSJ::Persistence persistence("init.ini", true);
 	size_t size = 0;
 	size_t offset = 0;
@@ -235,6 +242,7 @@ void ZDSJ::Camera::saveToFile() const
 
 void ZDSJ::Camera::loadFromFile()
 {
+	// TODO 转为通过配置类读取配置文件
 	ZDSJ::Persistence persistence("init.ini");
 	size_t size = 0;
 	size_t offset = 0;

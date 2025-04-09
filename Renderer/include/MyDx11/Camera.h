@@ -47,6 +47,7 @@ namespace ZDSJ {
 
 		Camera(Context* _context, float _window_rate);
 
+		void printCameraParams() const;
 		void calculateProjectionMatrix();
 		void calculateProjectionMatrix(float _window_rate);
 		void calculateViewMatrix();

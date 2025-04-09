@@ -131,6 +131,8 @@ ZDSJ::ApplicationWindowInterface* ZDSJ::createWindow(const wchar_t* _window_name
 	Log_Info("[win api]: create window");
 	constexpr DWORD ex_style = NULL;
 	const auto class_name = L"ZDSJWindow";
+	// TODO 改为创建父窗口
+	// WS_CLIPCHILDREN	0x02000000L	在父窗口内进行绘图时，不包括子窗口所占用的区域。 创建父窗口时使用此样式。
 	constexpr DWORD style = WS_SYSMENU;
 	const HWND parent = nullptr;
 	const HMENU menu = nullptr;
