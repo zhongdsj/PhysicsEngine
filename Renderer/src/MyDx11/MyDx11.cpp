@@ -1,13 +1,12 @@
 ﻿# include <MyDx11/MyDx11.h>
-# include <MyDx11/DrawAble/Triangle2DDrawAble.h>
 # include <MyDx11/DrawAble/Rectangle2DDrawAble.h>
-# include <MyDx11/DrawAble/Arc2DDrawAble.h>
-# include <MyDx11/DrawAbleManager.h>
+# include <Manager/BaseManager.h>
 # include <Context.h>
 # include <DirectXMath.h>
 # include <d3d11.h>
 # include <sstream>
-# include <Persistence.h>
+# include <MyDx11/DrawAbleData.h>
+#include "Physics/Collision.h"
 
 ZDSJ::Dx11Interface* ZDSJ::createDx11(HWND _hwnd, int _window_width, int _window_height, int _render_type)
 {
@@ -83,7 +82,7 @@ ZDSJ::MyDx11::MyDx11(HWND _hwnd, int _window_width, int _window_height, ZDSJ::Re
 	this->m_context->RSSetViewports(1, &view_port);
 
 	// 
-	this->m_drawable_manager = new ZDSJ::DrawAbleManager(_render_type);
+	this->m_drawable_manager = new ZDSJ::BaseManager(this->m_device, this->m_context);
 
 	//ZDSJ::Context::getInstance()->keyboard()->registerKeyboard(ZDSJ::Key::ctrl, ZDSJ::Key::mouse_left, "add element in mouse position", [&](float _data){
 	//	short x;
@@ -194,7 +193,9 @@ ZDSJ::MyDx11::MyDx11(HWND _hwnd, int _window_width, int _window_height, ZDSJ::Re
 	
 	this->solid();
 	this->registerToContext();
-	this->m_drawable_manager->add((new Arc2DDrawAble(this->m_device, this->m_context, 20, 360))->setPosX(100));
+	this->m_drawable_manager->add((new DrawAbleData("Arc2D"))->addVelocity({1.0f, 0.0f, 0.0f}));
+	this->m_drawable_manager->add(new DrawAbleData("Arc2D", { 15.0f, 0.0f, 0.0f }));
+	// this->m_drawable_manager->add(new Arc2DDrawAble(this->m_device, this->m_context, 20, 360));
 }
 
 void ZDSJ::MyDx11::beginTick()
@@ -251,18 +252,15 @@ void ZDSJ::MyDx11::clearByBackground()
 
 void ZDSJ::MyDx11::createTriangle2D(float _x, float _y, float _width, float _height)
 {
-	this->m_drawable_manager->add((new ZDSJ::Triangle2DDrawAble(this->m_device, this->m_context))
-	                              ->setPosX(_x)->setPosY(_y)->setSizeX(_width)->setSizeY(_height));
+	// this->m_drawable_manager->add((new ZDSJ::Triangle2DDrawAble(this->m_device, this->m_context)));
 }
 
 void ZDSJ::MyDx11::createRectangle2D(float _x, float _y, float _width, float _height)
 {
-	this->m_drawable_manager->add((new ZDSJ::Rectangle2DDrawAble(this->m_device, this->m_context))
-	                              ->setPosX(_x)->setPosY(_y)->setSizeX(_width)->setSizeY(_height));
+	// this->m_drawable_manager->add((new ZDSJ::Rectangle2DDrawAble(this->m_device, this->m_context)));
 }
 
 void ZDSJ::MyDx11::createCircle2D(float _x, float _y, float _width, float _height)
 {
-	this->m_drawable_manager->add((new ZDSJ::Arc2DDrawAble(this->m_device, this->m_context, 20, 360))
-	                              ->setPosX(_x)->setPosY(_y)->setSizeX(_width)->setSizeY(_height));
+	// this->m_drawable_manager->add((new ZDSJ::Arc2DDrawAble(this->m_device, this->m_context, 20, 360)));
 }

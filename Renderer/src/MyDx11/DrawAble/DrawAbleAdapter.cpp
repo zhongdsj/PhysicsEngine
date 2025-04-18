@@ -6,24 +6,23 @@
 # include <MyDx11/VertexStructure.h>
 # include <MyDx11/BindAble/IndexBufferBindAble.h>
 # include <MyDx11/BindAble/VertexBufferBindAble.h>
-# include <MyDx11/DrawAble/Triangle2DDrawAble.h>
-# include <MyDx11/DrawAble/Rectangle2DDrawAble.h>
-# include <MyDx11/DrawAble/Arc2DDrawAble.h>
 # include <MyDx11/Camera.h>
 # include <Context.h>
+# include <Physics/MovementInterface.h>
+# include <MyDx11/DrawAbleData.h>
 
-ZDSJ::DrawAbleAdapter::DrawAbleAdapter(const DrawAbleData& _data) : m_bind_able(new std::vector<ZDSJ::BindAbleInterface*>), m_data(new DrawAbleData(_data))
+ZDSJ::DrawAbleAdapter::DrawAbleAdapter() : m_bind_able(new std::vector<std::shared_ptr<BindAbleInterface>>)
 {
-	/*this->m_movement = new BaseMovement(this);*/
+	
 }
 
-void ZDSJ::DrawAbleAdapter::draw(ID3D11DeviceContext* _context, bool _bind_static)
+void ZDSJ::DrawAbleAdapter::draw(ID3D11DeviceContext* _context, const DrawAbleData* _drawAbleData, bool _bind_static)
 {
 	this->bind(_context);
 	if (_bind_static) {
 		this->bindStatic(_context);
 	}
-	this->update(_context);
+	this->update(_context, _drawAbleData);
 	if (!this->hasState(ZDSJ::DrawAbleState::Check)) {
 		this->drawIndex(_context);
 	}
@@ -33,38 +32,14 @@ void ZDSJ::DrawAbleAdapter::draw(ID3D11DeviceContext* _context, bool _bind_stati
 	
 }
 
-const ZDSJ::float3& ZDSJ::DrawAbleAdapter::position() const
-{
-	return this->m_data->pos;
-}
-
-const ZDSJ::float3& ZDSJ::DrawAbleAdapter::size() const
-{
-	return this->m_data->size;
-}
-
-void ZDSJ::DrawAbleAdapter::calculateForce(DrawAbleInterface* _other)
-{
-	//this->m_movement->calculateForce(_other->getMovement());
-}
-
-void ZDSJ::DrawAbleAdapter::moveByAcceleration()
-{
-	//const auto a = this->m_movement->calculateAcceleration();
-	//this->m_data->pos.x += a.x;
-	//this->m_data->pos.y += a.y;
-	//this->m_data->pos.z += a.z;
-}
-
 ZDSJ::DrawAbleAdapter::~DrawAbleAdapter()
 {
 	delete this->m_bind_able;
-	delete this->m_data;
 }
 
-void ZDSJ::DrawAbleAdapter::update(ID3D11DeviceContext* _context)
+void ZDSJ::DrawAbleAdapter::update(ID3D11DeviceContext* _context, const DrawAbleData* _drawAbleData)
 {
-	this->m_transform->update(_context, this->getTransformMatix());
+	this->m_transform.get()->update(_context, this->getTransformMatix(_drawAbleData));
 }
 
 void ZDSJ::DrawAbleAdapter::bind(ID3D11DeviceContext* _context)
@@ -87,106 +62,35 @@ void ZDSJ::DrawAbleAdapter::drawIndex(ID3D11DeviceContext* _context, unsigned in
 	_context->DrawIndexed(this->getStaticIndexSize(), _start_index_location, _base_vertex_location);
 }
 
-ZDSJ::MovementInterface* ZDSJ::DrawAbleAdapter::getMovement() const
-{
-	return this->m_movement;
-}
-
-DirectX::XMMATRIX ZDSJ::DrawAbleAdapter::getTransformMatix() const
+DirectX::XMMATRIX ZDSJ::DrawAbleAdapter::getTransformMatix(const DrawAbleData* _drawAbleData) const
 {
 	// 世界矩阵->视图矩阵->投影矩阵
 	// 世界矩阵
-	DirectX::XMMATRIX size = DirectX::XMMatrixScaling(this->m_data->size.x, this->m_data->size.y, this->m_data->size.z);
-	DirectX::XMMATRIX rotation = DirectX::XMMatrixRotationRollPitchYaw(this->m_data->rotation.x, this->m_data->rotation.y, this->m_data->rotation.z);
-	DirectX::XMMATRIX pos = DirectX::XMMatrixTranslation(this->m_data->pos.x, this->m_data->pos.y, this->m_data->pos.z);
-	DirectX::XMMATRIX word = size * rotation * pos;
+	DirectX::XMMATRIX size = DirectX::XMMatrixScalingFromVector(DirectX::XMLoadFloat3(&_drawAbleData->size()));
+	DirectX::XMMATRIX rotation = DirectX::XMMatrixRotationRollPitchYawFromVector(DirectX::XMLoadFloat3(&_drawAbleData->rotation()));
+	DirectX::XMMATRIX position = DirectX::XMMatrixTranslationFromVector(DirectX::XMLoadFloat3(&_drawAbleData->position()));
+
+	DirectX::XMMATRIX word = size * rotation * position;
 	
 	DirectX::XMMATRIX matrix = word * Camera_Instance->getCameraMatrix();
+
+	//// TODO
+	//// XMVector3Project方法
+	//
+	//DirectX::XMVECTOR v = DirectX::XMVectorSet(20.0f, 20.0f, 0.0f, 1.0f);
+	//// BoundingFrustum创建视锥
+	//DirectX::XMMATRIX projection = DirectX::XMMatrixPerspectiveFovLH(60.0f, 800.0f/600.0f, 0.1f, 1000.0f);
+	//DirectX::BoundingFrustum frustum(projection);
+	//// 1. 定义相机位置、目标点和上方向
+	//DirectX::XMVECTOR eyePosition = DirectX::XMVectorSet(0.0f, 0.0f, -200.0f, 0.0f);
+	//DirectX::XMVECTOR focusPosition = DirectX::XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
+	//DirectX::XMVECTOR upDirection = DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+
+	//// 2. 创建视图矩阵
+	//DirectX::XMMATRIX viewMatrix = DirectX::XMMatrixLookAtLH(eyePosition, focusPosition, upDirection);
+	//// frustum.Transform(frustum, XMMatrixInverse(nullptr, viewMatrix));
+	//auto result = DirectX::XMVector3Project(v, 0, 0, 800, 600, 0.0f, 1.0f, projection, viewMatrix, word);
 	return DirectX::XMMatrixTranspose(matrix);
-}
-
-bool ZDSJ::DrawAbleAdapter::pointInPolgon2D(float _x, float _y)
-{
-	bool result = false;
-	size_t triangle_size = this->m_indices.size() / 3;
-	// 世界矩阵
-	DirectX::XMMATRIX size = DirectX::XMMatrixScaling(this->m_data->size.x, this->m_data->size.y, this->m_data->size.z);
-	DirectX::XMMATRIX rotation = DirectX::XMMatrixRotationRollPitchYaw(this->m_data->rotation.x, this->m_data->rotation.y, this->m_data->rotation.z);
-	DirectX::XMMATRIX pos = DirectX::XMMatrixTranslation(this->m_data->pos.x, this->m_data->pos.y, this->m_data->pos.z);
-	DirectX::XMMATRIX word = size * rotation * pos;
-	for (int i = 0; i < this->m_indices.size(); i += 3) {
-#ifdef RADIOGRAPHIC_INSPECTION
-		result = this->rayInTriangle2D(_x, _y, i, word);
-#else
-		result = this->pointInTriangle2D(_x, _y, i, word);
-#endif
-		if (result) {
-			break;
-		}
-	}
-	if (result) {
-		this->addState(ZDSJ::DrawAbleState::Hover);
-	}
-	else {
-		this->removeState(ZDSJ::DrawAbleState::Hover);
-	}
-	return result;
-}
-
-char* ZDSJ::DrawAbleAdapter::save(size_t& _size)
-{
-	size_t offset = 0;
-	size_t data_size = sizeof(ZDSJ::DrawAbleData);
-	size_t type_size = sizeof(ZDSJ::DrawAbleClass);
-	_size += type_size;
-	_size += data_size;
-	char* data = nullptr;
-	data = new char[_size];
-	memcpy_s(data + offset, type_size, &this->m_drawable_class, type_size);
-	offset += type_size;
-	memcpy_s(data + offset, data_size, this->m_data, data_size);
-	return data;
-}
-
-ZDSJ::DrawAbleInterface* ZDSJ::DrawAbleAdapter::load(ID3D11Device* _device, ID3D11DeviceContext* _context, const char* _data, size_t& _offset, size_t _size)
-{
-	ZDSJ::DrawAbleInterface* node = nullptr;
-	ZDSJ::DrawAbleClass type = ZDSJ::DrawAbleClass::Default;
-	ZDSJ::DrawAbleData data;
-	size_t len = _size - _offset;
-	size_t type_size = sizeof(ZDSJ::DrawAbleClass);
-	size_t data_size = sizeof(ZDSJ::DrawAbleData);
-	if (len < type_size) {
-		return node;
-	}
-	memcpy_s(&type, type_size, _data + _offset, type_size);
-	if (type == ZDSJ::DrawAbleClass::Default) {
-		return node;
-	}
-	_offset += type_size;
-	len = _size - _offset;
-	if (len < data_size) {
-		return node;
-	}
-	memcpy_s(&data, data_size, _data + _offset, data_size);
-	switch (type)
-	{
-	case ZDSJ::DrawAbleClass::Default:
-		break;
-	case ZDSJ::DrawAbleClass::Triangle2D:
-		node = new Triangle2DDrawAble(_device, _context, data);
-		break;
-	case ZDSJ::DrawAbleClass::Rectangle2D:
-		node = new Rectangle2DDrawAble(_device, _context, data);
-		break;
-	case ZDSJ::DrawAbleClass::Arc2D:
-		node = new Arc2DDrawAble(_device, _context, 20, 360, data);
-		break;
-	default:
-		break;
-	}
-	_offset += data_size;
-	return node;
 }
 
 void ZDSJ::DrawAbleAdapter::drawBorder(ID3D11DeviceContext* _context)

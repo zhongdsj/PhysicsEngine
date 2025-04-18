@@ -1,0 +1,43 @@
+﻿# include <Manager/BaseManager.h>
+# include <MyDx11/DrawAbleData.h>
+# include <MyDx11/DrawAble/Arc2DDrawAble.h>
+
+ZDSJ::BaseManager::BaseManager(ID3D11Device* _device, ID3D11DeviceContext* _context)
+{
+	this->m_render.insert_or_assign("Arc2D", std::make_shared<Arc2DDrawAble>(_device, _context, 20, 360));
+}
+
+void ZDSJ::BaseManager::add(DrawAbleData* _data)
+{
+	this->m_data.push_back(std::shared_ptr<DrawAbleData>(_data));
+}
+
+void ZDSJ::BaseManager::render(ID3D11DeviceContext* _context)
+{
+	for(int i = 0; i < this->m_data.size(); ++i)
+	{
+		auto& wait_render = this->m_data.at(i);
+		
+		for(int j = i+1; j < this->m_data.size(); ++j)
+		{
+			auto& wait_calculate = this->m_data.at(j);
+			if (this->skipCalculate(wait_render.get(), wait_calculate.get()))
+			{
+				continue;
+			}
+			wait_render->applyForce(wait_calculate.get());
+		}
+		wait_render->update(1.0f);
+		// 渲染
+		auto pair = this->m_render.find(wait_render->renderType());
+		if (pair != this->m_render.end())
+		{
+			pair->second->draw(_context, wait_render.get());
+		}
+	}
+}
+
+bool ZDSJ::BaseManager::skipCalculate(const DrawAbleData* _first, const DrawAbleData* _second)
+{
+	return _first == _second;
+}

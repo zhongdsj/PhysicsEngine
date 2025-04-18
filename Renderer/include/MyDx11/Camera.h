@@ -54,8 +54,6 @@ namespace ZDSJ {
 		void calculateViewMatrix(float _window_rate);
 		void viewPosSize(float _window_rate);
 		Point viewPosSize() const;
-		void saveToFile() const;
-		void loadFromFile();
 
 
 		~Camera();

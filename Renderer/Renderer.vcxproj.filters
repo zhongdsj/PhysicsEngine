@@ -40,6 +40,18 @@
     <Filter Include="源文件\src\MyDx11\DrawAble">
       <UniqueIdentifier>{5c08c998-31dd-422c-b9f0-301fb7529b1c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\include\Physics">
+      <UniqueIdentifier>{7a3cade4-275b-4821-a3fb-11fe0675da71}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\src\Physics">
+      <UniqueIdentifier>{41f374c8-cc9c-4fb0-be1f-08242dfc2ab1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\include\Manager">
+      <UniqueIdentifier>{b646dbd9-958d-49c0-902d-617632f1c51e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\src\Manager">
+      <UniqueIdentifier>{9b93f645-de32-4592-a4c8-d10db4677fd5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\MyDx11\BindAble\BindAbleInterface.h">
@@ -87,17 +99,11 @@
     <ClInclude Include="include\MyDx11\Camera.h">
       <Filter>头文件\include\MyDx11</Filter>
     </ClInclude>
-    <ClInclude Include="include\MyDx11\DrawAbleManager.h">
-      <Filter>头文件\include\MyDx11</Filter>
-    </ClInclude>
     <ClInclude Include="include\MyDx11\MyDx11.h">
       <Filter>头文件\include\MyDx11</Filter>
     </ClInclude>
     <ClInclude Include="include\MyDx11\VertexStructure.h">
       <Filter>头文件\include\MyDx11</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Persistence.h">
-      <Filter>头文件\include</Filter>
     </ClInclude>
     <ClInclude Include="include\RendererExport.h">
       <Filter>头文件\include</Filter>
@@ -108,12 +114,27 @@
     <ClInclude Include="include\MyDx11\Shader\TriangleVertexShader2D.h">
       <Filter>头文件\include\MyDx11\Shader</Filter>
     </ClInclude>
+    <ClInclude Include="include\Physics\Collision.h">
+      <Filter>头文件\include\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Physics\Movement.h">
+      <Filter>头文件\include\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Physics\MovementInterface.h">
+      <Filter>头文件\include\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Physics\PhysicsInterface.h">
+      <Filter>头文件\include\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MyDx11\DrawAbleData.h">
+      <Filter>头文件\include\MyDx11</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Manager\BaseManager.h">
+      <Filter>头文件\include\Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\MyDx11\Camera.cpp">
-      <Filter>源文件\src\MyDx11</Filter>
-    </ClCompile>
-    <ClCompile Include="src\MyDx11\DrawAbleManager.cpp">
       <Filter>源文件\src\MyDx11</Filter>
     </ClCompile>
     <ClCompile Include="src\MyDx11\MyDx11.cpp">
@@ -155,8 +176,17 @@
     <ClCompile Include="src\MyDx11\DrawAble\Triangle2DDrawAble.cpp">
       <Filter>源文件\src\MyDx11\DrawAble</Filter>
     </ClCompile>
-    <ClCompile Include="src\Persistence.cpp">
-      <Filter>源文件\src</Filter>
+    <ClCompile Include="src\Physics\Collision.cpp">
+      <Filter>源文件\src\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Physics\Movement.cpp">
+      <Filter>源文件\src\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MyDx11\DrawAbleData.cpp">
+      <Filter>源文件\src\MyDx11</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Manager\BaseManager.cpp">
+      <Filter>源文件\src\Manager</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

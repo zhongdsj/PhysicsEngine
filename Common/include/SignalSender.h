@@ -9,6 +9,7 @@ namespace ZDSJ
 	class Common_Api SignalSender
 	{
 	public:
+		virtual ~SignalSender() = default;
 		virtual Slot* connect(const std::string& signal, Slot* slot) = 0;
 
 		template <class... Args>

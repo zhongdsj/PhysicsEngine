@@ -6,6 +6,7 @@
 ZDSJ::MyMainWindow::MyMainWindow(DWORD _ex_style, LPCWSTR _class_name, LPCWSTR _window_name, DWORD _style, int _x,
                                  int _y, int _width, int _height, HWND _parent, HMENU _menu, HINSTANCE _instance)
 {
+	// TODO 窗口位置与大小改为类自身读取配置文件
 	this->m_windowClass = std::make_shared<MyWindowClass>(_instance, _class_name);
 	this->m_handle = CreateWindowExW(
 		_ex_style,
@@ -22,7 +23,7 @@ ZDSJ::MyMainWindow::MyMainWindow(DWORD _ex_style, LPCWSTR _class_name, LPCWSTR _
 		_x, _y, _width, _height, _parent, _menu, _instance, this
 	);
 	ShowWindow(this->m_handle, SW_SHOWDEFAULT);
-	this->registerSignal();
+	this->MyMainWindow::registerSignal();
 	this->registerToContext();
 }
 
@@ -137,5 +138,7 @@ ZDSJ::ApplicationWindowInterface* ZDSJ::createWindow(const wchar_t* _window_name
 	const HWND parent = nullptr;
 	const HMENU menu = nullptr;
 	const HINSTANCE instance = GetModuleHandle(nullptr);
-	return new MyMainWindow(ex_style, class_name, _window_name, style, _x, _y, _width, _height, parent, menu, instance);
+	auto window = new MyMainWindow(ex_style, class_name, _window_name, style, _x, _y, _width, _height, parent, menu, instance);
+	Log_Info("[win api]: window created");
+	return window;
 }

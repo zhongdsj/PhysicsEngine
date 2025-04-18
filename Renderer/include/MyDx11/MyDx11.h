@@ -12,7 +12,7 @@ struct ID3D11RasterizerState;
 namespace ZDSJ {
 #define SAFE_RELEASE(p) {if(p != nullptr){(p)->Release(); p=nullptr;}}
 	class DrawAbleInterface;
-	class DrawAbleManager;
+	class BaseManager;
 	enum class RenderType;
 
 	class Renderer_Api MyDx11: public Dx11Interface {
@@ -32,7 +32,7 @@ namespace ZDSJ {
 		ID3D11Device* m_device = nullptr;
 		ID3D11DeviceContext* m_context = nullptr;
 		ID3D11RenderTargetView* m_render_target_view = nullptr;
-		DrawAbleManager* m_drawable_manager = nullptr;
+		BaseManager* m_drawable_manager = nullptr;
 		ID3D11RasterizerState* m_solid_rasterizer_state = nullptr;
 		ID3D11RasterizerState* m_wireframe_rasterizer_state = nullptr;
 		size_t m_index_size = 0;

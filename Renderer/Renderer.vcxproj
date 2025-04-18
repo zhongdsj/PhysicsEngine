@@ -149,6 +149,7 @@ if ERRORLEVEL 1 set ERRORLEVEL=0</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="include\Manager\BaseManager.h" />
     <ClInclude Include="include\MyDx11\BindAble\BindAbleInterface.h" />
     <ClInclude Include="include\MyDx11\BindAble\ConstantBufferBindAble.h" />
     <ClInclude Include="include\MyDx11\BindAble\IndexBufferBindAble.h" />
@@ -158,7 +159,7 @@ if ERRORLEVEL 1 set ERRORLEVEL=0</Command>
     <ClInclude Include="include\MyDx11\BindAble\VertexConstantBufferBindAble.h" />
     <ClInclude Include="include\MyDx11\BindAble\VertexShaderBindAble.h" />
     <ClInclude Include="include\MyDx11\Camera.h" />
-    <ClInclude Include="include\MyDx11\DrawAbleManager.h" />
+    <ClInclude Include="include\MyDx11\DrawAbleData.h" />
     <ClInclude Include="include\MyDx11\DrawAble\Arc2DDrawAble.h" />
     <ClInclude Include="include\MyDx11\DrawAble\DrawAbleAdapter.h" />
     <ClInclude Include="include\MyDx11\DrawAble\DrawAbleBase.h" />
@@ -169,10 +170,14 @@ if ERRORLEVEL 1 set ERRORLEVEL=0</Command>
     <ClInclude Include="include\MyDx11\Shader\TrianglePixelShader2D.h" />
     <ClInclude Include="include\MyDx11\Shader\TriangleVertexShader2D.h" />
     <ClInclude Include="include\MyDx11\VertexStructure.h" />
-    <ClInclude Include="include\Persistence.h" />
+    <ClInclude Include="include\Physics\Collision.h" />
+    <ClInclude Include="include\Physics\Movement.h" />
+    <ClInclude Include="include\Physics\MovementInterface.h" />
+    <ClInclude Include="include\Physics\PhysicsInterface.h" />
     <ClInclude Include="include\RendererExport.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Manager\BaseManager.cpp" />
     <ClCompile Include="src\MyDx11\BindAble\ConstantBufferBindAble.cpp" />
     <ClCompile Include="src\MyDx11\BindAble\IndexBufferBindAble.cpp" />
     <ClCompile Include="src\MyDx11\BindAble\InputLayoutBindAble.cpp" />
@@ -181,14 +186,15 @@ if ERRORLEVEL 1 set ERRORLEVEL=0</Command>
     <ClCompile Include="src\MyDx11\BindAble\VertexConstantBufferBindAble.cpp" />
     <ClCompile Include="src\MyDx11\BindAble\VertexShaderBindAble.cpp" />
     <ClCompile Include="src\MyDx11\Camera.cpp" />
-    <ClCompile Include="src\MyDx11\DrawAbleManager.cpp" />
+    <ClCompile Include="src\MyDx11\DrawAbleData.cpp" />
     <ClCompile Include="src\MyDx11\DrawAble\Arc2DDrawAble.cpp" />
     <ClCompile Include="src\MyDx11\DrawAble\DrawAbleAdapter.cpp" />
     <ClCompile Include="src\MyDx11\DrawAble\Rectangle2DDrawAble.cpp" />
     <ClCompile Include="src\MyDx11\DrawAble\Triangle2DDrawAble.cpp" />
     <ClCompile Include="src\MyDx11\MyDx11.cpp" />
     <ClCompile Include="src\MyDx11\VertexStructure.cpp" />
-    <ClCompile Include="src\Persistence.cpp" />
+    <ClCompile Include="src\Physics\Collision.cpp" />
+    <ClCompile Include="src\Physics\Movement.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.vcxproj">

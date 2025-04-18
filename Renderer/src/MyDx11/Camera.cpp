@@ -1,7 +1,6 @@
 ﻿# include <MyDx11/Camera.h>
 # include <DirectXMath.h>
 # include <Context.h>
-# include <Persistence.h>
 # include <Types.h>
 
 ZDSJ::Camera* ZDSJ::Camera::getInstance()
@@ -218,50 +217,7 @@ ZDSJ::Point ZDSJ::Camera::viewPosSize() const
 	return *this->m_view_pos;
 }
 
-void ZDSJ::Camera::saveToFile() const
-{
-	// TODO 转为通过配置类写入配置文件
-	ZDSJ::Persistence persistence("init.ini", true);
-	size_t size = 0;
-	size_t offset = 0;
-	size += sizeof(this->m_pos);
-	size += sizeof(this->m_fov);
-	size += sizeof(this->m_pos_z_step);
-	uint8_t* data = new uint8_t[size];
-
-	memcpy_s(data + offset, sizeof(this->m_pos), &this->m_pos, sizeof(this->m_pos));
-	offset += sizeof(this->m_pos);
-	memcpy_s(data + offset, sizeof(this->m_fov), &this->m_fov, sizeof(this->m_fov));
-	offset += sizeof(this->m_fov);
-	memcpy_s(data + offset, sizeof(this->m_pos_z_step), &this->m_pos_z_step, sizeof(this->m_pos_z_step));
-	offset += sizeof(this->m_pos_z_step);
-
-	persistence.save(data, size);
-	delete[] data;
-}
-
-void ZDSJ::Camera::loadFromFile()
-{
-	// TODO 转为通过配置类读取配置文件
-	ZDSJ::Persistence persistence("init.ini");
-	size_t size = 0;
-	size_t offset = 0;
-	size += sizeof(this->m_pos);
-	size += sizeof(this->m_fov);
-	size += sizeof(this->m_pos_z_step);
-	uint8_t* data = new uint8_t[size];
-	persistence.load(data, size);
-	memcpy_s(&this->m_pos, sizeof(this->m_pos), data + offset, sizeof(this->m_pos));
-	offset += sizeof(this->m_pos);
-	memcpy_s(&this->m_fov, sizeof(this->m_fov), data + offset, sizeof(this->m_fov));
-	offset += sizeof(this->m_fov);
-	memcpy_s(&this->m_pos_z_step, sizeof(this->m_pos_z_step), data + offset, sizeof(this->m_pos_z_step));
-	offset += sizeof(this->m_pos_z_step);
-	delete[] data;
-}
-
 ZDSJ::Camera::~Camera()
 {
-	this->saveToFile();
 	delete this->m_view_pos;
 }

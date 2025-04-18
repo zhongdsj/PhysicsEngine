@@ -8,12 +8,10 @@
 # include <MyDx11/BindAble/VertexConstantBufferBindAble.h>
 # include <MyDx11/Shader/TriangleVertexShader2D.h>
 # include <MyDx11/Shader/TrianglePixelShader2D.h>
-
 # include <d3d11.h>
 
-ZDSJ::Arc2DDrawAble::Arc2DDrawAble(ID3D11Device* _device, ID3D11DeviceContext* _context, int _divisions, float _rotate, const DrawAbleData& _data) : DrawAbleBase<Arc2DDrawAble>(_data)
+ZDSJ::Arc2DDrawAble::Arc2DDrawAble(ID3D11Device* _device, ID3D11DeviceContext* _context, int _divisions, float _rotate) : DrawAbleBase<Arc2DDrawAble>()
 {
-	this->m_drawable_class = ZDSJ::DrawAbleClass::Arc2D;
 	if (!this->isStaticInitialized()) {
 		float r = 0.5f;
 		// 顶点缓存
@@ -26,15 +24,6 @@ ZDSJ::Arc2DDrawAble::Arc2DDrawAble(ID3D11Device* _device, ID3D11DeviceContext* _
 		for (int i = 1; i <= _divisions; ++i) {
 			angle = i * angle_step;
 			vertices.push_back({ r * DirectX::XMScalarCos(angle), r * DirectX::XMScalarSin(angle), 22, 177, 224, 255 });
-			/*if (i % 3 == 0) {
-				vertices.push_back({ r * DirectX::XMScalarCos(angle), r * DirectX::XMScalarSin(angle), 255, 0, 0, 128});
-			}
-			else if (i % 3 == 1) {
-				vertices.push_back({ r * DirectX::XMScalarCos(angle), r * DirectX::XMScalarSin(angle), 0, 255, 0, 255 });
-			}
-			else if (i % 3 == 2) {
-				vertices.push_back({ r * DirectX::XMScalarCos(angle), r * DirectX::XMScalarSin(angle), 0, 0, 255, 128 });
-			}*/
 		}
 		std::vector<UINT16> indices;
 		for (int i = 1; i < _divisions; ++i) {
@@ -67,18 +56,8 @@ ZDSJ::Arc2DDrawAble::Arc2DDrawAble(ID3D11Device* _device, ID3D11DeviceContext* _
 		this->setVertexBufferAndIndexBuffer(_device, _context, vertex_buffer_bindable, index_buffer_bindable);
 	}
 	// 缩放旋转矩阵
-	this->m_transform = new ZDSJ::VertexConstantBufferBindAble(_device);
+	this->m_transform = std::make_shared<ZDSJ::VertexConstantBufferBindAble>(_device);
 	this->m_bind_able->push_back(m_transform);
-}
-
-ZDSJ::Arc2DDrawAble::Arc2DDrawAble(ID3D11Device* _device, ID3D11DeviceContext* _context, int _divisions, float _rotate)
-	:Arc2DDrawAble(_device, _context, _divisions, _rotate, DrawAbleData())
-{
-}
-
-ZDSJ::Arc2DDrawAble::Arc2DDrawAble(ID3D11Device* _device, ID3D11DeviceContext* _context, int _divisions, float _rotate, float3 _size, float3 _pos)
-	:Arc2DDrawAble(_device, _context, _divisions, _rotate, DrawAbleData(_size, _pos, { 0.0f, 0.0f, 0.0f }))
-{
 }
 
 ZDSJ::Arc2DDrawAble::~Arc2DDrawAble()

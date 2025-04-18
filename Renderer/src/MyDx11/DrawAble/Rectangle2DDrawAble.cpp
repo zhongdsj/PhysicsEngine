@@ -1,4 +1,4 @@
-# include <MyDx11/DrawAble/Rectangle2DDrawAble.h>
+﻿# include <MyDx11/DrawAble/Rectangle2DDrawAble.h>
 # include <MyDx11/BindAble/VertexBufferBindAble.h>
 # include <MyDx11/BindAble/IndexBufferBindAble.h>
 # include <MyDx11/BindAble/VertexShaderBindAble.h>
@@ -8,12 +8,10 @@
 # include <MyDx11/BindAble/VertexConstantBufferBindAble.h>
 # include <MyDx11/Shader/TriangleVertexShader2D.h>
 # include <MyDx11/Shader/TrianglePixelShader2D.h>
-
 # include <d3d11.h>
 
-ZDSJ::Rectangle2DDrawAble::Rectangle2DDrawAble(ID3D11Device* _device, ID3D11DeviceContext* _context, const DrawAbleData& _data) : DrawAbleBase<Rectangle2DDrawAble>(_data)
+ZDSJ::Rectangle2DDrawAble::Rectangle2DDrawAble(ID3D11Device* _device, ID3D11DeviceContext* _context) : DrawAbleBase<Rectangle2DDrawAble>()
 {
-	this->m_drawable_class = ZDSJ::DrawAbleClass::Rectangle2D;
 	if (!this->isStaticInitialized()) {
 		// 顶点缓存
 		std::vector<ZDSJ::Vertex2D> vertices = {
@@ -57,13 +55,8 @@ ZDSJ::Rectangle2DDrawAble::Rectangle2DDrawAble(ID3D11Device* _device, ID3D11Devi
 	}
 	
 	// 缩放旋转矩阵
-	this->m_transform = new ZDSJ::VertexConstantBufferBindAble(_device);
+	this->m_transform = std::make_shared<ZDSJ::VertexConstantBufferBindAble>(_device);
 	this->m_bind_able->push_back(m_transform);
-}
-
-ZDSJ::Rectangle2DDrawAble::Rectangle2DDrawAble(ID3D11Device* _device, ID3D11DeviceContext* _context) : Rectangle2DDrawAble(_device, _context, DrawAbleData())
-{
-
 }
 
 ZDSJ::Rectangle2DDrawAble::~Rectangle2DDrawAble()

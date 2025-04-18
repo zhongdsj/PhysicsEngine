@@ -1,4 +1,4 @@
-# include <MyDx11/DrawAble/Triangle2DDrawAble.h>
+﻿# include <MyDx11/DrawAble/Triangle2DDrawAble.h>
 # include <MyDx11/BindAble/VertexBufferBindAble.h>
 # include <MyDx11/BindAble/IndexBufferBindAble.h>
 # include <MyDx11/BindAble/VertexShaderBindAble.h>
@@ -8,12 +8,10 @@
 # include <MyDx11/BindAble/VertexConstantBufferBindAble.h>
 # include <MyDx11/Shader/TriangleVertexShader2D.h>
 # include <MyDx11/Shader/TrianglePixelShader2D.h>
-
 # include <d3d11.h>
 
 
-ZDSJ::Triangle2DDrawAble::Triangle2DDrawAble(ID3D11Device* _device, ID3D11DeviceContext* _context, const DrawAbleData& _data) : DrawAbleBase<Triangle2DDrawAble>(_data) {
-	this->m_drawable_class = ZDSJ::DrawAbleClass::Triangle2D;
+ZDSJ::Triangle2DDrawAble::Triangle2DDrawAble(ID3D11Device* _device, ID3D11DeviceContext* _context) : DrawAbleBase<Triangle2DDrawAble>() {
 	if (!this->isStaticInitialized()) {
 		// 顶点缓存
 		std::vector<ZDSJ::Vertex2D> vertices = {
@@ -47,17 +45,9 @@ ZDSJ::Triangle2DDrawAble::Triangle2DDrawAble(ID3D11Device* _device, ID3D11Device
 		this->setVertexBufferAndIndexBuffer(_device, _context, vertex_buffer_bindable, index_buffer_bindable);
 	}
 	// 缩放旋转矩阵
-	this->m_transform = new ZDSJ::VertexConstantBufferBindAble(_device);
+	this->m_transform = std::make_shared<ZDSJ::VertexConstantBufferBindAble>(_device);
 	this->m_bind_able->push_back(m_transform);
-}
-
-ZDSJ::Triangle2DDrawAble::Triangle2DDrawAble(ID3D11Device* _device, ID3D11DeviceContext* _context) : Triangle2DDrawAble(_device, _context, DrawAbleData())
-{
-	
-}
-
-ZDSJ::Triangle2DDrawAble::Triangle2DDrawAble(ID3D11Device* _device, ID3D11DeviceContext* _context, float3 _size, float3 _pos) : Triangle2DDrawAble(_device, _context, DrawAbleData(_size, _pos, {0.0f, 0.0f, 0.0f}))
-{
+	// TODO 只负责渲染，即通过顶点表明渲染方式，具体位置与大小通过MVP矩阵传递
 }
 
 ZDSJ::Triangle2DDrawAble::~Triangle2DDrawAble()
