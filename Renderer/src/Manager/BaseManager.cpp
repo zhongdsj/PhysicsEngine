@@ -1,6 +1,13 @@
 ﻿# include <Manager/BaseManager.h>
 # include <MyDx11/DrawAbleData.h>
 # include <MyDx11/DrawAble/Arc2DDrawAble.h>
+# include <MyDx11/Ray.h>
+# include <MyDx11/Camera.h>
+# include <Context.h>
+# include <DirectXMath.h>
+
+#include "Physics/CollisionInterface.h"
+#include "Physics/MovementInterface.h"
 
 ZDSJ::BaseManager::BaseManager(ID3D11Device* _device, ID3D11DeviceContext* _context)
 {
@@ -14,10 +21,21 @@ void ZDSJ::BaseManager::add(DrawAbleData* _data)
 
 void ZDSJ::BaseManager::render(ID3D11DeviceContext* _context)
 {
+	using namespace DirectX;
+	// 获取鼠标位置，创建射线
+	auto point = Camera_Instance->viewPosToWordPos(Context_Instance->getMouseWorld());
+	XMVECTOR views_pace_start_point = XMVectorSet(Camera_Instance->cameraPos().x, Camera_Instance->cameraPos().y, Camera_Instance->cameraPos().z, 0.0f);
+	XMVECTOR direction = XMVector3Normalize(XMVectorSet(point.x, point.y, 1, 0.0f));
+	Ray ray(views_pace_start_point, direction, Camera_Instance->cameraFarPlane());
 	for(int i = 0; i < this->m_data.size(); ++i)
 	{
 		auto& wait_render = this->m_data.at(i);
-		
+		//鼠标发出射线碰撞
+		if(wait_render->movement()->getCollision()->intersects(ray))
+		{
+			// TODO 添加方法输出属性，渲染到屏幕上
+			Log_Debug("collision");
+		}
 		for(int j = i+1; j < this->m_data.size(); ++j)
 		{
 			auto& wait_calculate = this->m_data.at(j);

@@ -1,12 +1,12 @@
 ﻿# include <Physics/Movement.h>
-# include <Physics/Collision.h>
+# include <Physics/SphereCollision.h>
 # include <Physics/PhysicsInterface.h>
 # include <MyDx11/DrawAbleData.h>
 
 ZDSJ::Movement::Movement(DrawAbleData* _data, float _mass): m_mass(_mass), m_velocity(std::make_shared<DirectX::XMFLOAT3>(0.0f, 0.0f, 0.0f))
                                                             , m_linearAcceleration(std::make_shared<DirectX::XMFLOAT3>(0.0f, 0.0f, 0.0f)), m_data(_data)
 {
-	this->m_collision = std::make_shared<Collision>(this, _data->position(), 10.0f);
+	this->m_collision = std::make_shared<SphereCollision>(this, _data->position(), 10.0f);
 }
 
 void ZDSJ::Movement::applyForce(MovementInterface* _other)
@@ -94,7 +94,7 @@ void ZDSJ::Movement::addPhysics(std::type_index _type_index, const std::shared_p
 	this->m_physics.insert_or_assign(_type_index, _ptr);
 }
 
-ZDSJ::Collision* ZDSJ::Movement::getCollision()
+ZDSJ::CollisionInterface* ZDSJ::Movement::getCollision() const
 {
 	return this->m_collision.get();
 }

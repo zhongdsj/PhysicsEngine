@@ -26,7 +26,7 @@ namespace ZDSJ
 		void addVelocity(const DirectX::XMFLOAT3& _velocity) const override;
 		void subVelocity(const DirectX::XMFLOAT3& _velocity) const override;
 		float getMass() const override;
-		Collision* getCollision() override;
+		CollisionInterface* getCollision() const override;
 		DrawAbleData* getData() override;
 		void addPhysics(std::type_index _type_index, const std::shared_ptr<PhysicsInterface>& _ptr);
 		~Movement() override = default;
@@ -40,7 +40,7 @@ namespace ZDSJ
 		// 物理量
 		std::map<std::type_index, std::shared_ptr<PhysicsInterface>> m_physics;
 		// 碰撞
-		std::shared_ptr<Collision> m_collision = nullptr;
+		std::shared_ptr<CollisionInterface> m_collision = nullptr;
 		// 数据
 		DrawAbleData* m_data = nullptr;
 	};

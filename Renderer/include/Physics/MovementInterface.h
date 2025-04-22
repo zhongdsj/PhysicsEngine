@@ -10,7 +10,7 @@ namespace ZDSJ
 {
 	class PhysicsInterface;
 	class DrawAbleData;
-	class Collision;
+	class CollisionInterface;
 	class MovementInterface
 	{
 	public:
@@ -21,7 +21,7 @@ namespace ZDSJ
 		virtual void addVelocity(const DirectX::XMFLOAT3& _velocity) const = 0;
 		virtual void subVelocity(const DirectX::XMFLOAT3& _velocity) const = 0;
 		virtual float getMass() const = 0;
-		virtual Collision* getCollision() = 0;
+		virtual CollisionInterface* getCollision() const = 0;
 		virtual DrawAbleData* getData() = 0;
 		virtual ~MovementInterface() = default;
 	};

@@ -28,9 +28,16 @@ ZDSJ::ConsoleByImgui::ConsoleByImgui(HWND _handle)
 	window->addHandleMessage("console", std::bind(&ConsoleInterface::messageHandle, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
 	if(window != nullptr)
 	{
-		this->m_slots.push_back(window->connect(ZDSJ::KEY::wavy, new Slot([this]()
+		this->m_slots.push_back(window->connect(ZDSJ::KEY::wavy, new Slot([this](KeyOperation _operation)
 		{
-			this->m_show.store(!this->m_show.load());
+			switch (_operation)
+			{
+			case KeyOperation::up:
+				this->m_show.store(!this->m_show.load());
+				break;
+			default: 
+				break;
+			}
 		})));
 	}
 }

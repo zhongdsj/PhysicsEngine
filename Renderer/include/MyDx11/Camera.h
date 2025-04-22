@@ -25,6 +25,8 @@ namespace ZDSJ {
 		void fov(float _value);
 
 		float4 cameraPos() const;
+		float cameraNearPlane() const;
+		float cameraFarPlane() const;
 		float cameraStep() const;
 		void cameraAway();
 

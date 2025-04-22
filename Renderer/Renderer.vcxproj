@@ -167,10 +167,13 @@ if ERRORLEVEL 1 set ERRORLEVEL=0</Command>
     <ClInclude Include="include\MyDx11\DrawAble\Rectangle2DDrawAble.h" />
     <ClInclude Include="include\MyDx11\DrawAble\Triangle2DDrawAble.h" />
     <ClInclude Include="include\MyDx11\MyDx11.h" />
+    <ClInclude Include="include\MyDx11\Ray.h" />
     <ClInclude Include="include\MyDx11\Shader\TrianglePixelShader2D.h" />
     <ClInclude Include="include\MyDx11\Shader\TriangleVertexShader2D.h" />
     <ClInclude Include="include\MyDx11\VertexStructure.h" />
-    <ClInclude Include="include\Physics\Collision.h" />
+    <ClInclude Include="include\Physics\BoundingInterface.h" />
+    <ClInclude Include="include\Physics\SphereCollision.h" />
+    <ClInclude Include="include\Physics\CollisionInterface.h" />
     <ClInclude Include="include\Physics\Movement.h" />
     <ClInclude Include="include\Physics\MovementInterface.h" />
     <ClInclude Include="include\Physics\PhysicsInterface.h" />
@@ -193,7 +196,7 @@ if ERRORLEVEL 1 set ERRORLEVEL=0</Command>
     <ClCompile Include="src\MyDx11\DrawAble\Triangle2DDrawAble.cpp" />
     <ClCompile Include="src\MyDx11\MyDx11.cpp" />
     <ClCompile Include="src\MyDx11\VertexStructure.cpp" />
-    <ClCompile Include="src\Physics\Collision.cpp" />
+    <ClCompile Include="src\Physics\SphereCollision.cpp" />
     <ClCompile Include="src\Physics\Movement.cpp" />
   </ItemGroup>
   <ItemGroup>

@@ -130,8 +130,18 @@ ZDSJ::Point ZDSJ::Camera::viewPosToWordPos(ZDSJ::Point _pos) const
 {
 	ZDSJ::Point point;
 	ZDSJ::Context* context = Context_Instance;
-	point.x = this->viewPosSize().x * (_pos.x / context->getWindowWidth()) - this->viewPosSize().x / 2 + this->m_pos.x;
-	point.y = this->viewPosSize().y * (_pos.y / context->getWindowHeight()) * -1 + this->viewPosSize().y / 2 + this->m_pos.y;
+	// 1. 将鼠标坐标转换为视口归一化坐标
+	float viewportX = _pos.x / context->getWindowWidth();
+	float viewportY = _pos.y / context->getWindowHeight();
+
+	// 2. 将视口归一化坐标转换为裁剪空间坐标（NDC）
+	point.x = 2.0f * viewportX - 1.0f;
+	point.y = 1.0f - 2.0f * viewportY;
+
+	/*auto half_fov = DirectX::XMConvertToRadians(0.5f * this->m_fov);
+	float half_fov_tan = std::tan(half_fov);
+	point.x = (_pos.x / context->getWindowWidth()) * this->m_far_plane * half_fov_tan * context->getWindowHeight() / context->getWindowWidth();
+	point.y = (_pos.y / context->getWindowHeight()) * this->m_far_plane * half_fov_tan;*/
 	return point;
 }
 
@@ -149,6 +159,16 @@ void ZDSJ::Camera::fov(float _value)
 ZDSJ::float4 ZDSJ::Camera::cameraPos() const
 {
 	return this->m_pos;
+}
+
+float ZDSJ::Camera::cameraNearPlane() const
+{
+	return this->m_near_plane;
+}
+
+float ZDSJ::Camera::cameraFarPlane() const
+{
+	return this->m_far_plane;
 }
 
 float ZDSJ::Camera::cameraStep() const

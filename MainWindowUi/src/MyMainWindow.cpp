@@ -2,6 +2,7 @@
 # include <Context.h>
 # include <MyWindowClass.h>
 # include <KeyEnum.h>
+# include <windowsx.h>
 
 ZDSJ::MyMainWindow::MyMainWindow(DWORD _ex_style, LPCWSTR _class_name, LPCWSTR _window_name, DWORD _style, int _x,
                                  int _y, int _width, int _height, HWND _parent, HMENU _menu, HINSTANCE _instance)
@@ -49,15 +50,21 @@ LRESULT ZDSJ::MyMainWindow::handleMessage(HWND handle, UINT msg, WPARAM w_param,
 	}
 	switch (msg)
 	{
+	case WM_MOUSEMOVE:
+		{
+			auto point = Point(GET_X_LPARAM(l_param), GET_Y_LPARAM(l_param));
+			Context_Instance->setMouseWorld(point);
+			// Log_Debug("{}, {}", point.x, point.y);
+		}
 	case WM_KEYUP:
 		{
 			switch (w_param)
 			{
 			case VK_OEM_3:
-				this->emit(KEY::wavy);
+				this->emit(KEY::wavy, KeyOperation::up);
 				break;
 			case VK_CONTROL:
-				this->emit(KEY::ctrl);
+				this->emit(KEY::ctrl, KeyOperation::up);
 				break;
 			}
 		}

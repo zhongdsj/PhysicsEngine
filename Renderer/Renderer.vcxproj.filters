@@ -114,7 +114,7 @@
     <ClInclude Include="include\MyDx11\Shader\TriangleVertexShader2D.h">
       <Filter>头文件\include\MyDx11\Shader</Filter>
     </ClInclude>
-    <ClInclude Include="include\Physics\Collision.h">
+    <ClInclude Include="include\Physics\SphereCollision.h">
       <Filter>头文件\include\Physics</Filter>
     </ClInclude>
     <ClInclude Include="include\Physics\Movement.h">
@@ -131,6 +131,15 @@
     </ClInclude>
     <ClInclude Include="include\Manager\BaseManager.h">
       <Filter>头文件\include\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MyDx11\Ray.h">
+      <Filter>头文件\include\MyDx11</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Physics\CollisionInterface.h">
+      <Filter>头文件\include\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Physics\BoundingInterface.h">
+      <Filter>头文件\include\Physics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -176,7 +185,7 @@
     <ClCompile Include="src\MyDx11\DrawAble\Triangle2DDrawAble.cpp">
       <Filter>源文件\src\MyDx11\DrawAble</Filter>
     </ClCompile>
-    <ClCompile Include="src\Physics\Collision.cpp">
+    <ClCompile Include="src\Physics\SphereCollision.cpp">
       <Filter>源文件\src\Physics</Filter>
     </ClCompile>
     <ClCompile Include="src\Physics\Movement.cpp">

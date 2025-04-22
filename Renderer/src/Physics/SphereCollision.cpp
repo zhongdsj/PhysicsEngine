@@ -1,27 +1,57 @@
-﻿# include <Physics/Collision.h>
-# include <DirectXCollision.h>
+﻿# include <Physics/SphereCollision.h>
 # include <Context.h>
+# include <DirectXCollision.h>
 # include <DirectXMath.h>
 # include <Physics/MovementInterface.h>
 # include <MyDx11/DrawAbleData.h>
 
-ZDSJ::Collision::Collision(MovementInterface* _movement, const DirectX::XMFLOAT3& _center, float _radius): PhysicsInterface(_movement),
-	m_boundingSphere(std::make_shared<DirectX::BoundingSphere>(_center, _radius))
+#include "MyDx11/Ray.h"
+
+ZDSJ::SphereCollision::SphereCollision(MovementInterface* _movement, const DirectX::XMFLOAT3& _center, float _radius): CollisionInterface(_movement)
 {
-	_movement->getData()->connect("position", new Slot([&]()
+	this->m_bounding.push_back(std::make_shared<BoundingObject>(BoundingType::sphere, DirectX::BoundingSphere(_center, _radius)));
+	this->m_slots.push_back(_movement->getData()->connect("position", new Slot([&]()
 	{
-		this->m_boundingSphere->Center = this->getMovement()->getData()->position();
-	}));
+		this->movementChanged();
+	})));
 }
 
-bool ZDSJ::Collision::intersects(const Collision* _other) const
+bool ZDSJ::SphereCollision::intersects(CollisionInterface* _other) const
 {
-	return this->m_boundingSphere->Intersects((*_other->m_boundingSphere.get()));
+	bool result = false;
+	for(auto& item: _other->getBounding())
+	{
+		switch (item->bounding_type)
+		{
+		case BoundingType::custom:
+			result |= item->custom->intersects(this->boundingSphere());
+			break;
+		case BoundingType::sphere:
+			result |= this->boundingSphere().Intersects(item->sphere);
+			break;
+		case BoundingType::box:
+			result |= this->boundingSphere().Intersects(item->box);
+			break;
+		default: 
+			break;
+		}
+		if(result)
+		{
+			break;
+		}
+	}
+	return result;
 }
 
-DirectX::XMFLOAT3 ZDSJ::Collision::calculateForce(PhysicsInterface* _other)
+bool ZDSJ::SphereCollision::intersects(const Ray& _ray) const
 {
-	auto other_collision = reinterpret_cast<Collision*>(_other);
+	float dist = _ray.dist();
+	return this->boundingSphere().Intersects(_ray.origin(), _ray.direction(), dist);
+}
+
+DirectX::XMFLOAT3 ZDSJ::SphereCollision::calculateForce(PhysicsInterface* _other)
+{
+	auto other_collision = reinterpret_cast<SphereCollision*>(_other);
 	if(other_collision == nullptr)
 	{
 		return { 0.0f, 0.0f, 0.0f };
@@ -45,7 +75,7 @@ DirectX::XMFLOAT3 ZDSJ::Collision::calculateForce(PhysicsInterface* _other)
 		float relative_velocity_dot_normal = DirectX::XMVectorGetX(DirectX::XMVector3Dot(relative_velocity, normal));
 
 		// 修正位置（避免穿透）
-		float penetration = (this->m_boundingSphere->Radius + other_collision->m_boundingSphere->Radius - distance) * 0.5f; // 平均穿透深度
+		float penetration = (this->boundingSphere().Radius + other_collision->boundingSphere().Radius - distance) * 0.5f; // 平均穿透深度
 		DirectX::XMFLOAT3 this_new_position;
 		DirectX::XMFLOAT3 other_new_position;
 		DirectX::XMStoreFloat3(&this_new_position, DirectX::XMVectorSubtract(this_position, DirectX::XMVectorScale(normal, penetration)));
@@ -68,7 +98,34 @@ DirectX::XMFLOAT3 ZDSJ::Collision::calculateForce(PhysicsInterface* _other)
 	return {0.0f, 0.0f, 0.0f};
 }
 
-ZDSJ::Collision::~Collision()
+ZDSJ::SphereCollision::~SphereCollision()
 {
+	for(auto& item: this->m_slots)
+	{
+		item->useful(false);
+	}
+}
 
+void ZDSJ::SphereCollision::movementChanged()
+{
+	for (auto& item : this->m_bounding)
+	{
+		switch (item->bounding_type)
+		{
+		case BoundingType::custom:
+			item->custom->movementChanged(this->getMovement()->getData()->size(), this->getMovement()->getData()->position(), this->getMovement()->getData()->rotation());
+			break;
+		case BoundingType::sphere:
+			item->sphere.Center = this->getMovement()->getData()->position();
+			break;
+		case BoundingType::box:
+			item->box.Center = this->getMovement()->getData()->position();
+			break;
+		}
+	}
+}
+
+const DirectX::BoundingSphere& ZDSJ::SphereCollision::boundingSphere() const
+{
+	return this->m_bounding.at(0)->sphere;
 }

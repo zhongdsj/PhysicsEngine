@@ -89,6 +89,11 @@ namespace ZDSJ
 			return this;
 		}
 
+		const MovementInterface* movement() const
+		{
+			return this->m_movement.get();
+		}
+
 		~DrawAbleData() override = default;
 	private:
 		std::string m_render_type = "";

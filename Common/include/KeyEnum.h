@@ -9,4 +9,10 @@ namespace ZDSJ
 		// ctrl
 		auto ctrl = "ctrl";
 	}
+
+	enum class KeyOperation
+	{
+		up = 0,
+		down = 1,
+	};
 }
