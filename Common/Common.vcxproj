@@ -97,6 +97,8 @@ if ERRORLEVEL 1 set ERRORLEVEL=0</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="include\ApplicationWindowInterface.h" />
+    <ClInclude Include="include\Command.h" />
+    <ClInclude Include="include\CommandNode.h" />
     <ClInclude Include="include\CommonExport.h" />
     <ClInclude Include="include\CommonMacro.h" />
     <ClInclude Include="include\ComponentInterface.h" />
@@ -112,6 +114,8 @@ if ERRORLEVEL 1 set ERRORLEVEL=0</Command>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ApplicationWindowInterface.cpp" />
+    <ClCompile Include="src\Command.cpp" />
+    <ClCompile Include="src\CommandNode.cpp" />
     <ClCompile Include="src\Config.cpp" />
     <ClCompile Include="src\Context.cpp" />
     <ClCompile Include="src\Dx11Interface.cpp" />

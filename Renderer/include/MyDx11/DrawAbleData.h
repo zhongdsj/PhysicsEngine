@@ -5,6 +5,7 @@
 # include <SignalSender.h>
 # include <unordered_map>
 # include <Slot.h>
+# include <sstream>
 
 namespace ZDSJ
 {
@@ -92,6 +93,15 @@ namespace ZDSJ
 		const MovementInterface* movement() const
 		{
 			return this->m_movement.get();
+		}
+
+		std::string printProperties() const
+		{
+			std::ostringstream oss;
+			oss << "size: (" << this->m_size.x << ", " << this->m_size.y << ", " << this->m_size.z << ")\n";
+			oss << "position: (" << this->m_position.x << ", " << this->m_position.y << ", " << this->m_position.z << ")\n";
+			oss << "rotation: (" << this->m_rotation.x << ", " << this->m_rotation.y << ", " << this->m_rotation.z << ")\n";
+			return std::move(oss.str());
 		}
 
 		~DrawAbleData() override = default;

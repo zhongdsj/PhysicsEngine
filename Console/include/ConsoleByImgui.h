@@ -10,6 +10,7 @@ struct ID3D11Device;
 struct IDXGISwapChain;
 struct ID3D11DeviceContext;
 struct ID3D11RenderTargetView;
+struct ImGuiInputTextCallbackData;
 
 namespace ZDSJ
 {
@@ -31,6 +32,9 @@ namespace ZDSJ
 		std::vector<Slot*> m_slots;
 
 		void rend();
+		static int textEditCallbackStub(ImGuiInputTextCallbackData* _data);
+
+		static void registerFonts();
 	};
 
 }

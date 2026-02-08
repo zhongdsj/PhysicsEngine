@@ -38,7 +38,7 @@ namespace ZDSJ
 		class Common_Api Slot {
 		public:
 			template <class Fn>
-			explicit Slot(Fn&& function)
+			explicit Slot(Fn&& function, const std::string& description = std::string("未添加描述")): m_description(description)
 			{
 				using traits = function_traits<std::decay_t<Fn>>;
 				using args_tuple = typename traits::argument_types;
@@ -70,11 +70,17 @@ namespace ZDSJ
 				this->m_useful.store(_canUsed);
 			}
 
+			const std::string& description()
+			{
+				return this->m_description;
+			}
+
 			~Slot() = default;
 
 		private:
 			std::function<void(void*)> m_slot;
 			std::atomic_bool m_useful{ true };
+			std::string m_description;
 
 #ifdef Less_Cxx17
 			// 辅助函数模板，用于展开元组

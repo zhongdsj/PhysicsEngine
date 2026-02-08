@@ -4,7 +4,7 @@
 # include <MainWindowUiExport.h>
 # include <MyWindowInterface.h>
 # include <ApplicationWindowInterface.h>
-#include <memory>
+# include <memory>
 # include <string>
 # include <unordered_map>
 # include <Slot.h>

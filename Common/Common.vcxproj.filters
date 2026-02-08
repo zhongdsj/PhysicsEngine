@@ -60,6 +60,12 @@
     <ClInclude Include="include\Types.h">
       <Filter>头文件\include</Filter>
     </ClInclude>
+    <ClInclude Include="include\Command.h">
+      <Filter>头文件\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CommandNode.h">
+      <Filter>头文件\include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Context.cpp">
@@ -75,6 +81,12 @@
       <Filter>源文件\src</Filter>
     </ClCompile>
     <ClCompile Include="src\Dx11Interface.cpp">
+      <Filter>源文件\src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Command.cpp">
+      <Filter>源文件\src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CommandNode.cpp">
       <Filter>源文件\src</Filter>
     </ClCompile>
   </ItemGroup>

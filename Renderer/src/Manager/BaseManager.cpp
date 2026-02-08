@@ -33,8 +33,8 @@ void ZDSJ::BaseManager::render(ID3D11DeviceContext* _context)
 		//鼠标发出射线碰撞
 		if(wait_render->movement()->getCollision()->intersects(ray))
 		{
-			// TODO 添加方法输出属性，渲染到屏幕上
-			Log_Debug("collision");
+			// TODO 渲染到屏幕上
+			Log_Debug("{}", wait_render->printProperties());
 		}
 		for(int j = i+1; j < this->m_data.size(); ++j)
 		{

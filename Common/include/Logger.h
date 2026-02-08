@@ -7,12 +7,12 @@
 
 namespace ZDSJ
 {
-#define Log_Trace(...)       Logger::getInstance().logger().get()->trace(__VA_ARGS__)
-#define Log_Debug(...)       Logger::getInstance().logger().get()->debug(__VA_ARGS__)
-#define Log_Info(...)        Logger::getInstance().logger().get()->info(__VA_ARGS__)
-#define Log_Warn(...)        Logger::getInstance().logger().get()->warn(__VA_ARGS__)
-#define Log_Error(...)       Logger::getInstance().logger().get()->error(__VA_ARGS__)
-#define Log_Critical(...)    Logger::getInstance().logger().get()->critical(__VA_ARGS__)
+#define Log_Trace(...)       Logger::getInstance().logger()->trace(__VA_ARGS__)
+#define Log_Debug(...)       Logger::getInstance().logger()->debug(__VA_ARGS__)
+#define Log_Info(...)        Logger::getInstance().logger()->info(__VA_ARGS__)
+#define Log_Warn(...)        Logger::getInstance().logger()->warn(__VA_ARGS__)
+#define Log_Error(...)       Logger::getInstance().logger()->error(__VA_ARGS__)
+#define Log_Critical(...)    Logger::getInstance().logger()->critical(__VA_ARGS__)
 #define Log_Buffer Logger::getInstance().getLog()
 
 	struct LoggerConfig

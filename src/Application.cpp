@@ -3,7 +3,6 @@
 # include <ApplicationWindowInterface.h>
 # include <Dx11Interface.h>
 # include <ConsoleInterface.h>
-# include <Slot.h>
 
 ZDSJ::Application::Application()
 {
