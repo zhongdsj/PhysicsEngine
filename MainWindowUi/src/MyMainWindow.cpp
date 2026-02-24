@@ -54,7 +54,6 @@ LRESULT ZDSJ::MyMainWindow::handleMessage(HWND handle, UINT msg, WPARAM w_param,
 		{
 			auto point = Point(GET_X_LPARAM(l_param), GET_Y_LPARAM(l_param));
 			Context_Instance->setMouseWorld(point);
-			// Log_Debug("{}, {}", point.x, point.y);
 		}
 	case WM_KEYUP:
 		{
@@ -66,9 +65,26 @@ LRESULT ZDSJ::MyMainWindow::handleMessage(HWND handle, UINT msg, WPARAM w_param,
 			case VK_CONTROL:
 				this->emit(KEY::ctrl, KeyOperation::up);
 				break;
+			case VK_MENU:
+				this->emit(KEY::alt, KeyOperation::up);
+				break;
+			default:
+				break;
 			}
+			break;
 		}
-		break;
+	case WM_KEYDOWN:
+		{
+			switch (w_param)
+			{
+			case VK_CONTROL:
+				this->emit(KEY::ctrl, KeyOperation::down);
+				break;
+			default:
+				break;
+			}
+			break;
+		}
 	case WM_MOVE:
 		{
 			const int x_pos = (int)static_cast<short>(LOWORD(l_param));   // horizontal position 
@@ -132,6 +148,7 @@ void ZDSJ::MyMainWindow::registerSignal()
 {
 	this->m_slots.insert(std::make_pair(KEY::wavy, std::tuple<std::string, std::vector<Slot*>>("波浪键弹起触发", std::vector<Slot*>())));
 	this->m_slots.insert(std::make_pair(KEY::ctrl, std::tuple<std::string, std::vector<Slot*>>("ctrl弹起触发", std::vector<Slot*>())));
+	this->m_slots.insert(std::make_pair(KEY::alt, std::tuple<std::string, std::vector<Slot*>>("ctrl弹起触发", std::vector<Slot*>())));
 }
 
 ZDSJ::ApplicationWindowInterface* ZDSJ::createWindow(const wchar_t* _window_name, int _x, int _y, int _width, int _height)

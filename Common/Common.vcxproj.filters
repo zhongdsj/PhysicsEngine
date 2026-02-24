@@ -66,6 +66,9 @@
     <ClInclude Include="include\CommandNode.h">
       <Filter>头文件\include</Filter>
     </ClInclude>
+    <ClInclude Include="include\Keyboard.h">
+      <Filter>头文件\include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Context.cpp">
@@ -87,6 +90,9 @@
       <Filter>源文件\src</Filter>
     </ClCompile>
     <ClCompile Include="src\CommandNode.cpp">
+      <Filter>源文件\src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Keyboard.cpp">
       <Filter>源文件\src</Filter>
     </ClCompile>
   </ItemGroup>

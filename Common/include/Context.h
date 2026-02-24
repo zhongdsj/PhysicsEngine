@@ -4,13 +4,14 @@
 # include <Logger.h>
 # include <Dx11Interface.h>
 # include <Types.h>
-
+# include <Keyboard.h>
 # define Context_Instance ZDSJ::Context::getInstance()
 
 namespace ZDSJ
 {
 	class ApplicationWindowInterface;
 	class Dx11Interface;
+	class Keyboard;
 	class Common_Api Context
 	{
 		friend ApplicationWindowInterface;
@@ -19,6 +20,7 @@ namespace ZDSJ
 		static Context* getInstance();
 		Delete_Copy_And_Move(Context);
 		float windowRate() const;
+		static Keyboard* getKeyBoard();
 	protected:
 		/**
 		 * @brief 析构函数

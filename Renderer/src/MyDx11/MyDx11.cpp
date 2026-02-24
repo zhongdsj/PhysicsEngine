@@ -191,7 +191,7 @@ ZDSJ::MyDx11::MyDx11(HWND _hwnd, int _window_width, int _window_height, ZDSJ::Re
 	wireframe_desc.DepthClipEnable = true;
 	this->m_device->CreateRasterizerState(&wireframe_desc, &this->m_wireframe_rasterizer_state);
 	
-	this->solid();
+	this->MyDx11::solid();
 	this->registerToContext();
 	this->m_drawable_manager->add((new DrawAbleData("Arc2D")));
 	/*this->m_drawable_manager->add((new DrawAbleData("Arc2D"))->addVelocity({1.0f, 0.0f, 0.0f}));

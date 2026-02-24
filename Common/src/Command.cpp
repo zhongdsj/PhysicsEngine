@@ -98,7 +98,7 @@ ZDSJ::Command::Command()
 
 void ZDSJ::Command::registerSignal()
 {
-	this->connect("command", new Slot([this]
+	this->connect("help", new Slot([this]
 	{
 		std::stringstream ss;
 		ss << "\n";

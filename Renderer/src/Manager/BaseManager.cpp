@@ -5,9 +5,9 @@
 # include <MyDx11/Camera.h>
 # include <Context.h>
 # include <DirectXMath.h>
-
-#include "Physics/CollisionInterface.h"
-#include "Physics/MovementInterface.h"
+# include <Physics/CollisionInterface.h>
+# include <Physics/MovementInterface.h>
+# include <KeyEnum.h>
 
 ZDSJ::BaseManager::BaseManager(ID3D11Device* _device, ID3D11DeviceContext* _context)
 {
@@ -31,7 +31,7 @@ void ZDSJ::BaseManager::render(ID3D11DeviceContext* _context)
 	{
 		auto& wait_render = this->m_data.at(i);
 		//鼠标发出射线碰撞
-		if(wait_render->movement()->getCollision()->intersects(ray))
+		if(Context_Instance->getKeyBoard()->isKeyPressed(SpecialKey::key_ctrl) && wait_render->movement()->getCollision()->intersects(ray))
 		{
 			// TODO 渲染到屏幕上
 			Log_Debug("{}", wait_render->printProperties());

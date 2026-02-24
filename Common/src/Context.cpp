@@ -19,6 +19,11 @@ void ZDSJ::Context::registerDx11(Dx11Interface* _ptr)
 	this->m_dx11 = _ptr;
 }
 
+ZDSJ::Keyboard* ZDSJ::Context::getKeyBoard()
+{
+	return Keyboard::getInstance();
+}
+
 void ZDSJ::Context::readFromConfig()
 {
 	// 读取配置文件
