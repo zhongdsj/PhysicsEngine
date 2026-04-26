@@ -60,10 +60,16 @@ LRESULT ZDSJ::MyMainWindow::handleMessage(HWND handle, UINT msg, WPARAM w_param,
 	}
 	switch (msg)
 	{
+	case WM_LBUTTONDOWN:
+		Context_Instance->getKeyBoard()->setKeyState(SpecialKey::mouse_left, KeyOperation::down);
+		break;
+	case WM_LBUTTONUP:
+		Context_Instance->getKeyBoard()->setKeyState(SpecialKey::mouse_left, KeyOperation::up);
+		break;
 	case WM_MOUSEMOVE:
 		{
 			auto point = Point(GET_X_LPARAM(l_param), GET_Y_LPARAM(l_param));
-			Context_Instance->setMouseWorld(point);
+			Context_Instance->setMouse(point);
 		}
 		break;
 	case WM_KEYUP:

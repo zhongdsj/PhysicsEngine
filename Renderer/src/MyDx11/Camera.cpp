@@ -129,8 +129,8 @@ void ZDSJ::Camera::printCameraParams() const
 
 ZDSJ::Position ZDSJ::Camera::viewPosToWordPos(ZDSJ::Point _pos) const
 {
-	ZDSJ::Point point;
-	ZDSJ::Context* context = Context_Instance;
+	Point point;
+	Context* context = Context_Instance;
 	// 1. 将鼠标坐标转换为视口归一化坐标
 	float viewportX = _pos.x / context->getWindowWidth();
 	float viewportY = _pos.y / context->getWindowHeight();
@@ -141,10 +141,57 @@ ZDSJ::Position ZDSJ::Camera::viewPosToWordPos(ZDSJ::Point _pos) const
 
 	// 2. 拿到 VP 矩阵
 	DirectX::XMMATRIX invVP = DirectX::XMMatrixInverse(nullptr, *this->m_view_matrix * *this->m_projection_matrix);
-	DirectX::XMVECTOR nearPt = DirectX::XMVectorSet(point.x, point.y, 0.0f, 1.0f);
+	DirectX::XMVECTOR nearPt = DirectX::XMVectorSet(point.x, point.y, 1.0f, 1.0f);
 	nearPt = DirectX::XMVector3TransformCoord(nearPt, invVP);
 
 	return Position(DirectX::XMVectorGetX(nearPt), DirectX::XMVectorGetY(nearPt), DirectX::XMVectorGetZ(nearPt));
+}
+
+ZDSJ::Position ZDSJ::Camera::toWordPos(Position _pos, float _z) const
+{
+	DirectX::XMVECTOR camPos = DirectX::XMVectorSet(
+		this->m_pos.x,
+		this->m_pos.y,
+		this->m_pos.z,
+		this->m_pos.w
+	);
+
+	// 2. 近裁面世界坐标 → XMVECTOR
+	DirectX::XMVECTOR nearPos = DirectX::XMVectorSet(
+		_pos.x,
+		_pos.y,
+		_pos.z,
+		1.0f
+	);
+
+	// 3. 射线方向：相机 → 近裁面
+	DirectX::XMVECTOR dir = DirectX::XMVector3Normalize(DirectX::XMVectorSubtract(nearPos, camPos));
+
+	// 4. 提取 Z 值（核心计算）
+	float camZ = DirectX::XMVectorGetZ(camPos);
+	float dirZ = DirectX::XMVectorGetZ(dir);
+
+	// ------------------------------
+	// 安全保护：防止除以 0
+	// ------------------------------
+	const float EPS = 0.0001f;
+	if (fabs(dirZ) < EPS)
+	{
+		return { 0,0,0 };
+	}
+
+	// ------------------------------
+	// 求交点 Z = targetZ
+	// ------------------------------
+	float t = (_z - camZ) / dirZ;
+	DirectX::XMVECTOR result = DirectX::XMVectorAdd(camPos, DirectX::XMVectorScale(dir, t));
+
+	// ------------------------------
+	// 转回你的 Position 结构体
+	// ------------------------------
+	Position out;
+	DirectX::XMStoreFloat3(reinterpret_cast<DirectX::XMFLOAT3*>(&out), result);
+	return out;
 }
 
 float ZDSJ::Camera::fov() const

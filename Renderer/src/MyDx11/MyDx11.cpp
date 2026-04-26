@@ -6,6 +6,7 @@
 # include <d3d11.h>
 # include <sstream>
 # include <MyDx11/DrawAbleData.h>
+# include <MyDx11/Camera.h>
 #include "Physics/SphereCollision.h"
 
 ZDSJ::Dx11Interface* ZDSJ::createDx11(HWND _hwnd, int _window_width, int _window_height, int _render_type)
@@ -207,11 +208,18 @@ void ZDSJ::MyDx11::beginTick()
 
 void ZDSJ::MyDx11::tick(float _use_time)
 {
+	
+	auto position = Camera_Instance->toWordPos(Context_Instance->getMouseWorld(), 0.0f);
+	if (Keyboard_Instance->isKeyDown(SpecialKey::key_ctrl) && Keyboard_Instance->isKeyReleased(SpecialKey::mouse_left))
+	{
+		this->m_drawable_manager->add(new DrawAbleData("Arc2D", { position.x, position.y, position.z }));
+	}
 	this->m_drawable_manager->render(m_context);
 }
 
 void ZDSJ::MyDx11::logicTick(float _use_time)
 {
+	Context_Instance->setMouseWorld(Camera_Instance->viewPosToWordPos(Context_Instance->getMouse()));
 	this->m_drawable_manager->physicsCalculate(_use_time);
 }
 

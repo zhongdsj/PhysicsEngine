@@ -22,6 +22,7 @@ namespace ZDSJ {
 	public:
 		static Camera* getInstance();
 		Position viewPosToWordPos(Point _pos) const;
+		Position toWordPos(Position _pos, float _z) const;
 		float fov() const;
 		void fov(float _value);
 

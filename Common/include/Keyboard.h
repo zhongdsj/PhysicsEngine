@@ -22,6 +22,8 @@ namespace ZDSJ
 		bool isKeyPressed(SpecialKey key) const;
 		bool isKeyReleased(SpecialKey key) const;
 		bool isKeyDown(SpecialKey key) const;
+		bool isLButtonClick() const;
+		void setLButtonClick(bool click);
 		float getAxisState(AxisKey axis) const;
 		~Keyboard() = default;
 	private:
@@ -30,6 +32,7 @@ namespace ZDSJ
 		std::atomic<uint32_t> m_currKeyDown{ 0 }; // 当前渲染帧键位是否按住
 		std::atomic<uint32_t> m_currKeyReleased{ 0 }; // 当前渲染帧键位是否抬起
 		std::atomic<uint32_t> m_currKeyPressed{ 0 }; // 当前渲染帧键位是否按下
+		std::atomic<bool> m_lButtonClick{ false }; // 鼠标左键点击
 		// 轴数据
 		std::atomic<float> m_axisStates[axis_key_count];
 

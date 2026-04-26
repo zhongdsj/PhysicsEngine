@@ -48,6 +48,7 @@ void ZDSJ::Keyboard::frameUpdate()
 	memset(this->m_axisStates, 0.0f, sizeof(this->m_axisStates));
 	this->m_currKeyPressed.store(0, std::memory_order_relaxed);
 	this->m_currKeyReleased.store(0, std::memory_order_relaxed);
+	this->setLButtonClick(false);
 }
 
 void ZDSJ::Keyboard::logicSyncEvent()
@@ -84,6 +85,16 @@ bool ZDSJ::Keyboard::isKeyDown(SpecialKey key) const
 	if (key >= SpecialKey::max_keys) return false;
 	uint32_t mask = 1u << static_cast<uint8_t>(key);
 	return (this->m_currKeyDown & mask) != 0;
+}
+
+bool ZDSJ::Keyboard::isLButtonClick() const
+{
+	return this->m_lButtonClick;
+}
+
+void ZDSJ::Keyboard::setLButtonClick(bool click)
+{
+	this->m_lButtonClick.store(click, std::memory_order_relaxed);
 }
 
 float ZDSJ::Keyboard::getAxisState(AxisKey axis) const

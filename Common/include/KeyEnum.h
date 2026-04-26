@@ -17,6 +17,7 @@ namespace ZDSJ
 		key_esc,     // ESC键
 		key_tab,     // Tab键
 		key_caps,    // 大小写锁定
+		mouse_left,  // 鼠标左键
 		max_keys     // 用于标记枚举上限，不可作为按键使用
 	};
 

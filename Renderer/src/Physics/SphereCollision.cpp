@@ -52,9 +52,10 @@ bool ZDSJ::SphereCollision::intersects(const Ray& _ray) const
 DirectX::XMFLOAT3 ZDSJ::SphereCollision::calculateForce(PhysicsInterface* _other)
 {
 	auto other_collision = reinterpret_cast<SphereCollision*>(_other);
+	DirectX::XMFLOAT3 defaultResult = { 0.0f, 0.0f, 0.0f };
 	if(other_collision == nullptr)
 	{
-		return { 0.0f, 0.0f, 0.0f };
+		return defaultResult;
 	}
 	if(this->intersects(other_collision))
 	{
@@ -65,37 +66,67 @@ DirectX::XMFLOAT3 ZDSJ::SphereCollision::calculateForce(PhysicsInterface* _other
 		auto other_mass = other_collision->getMovement()->getMass();
 		auto this_position = DirectX::XMLoadFloat3(&this->getMovement()->getData()->position());
 		auto other_position = DirectX::XMLoadFloat3(&other_collision->getMovement()->getData()->position());
-		// 计算碰撞方向（从 A 到 B 的单位向量）
+
+		// 计算碰撞方向（从 A 到 B 的向量）
+
+		float sum_radius = this->boundingSphere().Radius + other_collision->boundingSphere().Radius;
 		DirectX::XMVECTOR delta = DirectX::XMVectorSubtract(other_position, this_position);
 		float distance = DirectX::XMVectorGetX(DirectX::XMVector3Length(delta));
-		DirectX::XMVECTOR normal = DirectX::XMVectorDivide(delta, DirectX::XMVectorSet(distance, distance, distance, 1.0f)); // 单位向量
+		DirectX::XMVECTOR normal;
 
-		// 计算相对速度
+		const float MIN_DIST = 0.001f;
+
+		// 引擎标准：重合时不计算法线，避免 INF
+		if (distance < MIN_DIST)
+		{
+			normal = DirectX::XMVectorSet(1.0f, 0.0f, 0.0f, 0.0f);
+			distance = MIN_DIST;
+		}
+		else
+		{
+			normal = DirectX::XMVector3Normalize(delta);
+		}
+
+		// 相对速度
 		DirectX::XMVECTOR relative_velocity = DirectX::XMVectorSubtract(this_velocity, other_velocity);
-		float relative_velocity_dot_normal = DirectX::XMVectorGetX(DirectX::XMVector3Dot(relative_velocity, normal));
+		float vel_dot = DirectX::XMVectorGetX(DirectX::XMVector3Dot(relative_velocity, normal));
 
-		// 修正位置（避免穿透）
-		float penetration = (this->boundingSphere().Radius + other_collision->boundingSphere().Radius - distance) * 0.5f; // 平均穿透深度
-		DirectX::XMFLOAT3 this_new_position;
-		DirectX::XMFLOAT3 other_new_position;
-		DirectX::XMStoreFloat3(&this_new_position, DirectX::XMVectorSubtract(this_position, DirectX::XMVectorScale(normal, penetration)));
-		DirectX::XMStoreFloat3(&other_new_position, DirectX::XMVectorAdd(other_position, DirectX::XMVectorScale(normal, penetration)));
-		this->getMovement()->getData()->position(this_new_position);
-		other_collision->getMovement()->getData()->position(other_new_position);
-		
-		// 碰撞公式
-		float this_impulse_factor = 2.0f * other_mass / (this_mass + other_mass);
-		float other_impulse_factor = 2.0f * this_mass / (this_mass + other_mass);
-		DirectX::XMVECTOR this_impulse = DirectX::XMVectorScale(normal, this_impulse_factor * relative_velocity_dot_normal);
-		DirectX::XMVECTOR other_impulse = DirectX::XMVectorScale(normal, other_impulse_factor * relative_velocity_dot_normal);
-		DirectX::XMFLOAT3 this_new_velocity;
-		DirectX::XMFLOAT3 other_new_velocity;
-		DirectX::XMStoreFloat3(&this_new_velocity, this_impulse);
-		DirectX::XMStoreFloat3(&other_new_velocity, other_impulse);
-		this->getMovement()->subVelocity(this_new_velocity);
-		_other->getMovement()->addVelocity(other_new_velocity);
+		// 只有物体相互靠近时才处理碰撞（防止反复震荡）
+		if (vel_dot > 0.0f)
+			return { 0.0f, 0.0f, 0.0f};
+
+		// ==============================
+		// 位置修正（解决穿透）
+		// ==============================
+		float penetration = (sum_radius - distance) * 0.5f;
+		if (penetration < 0) penetration = 0;
+
+		DirectX::XMFLOAT3 this_new_pos;
+		DirectX::XMFLOAT3 other_new_pos;
+		DirectX::XMStoreFloat3(&this_new_pos, DirectX::XMVectorSubtract(this_position, DirectX::XMVectorScale(normal, penetration)));
+		DirectX::XMStoreFloat3(&other_new_pos, DirectX::XMVectorAdd(other_position, DirectX::XMVectorScale(normal, penetration)));
+		this->getMovement()->getData()->position(this_new_pos);
+		other_collision->getMovement()->getData()->position(other_new_pos);
+
+		float restitution = 0.8f; // 弹性系数 0~1
+		float impulse_j = -(1 + restitution) * vel_dot;
+		float total_mass = this_mass + other_mass;
+
+		// 质量为0的特殊情况（静态物体）
+		if (total_mass < 0.0001f) total_mass = 0.0001f;
+		impulse_j /= total_mass;
+
+		DirectX::XMVECTOR impulse = DirectX::XMVectorScale(normal, impulse_j);
+
+		DirectX::XMFLOAT3 v1;
+		DirectX::XMFLOAT3 v2;
+		DirectX::XMStoreFloat3(&v1, DirectX::XMVectorScale(impulse, other_mass));
+		DirectX::XMStoreFloat3(&v2, DirectX::XMVectorScale(impulse, this_mass));
+
+		this->getMovement()->subVelocity(v1);
+		other_collision->getMovement()->addVelocity(v2);
 	}
-	return {0.0f, 0.0f, 0.0f};
+	return defaultResult;
 }
 
 ZDSJ::SphereCollision::~SphereCollision()

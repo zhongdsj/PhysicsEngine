@@ -35,7 +35,8 @@ namespace ZDSJ
 		Context();
 		ReadOnly(Dx11Interface*, dx11, nullptr, Dx11)
 		ReadOnly(ApplicationWindowInterface*, window, nullptr, Window)
-		ReadWrite(Point, mouse_word, {}, MouseWorld)
+		ReadWrite(Point, mouse, {}, Mouse)
+		ReadWrite(Position, mouse_word, {}, MouseWorld)
 		ReadWrite(int, window_x, 200, WindowX)
 		ReadWrite(int, window_y, 100, WindowY)
 		ReadWrite(int, window_width, 800, WindowWidth)

@@ -22,7 +22,7 @@ void ZDSJ::BaseManager::render(ID3D11DeviceContext* _context)
 {
 	using namespace DirectX;
 	// 获取鼠标位置，创建射线
-	auto position = Camera_Instance->viewPosToWordPos(Context_Instance->getMouseWorld());
+	auto position = Context_Instance->getMouseWorld();
 	XMVECTOR views_pace_start_point = XMVectorSet(Camera_Instance->cameraPos().x, Camera_Instance->cameraPos().y, Camera_Instance->cameraPos().z, 0.0f);
 	XMVECTOR views_pace_end_point = XMVectorSet(position.x, position.y, position.z, 0.0f);
 	XMVECTOR direction = XMVector3Normalize(views_pace_end_point - views_pace_start_point);
@@ -60,7 +60,7 @@ void ZDSJ::BaseManager::physicsCalculate(float speed)
 			}
 			wait_render->applyForce(wait_calculate.get());
 		}
-		wait_render->update(1.0f);
+		wait_render->update(speed);
 	}
 }
 
