@@ -21,13 +21,15 @@ namespace ZDSJ
 		// void resetAllKeys();
 		bool isKeyPressed(SpecialKey key) const;
 		bool isKeyReleased(SpecialKey key) const;
+		bool isKeyDown(SpecialKey key) const;
 		float getAxisState(AxisKey axis) const;
 		~Keyboard() = default;
 	private:
 		Keyboard();
 		// 按键bitmap
-		std::atomic<uint32_t> m_currKeyStates{ 0 };  // 当前帧
-		std::atomic<uint32_t> m_prevKeyStates{ 0 };  // 上一帧
+		std::atomic<uint32_t> m_currKeyDown{ 0 }; // 当前渲染帧键位是否按住
+		std::atomic<uint32_t> m_currKeyReleased{ 0 }; // 当前渲染帧键位是否抬起
+		std::atomic<uint32_t> m_currKeyPressed{ 0 }; // 当前渲染帧键位是否按下
 		// 轴数据
 		std::atomic<float> m_axisStates[axis_key_count];
 

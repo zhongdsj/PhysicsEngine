@@ -65,6 +65,7 @@ LRESULT ZDSJ::MyMainWindow::handleMessage(HWND handle, UINT msg, WPARAM w_param,
 			auto point = Point(GET_X_LPARAM(l_param), GET_Y_LPARAM(l_param));
 			Context_Instance->setMouseWorld(point);
 		}
+		break;
 	case WM_KEYUP:
 		Context_Instance->getKeyBoard()->setKeyState(win32ToSpecialKey(w_param), KeyOperation::up);
 		break;

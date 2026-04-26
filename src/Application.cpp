@@ -41,8 +41,6 @@ void ZDSJ::Application::run() const
 			this->logicTick();
 			accumulator -= fixed_logic_step;
 		}
-		// 渲染帧
-		this->tick(delta_time);
 		if (this->m_window != nullptr)
 		{
 			MSG msg;
@@ -51,6 +49,8 @@ void ZDSJ::Application::run() const
 				break;
 			}
 		}
+		// 渲染帧
+		this->tick(delta_time);
 	}
 	Log_Info("message loop end");
 }
@@ -68,12 +68,12 @@ void ZDSJ::Application::tick(float _use_time) const
 	{
 		item->tick(_use_time);
 	}
-	Keyboard_Instance->frameUpdate();
 	Context_Instance->getDx11()->endTick();
 	auto end_time = std::chrono::high_resolution_clock::now();
 	std::chrono::duration<float> elapsed = end_time - start_time;
 	float current_frame_dt = elapsed.count();
 	Context_Instance->setDeltaTime(current_frame_dt);
+	Keyboard_Instance->frameUpdate();
 }
 
 void ZDSJ::Application::logicTick() const

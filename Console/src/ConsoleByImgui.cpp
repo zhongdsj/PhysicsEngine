@@ -35,7 +35,7 @@ void ZDSJ::ConsoleByImgui::tick(float _use_time)
 	{
 		this->m_show = !this->m_show;
 	}
-	
+
 	if (this->m_show)
 	{
 		this->rend();

@@ -31,7 +31,7 @@ void ZDSJ::BaseManager::render(ID3D11DeviceContext* _context)
 	{
 		auto& wait_render = this->m_data.at(i);
 		//鼠标发出射线碰撞
-		if(Keyboard_Instance->isKeyPressed(SpecialKey::key_ctrl) && wait_render->movement()->getCollision()->intersects(ray))
+		if(Keyboard_Instance->isKeyDown(SpecialKey::key_ctrl) && wait_render->movement()->getCollision()->intersects(ray))
 		{
 			// TODO 渲染到屏幕上
 			Log_Debug("{}", wait_render->printProperties());

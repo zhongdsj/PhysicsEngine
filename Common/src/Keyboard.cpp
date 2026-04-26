@@ -15,10 +15,12 @@ void ZDSJ::Keyboard::setKeyState(SpecialKey key, KeyOperation is_pressed)
 	// 位运算更新状态：原子操作保证多线程安全
 	uint32_t mask = 1 << static_cast<uint8_t>(key);
 	if (is_pressed == KeyOperation::down) {
-		this->m_currKeyStates.fetch_or(mask, std::memory_order_relaxed);
+		this->m_currKeyPressed.fetch_or(mask, std::memory_order_relaxed);
+		this->m_currKeyDown.fetch_or(mask, std::memory_order_relaxed);
 	}
 	else {
-		this->m_currKeyStates.fetch_and(~mask, std::memory_order_relaxed);
+		this->m_currKeyReleased.fetch_or(mask, std::memory_order_relaxed);
+		this->m_currKeyDown.fetch_and(~mask, std::memory_order_relaxed);
 	}
 
 	// 数据放入队列
@@ -44,12 +46,8 @@ void ZDSJ::Keyboard::frameUpdate()
 {
 	// 清空轴缓存
 	memset(this->m_axisStates, 0.0f, sizeof(this->m_axisStates));
-
-	// --- 按键：保存上一帧状态 ---
-	this->m_prevKeyStates.store(
-		this->m_currKeyStates.load(std::memory_order_relaxed),
-		std::memory_order_relaxed
-	);
+	this->m_currKeyPressed.store(0, std::memory_order_relaxed);
+	this->m_currKeyReleased.store(0, std::memory_order_relaxed);
 }
 
 void ZDSJ::Keyboard::logicSyncEvent()
@@ -71,16 +69,21 @@ bool ZDSJ::Keyboard::isKeyPressed(SpecialKey key) const
 {
 	if (key >= SpecialKey::max_keys) return false;
 	uint32_t mask = 1u << static_cast<uint8_t>(key);
-	return (m_currKeyStates & mask) != 0;
+	return (this->m_currKeyPressed & mask) != 0;
 }
 
 bool ZDSJ::Keyboard::isKeyReleased(SpecialKey key) const
 {
 	if (key >= SpecialKey::max_keys) return false;
 	uint32_t mask = 1u << static_cast<uint8_t>(key);
-	bool curr = (m_currKeyStates & mask) != 0;
-	bool prev = (m_prevKeyStates & mask) != 0;
-	return !curr && prev;
+	return (this->m_currKeyReleased & mask) != 0;
+}
+
+bool ZDSJ::Keyboard::isKeyDown(SpecialKey key) const
+{
+	if (key >= SpecialKey::max_keys) return false;
+	uint32_t mask = 1u << static_cast<uint8_t>(key);
+	return (this->m_currKeyDown & mask) != 0;
 }
 
 float ZDSJ::Keyboard::getAxisState(AxisKey axis) const
@@ -92,6 +95,5 @@ float ZDSJ::Keyboard::getAxisState(AxisKey axis) const
 
 ZDSJ::Keyboard::Keyboard()
 {
-	this->m_currKeyStates.store(0);
 	memset(this->m_axisStates, 0.0f, sizeof(this->m_axisStates));
 }
