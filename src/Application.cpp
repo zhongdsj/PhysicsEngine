@@ -22,14 +22,27 @@ ZDSJ::Application::Application()
 	ZDSJ::createDx11(this->m_window->getHandle(), Context_Instance->getWindowWidth(), Context_Instance->getWindowHeight(), 0);
 	this->m_console = std::shared_ptr<ConsoleInterface>(ZDSJ::createConsole(this->m_window->getHandle()));
 	this->m_tick_component.push_back(this->m_console.get());
+	this->m_tick_component.push_back(Context_Instance->getDx11());
 }
 
 void ZDSJ::Application::run() const
 {
 	Log_Info("start message loop");
+	float accumulator = 0.0f;      // 时间累积器
+	float delta_time = 0.0f;
 	while(true)
 	{
-		Context_Instance->getDx11()->beginTick();
+		delta_time = Context_Instance->getDeltaTime();
+		accumulator += delta_time;
+		// 3. 固定步长跑逻辑帧（核心！）
+		while (accumulator >= fixed_logic_step)
+		{
+			Context_Instance->getKeyBoard()->frameUpdate();
+			this->logicTick();
+			accumulator -= fixed_logic_step;
+		}
+		// 渲染帧
+		this->tick(delta_time);
 		if (this->m_window != nullptr)
 		{
 			MSG msg;
@@ -38,8 +51,6 @@ void ZDSJ::Application::run() const
 				break;
 			}
 		}
-		this->tick(1.0);
-		Context_Instance->getDx11()->endTick();
 	}
 	Log_Info("message loop end");
 }
@@ -51,9 +62,25 @@ ZDSJ::Application::~Application()
 
 void ZDSJ::Application::tick(float _use_time) const
 {
-	Context_Instance->getDx11()->tick(_use_time);
+	Context_Instance->getDx11()->beginTick();
+	auto start_time = std::chrono::high_resolution_clock::now();
 	for (auto item : this->m_tick_component)
 	{
 		item->tick(_use_time);
+	}
+	Keyboard_Instance->frameUpdate();
+	Context_Instance->getDx11()->endTick();
+	auto end_time = std::chrono::high_resolution_clock::now();
+	std::chrono::duration<float> elapsed = end_time - start_time;
+	float current_frame_dt = elapsed.count();
+	Context_Instance->setDeltaTime(current_frame_dt);
+}
+
+void ZDSJ::Application::logicTick() const
+{
+	Keyboard_Instance->logicSyncEvent();
+	for (auto item : this->m_tick_component)
+	{
+		item->logicTick(Context_Instance->getSpeed());
 	}
 }

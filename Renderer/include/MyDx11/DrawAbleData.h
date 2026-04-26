@@ -84,6 +84,21 @@ namespace ZDSJ
 			return this->m_rotation;
 		}
 
+		const DirectX::XMFLOAT3& renderSize() const
+		{
+			return this->m_renderSize;
+		}
+
+		const DirectX::XMFLOAT3& renderPosition() const
+		{
+			return this->m_renderPosition;
+		}
+
+		const DirectX::XMFLOAT3& renderRotation() const
+		{
+			return this->m_renderRotation;
+		}
+
 		DrawAbleData* rotation(const DirectX::XMFLOAT3& _rotation)
 		{
 			this->m_rotation = _rotation;
@@ -110,6 +125,9 @@ namespace ZDSJ
 		DirectX::XMFLOAT3 m_size = {20.0f, 20.0f, 1.0f};
 		DirectX::XMFLOAT3 m_position = {0.0f, 0.0f, 0.0f};
 		DirectX::XMFLOAT3 m_rotation = {0.0f, 0.0f, 0.0f};
+		DirectX::XMFLOAT3 m_renderSize = { 20.0f, 20.0f, 1.0f };
+		DirectX::XMFLOAT3 m_renderPosition = { 0.0f, 0.0f, 0.0f };
+		DirectX::XMFLOAT3 m_renderRotation = { 0.0f, 0.0f, 0.0f };
 		std::shared_ptr<MovementInterface> m_movement = nullptr;
 		std::unordered_map<std::string, std::vector<std::shared_ptr<Slot>>> m_slots;
 	protected:

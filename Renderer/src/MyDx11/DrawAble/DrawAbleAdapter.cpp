@@ -66,9 +66,9 @@ DirectX::XMMATRIX ZDSJ::DrawAbleAdapter::getTransformMatix(const DrawAbleData* _
 {
 	// 世界矩阵->视图矩阵->投影矩阵
 	// 世界矩阵
-	DirectX::XMMATRIX size = DirectX::XMMatrixScalingFromVector(DirectX::XMLoadFloat3(&_drawAbleData->size()));
-	DirectX::XMMATRIX rotation = DirectX::XMMatrixRotationRollPitchYawFromVector(DirectX::XMLoadFloat3(&_drawAbleData->rotation()));
-	DirectX::XMMATRIX position = DirectX::XMMatrixTranslationFromVector(DirectX::XMLoadFloat3(&_drawAbleData->position()));
+	DirectX::XMMATRIX size = DirectX::XMMatrixScalingFromVector(DirectX::XMLoadFloat3(&_drawAbleData->renderSize()));
+	DirectX::XMMATRIX rotation = DirectX::XMMatrixRotationRollPitchYawFromVector(DirectX::XMLoadFloat3(&_drawAbleData->renderRotation()));
+	DirectX::XMMATRIX position = DirectX::XMMatrixTranslationFromVector(DirectX::XMLoadFloat3(&_drawAbleData->renderPosition()));
 
 	DirectX::XMMATRIX word = size * rotation * position;
 	

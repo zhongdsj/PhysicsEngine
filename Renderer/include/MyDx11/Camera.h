@@ -10,6 +10,7 @@ namespace DirectX {
 namespace ZDSJ {
 	class Context;
 	struct Point;
+	struct Position;
 	struct float4 {
 		float x;
 		float y;
@@ -20,7 +21,7 @@ namespace ZDSJ {
 	class Camera {
 	public:
 		static Camera* getInstance();
-		Point viewPosToWordPos(Point _pos) const;
+		Position viewPosToWordPos(Point _pos) const;
 		float fov() const;
 		void fov(float _value);
 

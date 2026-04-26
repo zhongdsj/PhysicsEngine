@@ -116,6 +116,7 @@ ZDSJ::Camera::Camera(ZDSJ::Context* _context, float _window_rate) : m_view_pos(n
 		return true;
 
 	});*/
+	
 	this->calculateProjectionMatrix(_window_rate);
 	this->calculateViewMatrix(_window_rate);
 	this->printCameraParams();
@@ -126,7 +127,7 @@ void ZDSJ::Camera::printCameraParams() const
 	Log_Info("[camera]: ({}, {}, {}, {}), (fov, near, far): ({}, {}, {})", this->m_pos.x, this->m_pos.y, this->m_pos.z, this->m_pos.w, this->m_fov, this->m_near_plane, this->m_far_plane);
 }
 
-ZDSJ::Point ZDSJ::Camera::viewPosToWordPos(ZDSJ::Point _pos) const
+ZDSJ::Position ZDSJ::Camera::viewPosToWordPos(ZDSJ::Point _pos) const
 {
 	ZDSJ::Point point;
 	ZDSJ::Context* context = Context_Instance;
@@ -138,11 +139,12 @@ ZDSJ::Point ZDSJ::Camera::viewPosToWordPos(ZDSJ::Point _pos) const
 	point.x = 2.0f * viewportX - 1.0f;
 	point.y = 1.0f - 2.0f * viewportY;
 
-	/*auto half_fov = DirectX::XMConvertToRadians(0.5f * this->m_fov);
-	float half_fov_tan = std::tan(half_fov);
-	point.x = (_pos.x / context->getWindowWidth()) * this->m_far_plane * half_fov_tan * context->getWindowHeight() / context->getWindowWidth();
-	point.y = (_pos.y / context->getWindowHeight()) * this->m_far_plane * half_fov_tan;*/
-	return point;
+	// 2. 拿到 VP 矩阵
+	DirectX::XMMATRIX invVP = DirectX::XMMatrixInverse(nullptr, *this->m_view_matrix * *this->m_projection_matrix);
+	DirectX::XMVECTOR nearPt = DirectX::XMVectorSet(point.x, point.y, 0.0f, 1.0f);
+	nearPt = DirectX::XMVector3TransformCoord(nearPt, invVP);
+
+	return Position(DirectX::XMVectorGetX(nearPt), DirectX::XMVectorGetY(nearPt), DirectX::XMVectorGetZ(nearPt));
 }
 
 float ZDSJ::Camera::fov() const

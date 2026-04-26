@@ -21,6 +21,7 @@ namespace ZDSJ {
 		MyDx11(HWND _hwnd, int _window_width, int _window_height, RenderType _render_type);
 		void beginTick() override;
 		void tick(float _use_time) override;
+		void logicTick(float _use_time) override;
 		void endTick() override;
 		void solid() override;
 		void wireframe() override;

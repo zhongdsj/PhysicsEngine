@@ -2,16 +2,6 @@
 
 namespace ZDSJ
 {
-	namespace KEY
-	{
-		// 波浪键
-		auto wavy = "wavy";
-		// ctrl
-		auto ctrl = "ctrl";
-		// alt
-		auto alt = "alt";
-	}
-
 	enum class KeyOperation
 	{
 		up = 0,
@@ -29,4 +19,27 @@ namespace ZDSJ
 		key_caps,    // 大小写锁定
 		max_keys     // 用于标记枚举上限，不可作为按键使用
 	};
+
+	enum class AxisKey: uint8_t {
+		mouse_wheel, // 滚轮
+		max_keys     // 用于标记枚举上限，不可作为按键使用
+	};
+
+	struct KeyEvent
+	{
+		SpecialKey key;
+		KeyOperation pressed; // true=按下, false=抬起
+
+		KeyEvent(SpecialKey k, KeyOperation p) : key(k), pressed(p) {}
+	};
+
+	struct AxisEvent
+	{
+		AxisKey axis;
+		float delta;
+
+		AxisEvent(AxisKey k, float dt) : axis(k), delta(dt) {}
+	};
+
+	constexpr size_t axis_key_count = static_cast<size_t>(AxisKey::max_keys);
 }

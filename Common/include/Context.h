@@ -41,6 +41,8 @@ namespace ZDSJ
 		ReadWrite(int, window_width, 800, WindowWidth)
 		ReadWrite(int, window_height, 600, WindowHeight)
 		ReadWrite(bool, word_active, true, WordActive)
+		ReadWrite(float, delta_time, true, DeltaTime)
+		ReadWrite(float, speed, true, Speed)
 		ReadOnly(LoggerConfig, log_config, {}, LoggerConfig)
 
 		void readFromConfig();

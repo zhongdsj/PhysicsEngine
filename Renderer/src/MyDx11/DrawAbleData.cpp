@@ -29,6 +29,9 @@ void ZDSJ::DrawAbleData::applyForce(const DrawAbleData* _other) const
 void ZDSJ::DrawAbleData::update(float _magnification)
 {
 	this->m_movement->updatePosition(this->m_position, _magnification);
+	memcpy(&this->m_renderSize, &this->m_size, sizeof(DirectX::XMFLOAT3));
+	memcpy(&this->m_renderPosition, &this->m_position, sizeof(DirectX::XMFLOAT3));
+	memcpy(&this->m_renderRotation, &this->m_rotation, sizeof(DirectX::XMFLOAT3));
 }
 
 ZDSJ::DrawAbleData* ZDSJ::DrawAbleData::addVelocity(const DirectX::XMFLOAT3& _velocity)

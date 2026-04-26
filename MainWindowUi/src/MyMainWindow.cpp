@@ -1,8 +1,18 @@
 ﻿# include <MyMainWindow.h>
 # include <Context.h>
 # include <MyWindowClass.h>
-# include <KeyEnum.h>
 # include <windowsx.h>
+
+ZDSJ::SpecialKey win32ToSpecialKey(WPARAM w_param)
+{
+	switch (w_param)
+	{
+	case VK_CONTROL: return ZDSJ::SpecialKey::key_ctrl;
+	case VK_MENU:    return ZDSJ::SpecialKey::key_alt;
+	case VK_OEM_3:   return ZDSJ::SpecialKey::key_wavy;
+	default:         return ZDSJ::SpecialKey::max_keys;
+	}
+}
 
 ZDSJ::MyMainWindow::MyMainWindow(DWORD _ex_style, LPCWSTR _class_name, LPCWSTR _window_name, DWORD _style, int _x,
                                  int _y, int _width, int _height, HWND _parent, HMENU _menu, HINSTANCE _instance)
@@ -56,35 +66,11 @@ LRESULT ZDSJ::MyMainWindow::handleMessage(HWND handle, UINT msg, WPARAM w_param,
 			Context_Instance->setMouseWorld(point);
 		}
 	case WM_KEYUP:
-		{
-			switch (w_param)
-			{
-			case VK_OEM_3:
-				this->emit(KEY::wavy, KeyOperation::up);
-				break;
-			case VK_CONTROL:
-				this->emit(KEY::ctrl, KeyOperation::up);
-				break;
-			case VK_MENU:
-				this->emit(KEY::alt, KeyOperation::up);
-				break;
-			default:
-				break;
-			}
-			break;
-		}
+		Context_Instance->getKeyBoard()->setKeyState(win32ToSpecialKey(w_param), KeyOperation::up);
+		break;
 	case WM_KEYDOWN:
-		{
-			switch (w_param)
-			{
-			case VK_CONTROL:
-				this->emit(KEY::ctrl, KeyOperation::down);
-				break;
-			default:
-				break;
-			}
-			break;
-		}
+		Context_Instance->getKeyBoard()->setKeyState(win32ToSpecialKey(w_param), KeyOperation::down);
+		break;
 	case WM_MOVE:
 		{
 			const int x_pos = (int)static_cast<short>(LOWORD(l_param));   // horizontal position 
@@ -93,6 +79,9 @@ LRESULT ZDSJ::MyMainWindow::handleMessage(HWND handle, UINT msg, WPARAM w_param,
 			Context_Instance->setWindowY(y_pos);
 			break;
 		}
+	case WM_MOUSEWHEEL:
+		Keyboard_Instance->addAxisStates(AxisKey::mouse_wheel, GET_WHEEL_DELTA_WPARAM(w_param));
+		break;
 	case WM_CLOSE:
 		PostQuitMessage(0);
 		break;
@@ -146,9 +135,6 @@ ZDSJ::MyMainWindow::~MyMainWindow()
 
 void ZDSJ::MyMainWindow::registerSignal()
 {
-	this->m_slots.insert(std::make_pair(KEY::wavy, std::tuple<std::string, std::vector<Slot*>>("波浪键弹起触发", std::vector<Slot*>())));
-	this->m_slots.insert(std::make_pair(KEY::ctrl, std::tuple<std::string, std::vector<Slot*>>("ctrl弹起触发", std::vector<Slot*>())));
-	this->m_slots.insert(std::make_pair(KEY::alt, std::tuple<std::string, std::vector<Slot*>>("ctrl弹起触发", std::vector<Slot*>())));
 }
 
 ZDSJ::ApplicationWindowInterface* ZDSJ::createWindow(const wchar_t* _window_name, int _x, int _y, int _width, int _height)

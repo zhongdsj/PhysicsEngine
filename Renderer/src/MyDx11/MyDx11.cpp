@@ -193,7 +193,9 @@ ZDSJ::MyDx11::MyDx11(HWND _hwnd, int _window_width, int _window_height, ZDSJ::Re
 	
 	this->MyDx11::solid();
 	this->registerToContext();
-	this->m_drawable_manager->add((new DrawAbleData("Arc2D")));
+	// this->m_drawable_manager->add(new DrawAbleData("Arc2D", { 200.0f, 0.0f, 0.0f }));
+	// this->m_drawable_manager->add(new DrawAbleData("Arc2D"));
+	this->m_drawable_manager->add((new DrawAbleData("Arc2D"))->addVelocity({0.2f, 0.0f, 0.0f}));
 	/*this->m_drawable_manager->add((new DrawAbleData("Arc2D"))->addVelocity({1.0f, 0.0f, 0.0f}));
 	this->m_drawable_manager->add(new DrawAbleData("Arc2D", { 15.0f, 0.0f, 0.0f }));*/
 }
@@ -206,6 +208,11 @@ void ZDSJ::MyDx11::beginTick()
 void ZDSJ::MyDx11::tick(float _use_time)
 {
 	this->m_drawable_manager->render(m_context);
+}
+
+void ZDSJ::MyDx11::logicTick(float _use_time)
+{
+	this->m_drawable_manager->physicsCalculate(_use_time);
 }
 
 

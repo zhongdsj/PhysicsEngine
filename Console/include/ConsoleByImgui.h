@@ -1,9 +1,7 @@
 ﻿# pragma once
-# include <atomic>
 # include <ConsoleInterface.h>
 # include <ConsoleExport.h>
 # include <CommonMacro.h>
-# include <memory>
 # include <vector>
 
 struct ID3D11Device;
@@ -28,7 +26,7 @@ namespace ZDSJ
 		int m_console_flag = 0;
 		ID3D11Device* m_device;
 		ID3D11DeviceContext* m_context;
-		std::atomic_bool m_show{false};
+		bool m_show{true};
 		std::vector<Slot*> m_slots;
 
 		void rend();

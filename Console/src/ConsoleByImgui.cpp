@@ -6,7 +6,6 @@
 # include <imgui/imgui.h>
 # include <Context.h>
 # include <ApplicationWindowInterface.h>
-# include <KeyEnum.h>
 # include <Slot.h>
 # include <Command.h>
 
@@ -28,25 +27,16 @@ ZDSJ::ConsoleByImgui::ConsoleByImgui(HWND _handle)
 	ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
 	auto window = Context_Instance->getWindow();
 	window->addHandleMessage("console", std::bind(&ConsoleInterface::messageHandle, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
-	if(window != nullptr)
-	{
-		this->m_slots.push_back(window->connect(ZDSJ::KEY::wavy, new Slot([this](KeyOperation _operation)
-		{
-			switch (_operation)
-			{
-			case KeyOperation::up:
-				this->m_show.store(!this->m_show.load());
-				break;
-			default: 
-				break;
-			}
-		}, "波浪键切换控制台显隐")));
-	}
 }
 
 void ZDSJ::ConsoleByImgui::tick(float _use_time)
 {
-	if (this->m_show.load())
+	if(Keyboard_Instance->isKeyReleased(SpecialKey::key_wavy))
+	{
+		this->m_show = !this->m_show;
+	}
+	
+	if (this->m_show)
 	{
 		this->rend();
 	}

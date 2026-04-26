@@ -31,6 +31,8 @@ namespace ZDSJ {
 
 		void render(ID3D11DeviceContext* _context);
 
+		void physicsCalculate(float speed);
+
 		~BaseManager() = default;
 	private:
 		std::vector<std::shared_ptr<DrawAbleData>> m_data;

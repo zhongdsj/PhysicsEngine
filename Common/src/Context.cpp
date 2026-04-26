@@ -10,6 +10,8 @@ ZDSJ::Context* ZDSJ::Context::getInstance()
 ZDSJ::Context::Context()
 {
 	Log_Info("init context");
+	this->m_delta_time = 0.0f;
+	this->m_speed = 1.0f;
 	this->readFromConfig();
 	Log_Info("context init complete");
 }
