@@ -10,6 +10,8 @@ ZDSJ::SpecialKey win32ToSpecialKey(WPARAM w_param)
 	case VK_CONTROL: return ZDSJ::SpecialKey::key_ctrl;
 	case VK_MENU:    return ZDSJ::SpecialKey::key_alt;
 	case VK_OEM_3:   return ZDSJ::SpecialKey::key_wavy;
+	case 'T':		 return ZDSJ::SpecialKey::key_t;
+	case 'R':		 return ZDSJ::SpecialKey::key_r;
 	default:         return ZDSJ::SpecialKey::max_keys;
 	}
 }

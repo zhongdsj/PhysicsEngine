@@ -26,7 +26,7 @@ namespace ZDSJ
 		int m_console_flag = 0;
 		ID3D11Device* m_device;
 		ID3D11DeviceContext* m_context;
-		bool m_show{true};
+		bool m_show{false};
 		std::vector<Slot*> m_slots;
 
 		void rend();

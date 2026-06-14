@@ -75,6 +75,7 @@ namespace ZDSJ
 		DrawAbleData* position(const DirectX::XMFLOAT3& _position)
 		{
 			this->m_position = _position;
+			this->m_renderPosition = _position;
 			this->emit("position");
 			return this;
 		}

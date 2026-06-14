@@ -274,7 +274,7 @@ void ZDSJ::Camera::calculateViewMatrix(float _window_rate)
 	this->viewPosSize(_window_rate);
 }
 
-void ZDSJ::Camera::viewPosSize(float _window_rate)
+void ZDSJ::Camera::viewPosSize(float _window_rate) const
 {
 	float tan_fov_2 = DirectX::XMVectorGetX(DirectX::XMVectorTan(DirectX::XMVectorSet(DirectX::XMConvertToRadians(this->m_fov / 2), 0, 0, 0)));
 	this->m_view_pos->x = tan_fov_2 * (-this->m_pos.z) * 2 * _window_rate;

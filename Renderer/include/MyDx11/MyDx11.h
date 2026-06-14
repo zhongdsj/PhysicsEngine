@@ -8,12 +8,14 @@ struct IDXGISwapChain;
 struct ID3D11Texture2D;
 struct ID3D11RenderTargetView;
 struct ID3D11RasterizerState;
+struct ID3D11Buffer;
 
 namespace ZDSJ {
 #define SAFE_RELEASE(p) {if(p != nullptr){(p)->Release(); p=nullptr;}}
 	class DrawAbleInterface;
 	class BaseManager;
 	enum class RenderType;
+	class ParticlePhysicsManager;
 
 	class Renderer_Api MyDx11: public Dx11Interface {
 	public:
@@ -36,6 +38,7 @@ namespace ZDSJ {
 		BaseManager* m_drawable_manager = nullptr;
 		ID3D11RasterizerState* m_solid_rasterizer_state = nullptr;
 		ID3D11RasterizerState* m_wireframe_rasterizer_state = nullptr;
+		ID3D11Buffer* m_cbMatrix = nullptr;
 		size_t m_index_size = 0;
 
 		float m_background[4] = { 0.0f, 0.0f, 0.0f, 1.0f };

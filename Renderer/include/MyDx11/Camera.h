@@ -56,7 +56,7 @@ namespace ZDSJ {
 		void calculateProjectionMatrix(float _window_rate);
 		void calculateViewMatrix();
 		void calculateViewMatrix(float _window_rate);
-		void viewPosSize(float _window_rate);
+		void viewPosSize(float _window_rate) const;
 		Point viewPosSize() const;
 
 

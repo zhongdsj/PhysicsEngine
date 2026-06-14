@@ -191,6 +191,22 @@ ZDSJ::MyDx11::MyDx11(HWND _hwnd, int _window_width, int _window_height, ZDSJ::Re
 	wireframe_desc.ScissorEnable = false;
 	wireframe_desc.DepthClipEnable = true;
 	this->m_device->CreateRasterizerState(&wireframe_desc, &this->m_wireframe_rasterizer_state);
+
+	D3D11_BUFFER_DESC matBufferDesc{};
+	matBufferDesc.ByteWidth = sizeof(DirectX::XMMATRIX);   // 缓冲区总大小
+	matBufferDesc.Usage = D3D11_USAGE_DEFAULT;    // 常规GPU缓冲区
+	matBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	matBufferDesc.CPUAccessFlags = 0;
+	matBufferDesc.MiscFlags = 0;
+	matBufferDesc.StructureByteStride = 0;
+
+	// 创建缓冲区对象
+	HRESULT hr = m_device->CreateBuffer(&matBufferDesc, nullptr, &m_cbMatrix);
+	if (FAILED(hr))
+	{
+		// 日志报错
+		Log_Error("创建矩阵常量缓冲区失败");
+	}
 	
 	this->MyDx11::solid();
 	this->registerToContext();
@@ -214,6 +230,16 @@ void ZDSJ::MyDx11::tick(float _use_time)
 	{
 		this->m_drawable_manager->add(new DrawAbleData("Arc2D", { position.x, position.y, position.z }));
 	}
+	auto camera_matrix = Camera_Instance->getInstance()->getCameraMatrix();
+	m_context->UpdateSubresource(
+		m_cbMatrix,   // 缓冲区对象
+		0,                  // 子资源索引，常量缓冲区固定0
+		nullptr,            // 不使用偏移矩形
+		&camera_matrix,           // 数据源
+		0,                  // 行间距(常量缓冲区填0)
+		0                   // 切片间距(常量缓冲区填0)
+	);
+	m_context->GSSetConstantBuffers(0, 1, &m_cbMatrix);
 	this->m_drawable_manager->render(m_context);
 }
 

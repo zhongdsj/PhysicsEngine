@@ -122,6 +122,8 @@
     </Link>
     <PostBuildEvent>
       <Command>robocopy $(SolutionDir)bin\$(ProjectName)\$(Platform)\$(Configuration) $(SolutionDir)bin\$(Platform)\$(Configuration)\dll $(TargetName)$(TargetExt)
+if ERRORLEVEL 1 set ERRORLEVEL=0
+robocopy $(SolutionDir)bin\$(ProjectName)\$(Platform)\$(Configuration) $(SolutionDir)bin\$(Platform)\$(Configuration) *.cso
 if ERRORLEVEL 1 set ERRORLEVEL=0</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -145,11 +147,14 @@ if ERRORLEVEL 1 set ERRORLEVEL=0</Command>
     </Link>
     <PostBuildEvent>
       <Command>robocopy $(SolutionDir)bin\$(ProjectName)\$(Platform)\$(Configuration) $(SolutionDir)bin\$(Platform)\$(Configuration)\dll $(TargetName)$(TargetExt)
+if ERRORLEVEL 1 set ERRORLEVEL=0
+robocopy $(SolutionDir)bin\$(ProjectName)\$(Platform)\$(Configuration) $(SolutionDir)bin\$(Platform)\$(Configuration) *.cso
 if ERRORLEVEL 1 set ERRORLEVEL=0</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="include\Manager\BaseManager.h" />
+    <ClInclude Include="include\Manager\BVHNode.h" />
     <ClInclude Include="include\MyDx11\BindAble\BindAbleInterface.h" />
     <ClInclude Include="include\MyDx11\BindAble\ConstantBufferBindAble.h" />
     <ClInclude Include="include\MyDx11\BindAble\IndexBufferBindAble.h" />
@@ -172,6 +177,8 @@ if ERRORLEVEL 1 set ERRORLEVEL=0</Command>
     <ClInclude Include="include\MyDx11\Shader\TriangleVertexShader2D.h" />
     <ClInclude Include="include\MyDx11\VertexStructure.h" />
     <ClInclude Include="include\Physics\BoundingInterface.h" />
+    <ClInclude Include="include\Physics\ParticalePhysicsData.h" />
+    <ClInclude Include="include\Physics\ParticlePhysicsManager.h" />
     <ClInclude Include="include\Physics\SphereCollision.h" />
     <ClInclude Include="include\Physics\CollisionInterface.h" />
     <ClInclude Include="include\Physics\Movement.h" />
@@ -196,6 +203,7 @@ if ERRORLEVEL 1 set ERRORLEVEL=0</Command>
     <ClCompile Include="src\MyDx11\DrawAble\Triangle2DDrawAble.cpp" />
     <ClCompile Include="src\MyDx11\MyDx11.cpp" />
     <ClCompile Include="src\MyDx11\VertexStructure.cpp" />
+    <ClCompile Include="src\Physics\ParticlePhysicsManager.cpp" />
     <ClCompile Include="src\Physics\SphereCollision.cpp" />
     <ClCompile Include="src\Physics\Movement.cpp" />
   </ItemGroup>
@@ -203,6 +211,60 @@ if ERRORLEVEL 1 set ERRORLEVEL=0</Command>
     <ProjectReference Include="..\Common\Common.vcxproj">
       <Project>{0effd7fc-fbe1-4cec-8e92-5f39c3b26cc5}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="include\MyDx11\Shader\ParticlePhysics.hlsl">
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Compute</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Compute</ShaderType>
+    </FxCompile>
+    <FxCompile Include="include\MyDx11\Shader\ParticlePS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="include\MyDx11\Shader\ParticleGS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Geometry</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Geometry</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Geometry</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">4.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Geometry</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="include\MyDx11\Shader\ParticleVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="include\MyDx11\Shader\TrianglePixelShader2D.hlsl">
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">main_pixel_shader</EntryPointName>
+      <DisableOptimizations Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</DisableOptimizations>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">main_pixel_shader</EntryPointName>
+      <EnableDebuggingInformation Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</EnableDebuggingInformation>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="include\MyDx11\Shader\TriangleVertexShader2D.hlsl">
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">main_vertex_shader</EntryPointName>
+      <DisableOptimizations Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</DisableOptimizations>
+      <EnableDebuggingInformation Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</EnableDebuggingInformation>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">main_vertex_shader</EntryPointName>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

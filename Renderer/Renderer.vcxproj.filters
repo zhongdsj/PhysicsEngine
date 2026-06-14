@@ -141,6 +141,15 @@
     <ClInclude Include="include\Physics\BoundingInterface.h">
       <Filter>头文件\include\Physics</Filter>
     </ClInclude>
+    <ClInclude Include="include\Manager\BVHNode.h">
+      <Filter>头文件\include\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Physics\ParticlePhysicsManager.h">
+      <Filter>头文件\include\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Physics\ParticalePhysicsData.h">
+      <Filter>头文件\include\Physics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\MyDx11\Camera.cpp">
@@ -197,5 +206,28 @@
     <ClCompile Include="src\Manager\BaseManager.cpp">
       <Filter>源文件\src\Manager</Filter>
     </ClCompile>
+    <ClCompile Include="src\Physics\ParticlePhysicsManager.cpp">
+      <Filter>源文件\src\Physics</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="include\MyDx11\Shader\ParticleVS.hlsl">
+      <Filter>头文件\include\MyDx11\Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="include\MyDx11\Shader\ParticlePS.hlsl">
+      <Filter>头文件\include\MyDx11\Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="include\MyDx11\Shader\ParticlePhysics.hlsl">
+      <Filter>头文件\include\MyDx11\Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="include\MyDx11\Shader\TrianglePixelShader2D.hlsl">
+      <Filter>头文件\include\MyDx11\Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="include\MyDx11\Shader\TriangleVertexShader2D.hlsl">
+      <Filter>头文件\include\MyDx11\Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="include\MyDx11\Shader\ParticleGS.hlsl">
+      <Filter>头文件\include\MyDx11\Shader</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>
